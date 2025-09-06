@@ -14,7 +14,7 @@ const PaymentsFeaturePage: React.FC = () => {
       <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
         <div className="flex justify-center order-2 md:order-1">
           <img
-            src="https://images.unsplash.com/photo-1579621970563-fa020b955579?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src="/images/payment-processing.jpg"
             alt="Payment Processing"
             className="w-full max-w-md h-auto rounded-lg shadow-lg object-cover"
           />

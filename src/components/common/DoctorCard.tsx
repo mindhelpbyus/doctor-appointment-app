@@ -19,7 +19,7 @@ interface DoctorCardProps {
 }
 
 const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
-  const defaultDoctorImage = 'https://images.unsplash.com/photo-1550831107-15534086750c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+  const defaultDoctorImage = '/images/doctors/default.jpg';
   const Icon = doctor.specialtyIcon;
 
   return (

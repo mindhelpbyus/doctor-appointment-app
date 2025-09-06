@@ -38,7 +38,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Routes>
           {/* Routes that use the MainLayout */}
           <Route path="/" element={<MainLayout />}>

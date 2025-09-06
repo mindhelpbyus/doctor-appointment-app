@@ -35,7 +35,7 @@ const MarketingFeaturePage: React.FC = () => {
         </div>
         <div className="flex justify-center">
           <img
-            src="https://images.unsplash.com/photo-1557804506-669a67965da9?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src="/images/marketing-tools.jpg"
             alt="Marketing Tools"
             className="w-full max-w-md h-auto rounded-lg shadow-lg object-cover"
           />

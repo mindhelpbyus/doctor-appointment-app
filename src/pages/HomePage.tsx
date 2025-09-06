@@ -4,10 +4,11 @@ import { getAgencies, getSpecialties } from '@/services/localApi';
 import { Agency } from '@/data/agencies';
 import { Specialty } from '@/data/specialties';
 import SpecialtyCard from '@/components/common/SpecialtyCard';
-import AgencyCard from '@/components/common/AgencyCard';
 import SearchBar from '@/components/common/SearchBar';
 import { Button } from '@/components/ui/button';
 import { TopDoctors, LocationBasedFeatures, Testimonials } from '@/components/home';
+import { InfiniteMovingCards } from '@/components/ui/infinite-moving-cards';
+import { insuranceProviders } from '@/data/insuranceProviders';
 
 const HomePage = () => {
   const [agencies, setAgencies] = useState<Agency[]>([]);
@@ -65,22 +66,20 @@ const HomePage = () => {
         </section>
       )}
 
-      {/* Healthcare Agencies */}
-      {agencies.length > 0 && (
-        <section>
+      {/* Top Insurance Providers */}
+      <section>
           <div className="text-center mb-10">
-            <h2 className="text-4xl font-bold font-recoleta text-foreground">Connect with Leading Healthcare Groups</h2>
+            <h2 className="text-4xl font-bold font-recoleta text-foreground">Top Insurance Providers</h2>
             <p className="text-lg text-muted-foreground mt-2 font-averta">
-              Access a network of trusted clinics and hospitals for comprehensive care.
+              We work with a wide range of insurance providers to ensure you get the best care.
             </p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {agencies.map(agency => (
-              <AgencyCard key={agency.id} agency={agency} />
-            ))}
-          </div>
+          <InfiniteMovingCards
+            items={insuranceProviders}
+            direction="right"
+            speed="slow"
+          />
         </section>
-      )}
 
       {/* Top-rated doctors */}
       <TopDoctors />

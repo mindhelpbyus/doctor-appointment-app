@@ -1,6 +1,6 @@
 import React from 'react';
 import { useGeolocation } from '@/hooks/useGeolocation';
-import { paymentMethodsByCountry, insuranceProvidersByCountry } from '@/data/paymentMethods';
+import { insuranceProvidersByCountry } from '@/data/paymentMethods';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const LogoBox = ({ name }: { name: string }) => (
@@ -16,7 +16,6 @@ const LocationBasedFeatures: React.FC = () => {
   const countryName = location?.countryName || 'your region';
 
   // We'll show a curated list of top partners instead of the full list
-  const paymentPartners = (paymentMethodsByCountry[countryCode] || paymentMethodsByCountry.default).slice(0, 4);
   const insurancePartners = (insuranceProvidersByCountry[countryCode] || insuranceProvidersByCountry.default).slice(0, 4);
 
   return (
@@ -30,7 +29,7 @@ const LocationBasedFeatures: React.FC = () => {
           </h2>
         )}
         <p className="text-lg text-muted-foreground mb-10 font-averta max-w-2xl mx-auto">
-          We partner with leading insurance and payment providers to make your healthcare journey seamless in {countryName}.
+          We partner with leading insurance providers to make your healthcare journey seamless in {countryName}.
         </p>
         
         <div className="space-y-8">
@@ -39,15 +38,6 @@ const LocationBasedFeatures: React.FC = () => {
             <div className="flex flex-wrap justify-center items-center gap-6">
               {insurancePartners.map(provider => (
                 <LogoBox key={provider} name={provider} />
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-muted-foreground font-semibold text-xl mb-6">Accepted Payment Methods</h3>
-            <div className="flex flex-wrap justify-center items-center gap-6">
-              {paymentPartners.map(method => (
-                <LogoBox key={method.name} name={method.name} />
               ))}
             </div>
           </div>
