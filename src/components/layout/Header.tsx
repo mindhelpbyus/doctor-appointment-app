@@ -11,49 +11,50 @@ const Header: React.FC = () => {
   return (
     <>
       <GlobalSearch open={isSearchOpen} onOpenChange={setIsSearchOpen} />
-      <header className="bg-primary text-primary-foreground p-4 shadow-md sticky top-0 z-50">
+      <header className="bg-background text-foreground border-b p-4 shadow-sm sticky top-0 z-50">
         <div className="container mx-auto flex justify-between items-center">
-          <Link to="/" className="text-2xl font-bold">
+          <Link to="/" className="text-2xl font-bold text-primary">
             HealthConnect
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-4 items-center">
+          <nav className="hidden md:flex space-x-6 items-center font-medium">
+            <Link to="/search" className="hover:text-primary">Features</Link>
+            <Link to="/search" className="hover:text-primary">Pricing</Link>
+            <Link to="/search" className="hover:text-primary">Resources</Link>
             <Button variant="ghost" onClick={() => setIsSearchOpen(true)} className="flex items-center gap-2">
-              <SearchIcon className="h-5 w-5" /> Search
+              <SearchIcon className="h-5 w-5" />
             </Button>
-            <Link to="/dashboard" className="hover:underline">Dashboard</Link>
-            <Link to="/provider-login" className="hover:underline">Provider Login</Link>
-            <Link to="/login">
-              <Button variant="secondary">Login</Button>
+            <Link to="/provider-login">
+              <Button variant="outline">Staff Sign In</Button>
             </Link>
             <Link to="/register">
-              <Button variant="outline" className="text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary">Register</Button>
+              <Button>Get a Demo</Button>
             </Link>
           </nav>
 
           {/* Mobile Navigation */}
           <div className="md:hidden flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)} className="text-primary-foreground">
+            <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)}>
               <SearchIcon className="h-6 w-6" />
             </Button>
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-primary-foreground">
+                <Button variant="ghost" size="icon">
                   <MenuIcon className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-background text-foreground">
+              <SheetContent side="right" className="w-[250px] sm:w-[300px]">
                 <nav className="flex flex-col space-y-4 p-4">
                   <Link to="/" className="text-lg font-semibold hover:text-primary">Home</Link>
-                  <Link to="/dashboard" className="text-lg font-semibold hover:text-primary">Dashboard</Link>
-                  <Link to="/provider-login" className="text-lg font-semibold hover:text-primary">Provider Login</Link>
-                  <Link to="/admin" className="text-lg font-semibold hover:text-primary">Admin</Link>
-                  <Link to="/login">
-                    <Button className="w-full">Login</Button>
+                  <Link to="/search" className="text-lg font-semibold hover:text-primary">Features</Link>
+                  <Link to="/search" className="text-lg font-semibold hover:text-primary">Pricing</Link>
+                  <Link to="/search" className="text-lg font-semibold hover:text-primary">Resources</Link>
+                  <Link to="/provider-login">
+                    <Button variant="outline" className="w-full">Staff Sign In</Button>
                   </Link>
                   <Link to="/register">
-                    <Button variant="outline" className="w-full">Register</Button>
+                    <Button className="w-full">Get a Demo</Button>
                   </Link>
                 </nav>
               </SheetContent>
