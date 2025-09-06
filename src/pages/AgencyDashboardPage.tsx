@@ -21,6 +21,7 @@ import {
   Megaphone,
   FileText,
   PlusCircle,
+  StarIcon, // Added StarIcon import
 } from 'lucide-react';
 import { getLoggedInUser, logoutUser } from '@/utils/auth';
 import {
@@ -31,9 +32,9 @@ import {
   getSpecialties,
   addPromotion,
   getAgencyUserById,
-  getAgencyPerformanceReport, // New import
-  getDoctorPerformanceReports, // New import
-  getPromotionReports, // New import
+  getAgencyPerformanceReport,
+  getDoctorPerformanceReports,
+  getPromotionReports,
 } from '@/services/localApi';
 import { Agency } from '@/data/agencies';
 import { Doctor } from '@/data/doctors';
@@ -53,8 +54,8 @@ import {
   AgencyPerformanceReport,
   DoctorPerformanceReport,
   PromotionReport,
-} from '@/data/reports'; // Import report interfaces
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'; // For the chart
+} from '@/data/reports';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const AgencyDashboardPage: React.FC = () => {
   const { agencyId } = useParams<{ agencyId: string }>();
@@ -282,7 +283,7 @@ const AgencyDashboardPage: React.FC = () => {
               <CardContent className="space-y-2">
                 <p><strong>Name:</strong> {agency.name}</p>
                 <p><strong>Address:</strong> {agency.address}</p>
-                <p><strong>Contact Email:</strong> {agency.contactEmail}</p> {/* Display contact email */}
+                <p><strong>Contact Email:</strong> {agency.contactEmail}</p>
                 <p><strong>Status:</strong> <Badge variant={agency.isActive ? 'default' : 'destructive'}>{agency.isActive ? 'Active' : 'Inactive'}</Badge></p>
               </CardContent>
             </Card>

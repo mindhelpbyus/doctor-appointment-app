@@ -76,6 +76,12 @@ export const getPromotionReports = (agencyId?: string): PromotionReport[] => {
   return promotionReports;
 };
 
+// New patient-specific appointment getter
+export const getAppointmentsForPatient = (patientId: string): Appointment[] => {
+  // Filter for appointments belonging to the patient and that are 'booked' (upcoming)
+  return getAppointments().filter(a => a.patientId === patientId && a.status === 'booked');
+};
+
 
 // --- Specific Updaters ---
 export const updateAgency = (agency: Agency): void => updateEntity<Agency>('agencies', agency);
