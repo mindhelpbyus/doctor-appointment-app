@@ -24,7 +24,7 @@ const PatientDoctorsTab: React.FC<PatientDoctorsTabProps> = ({ allDoctors, speci
     setFilteredDoctors(allDoctors);
   }, [allDoctors]);
 
-  const getSpecialtyName = (specialtyId: string) => specialties.find(s => s.id === specialtyId)?.name || 'N/A';
+  const getSpecialty = (specialtyId: string) => specialties.find(s => s.id === specialtyId);
 
   const handleSearch = (query: string) => {
     if (!query) {
@@ -34,7 +34,7 @@ const PatientDoctorsTab: React.FC<PatientDoctorsTabProps> = ({ allDoctors, speci
     const lowercasedQuery = query.toLowerCase();
     const results = allDoctors.filter(doctor => 
       doctor.fullName.toLowerCase().includes(lowercasedQuery) ||
-      getSpecialtyName(doctor.specialtyId).toLowerCase().includes(lowercasedQuery) ||
+      (getSpecialty(doctor.specialtyId)?.name || '').toLowerCase().includes(lowercasedQuery) ||
       doctor.clinicAddress.toLowerCase().includes(lowercasedQuery)
     );
     setFilteredDoctors(results);
@@ -58,16 +58,20 @@ const PatientDoctorsTab: React.FC<PatientDoctorsTabProps> = ({ allDoctors, speci
         <section>
           <h2 className="text-2xl font-bold mb-4">Search Results ({filteredDoctors.length})</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredDoctors.map(doctor => (
-              <DoctorCard key={doctor.id} doctor={{
-                id: doctor.id,
-                fullName: doctor.fullName,
-                specialtyName: getSpecialtyName(doctor.specialtyId),
-                clinicAddress: doctor.clinicAddress,
-                rating: doctor.rating,
-                photoUrl: doctor.photoUrl,
-              }} />
-            ))}
+            {filteredDoctors.map(doctor => {
+              const specialty = getSpecialty(doctor.specialtyId);
+              return (
+                <DoctorCard key={doctor.id} doctor={{
+                  id: doctor.id,
+                  fullName: doctor.fullName,
+                  specialtyName: specialty?.name || 'N/A',
+                  specialtyIcon: specialty?.icon,
+                  clinicAddress: doctor.clinicAddress,
+                  rating: doctor.rating,
+                  photoUrl: doctor.photoUrl,
+                }} />
+              )
+            })}
           </div>
         </section>
       ) : (
@@ -76,16 +80,20 @@ const PatientDoctorsTab: React.FC<PatientDoctorsTabProps> = ({ allDoctors, speci
           <section>
             <h2 className="text-2xl font-bold mb-4">Top Rated Doctors</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {topRatedDoctors.map(doctor => (
-                <DoctorCard key={doctor.id} doctor={{
-                  id: doctor.id,
-                  fullName: doctor.fullName,
-                  specialtyName: getSpecialtyName(doctor.specialtyId),
-                  clinicAddress: doctor.clinicAddress,
-                  rating: doctor.rating,
-                  photoUrl: doctor.photoUrl,
-                }} />
-              ))}
+              {topRatedDoctors.map(doctor => {
+                const specialty = getSpecialty(doctor.specialtyId);
+                return (
+                  <DoctorCard key={doctor.id} doctor={{
+                    id: doctor.id,
+                    fullName: doctor.fullName,
+                    specialtyName: specialty?.name || 'N/A',
+                    specialtyIcon: specialty?.icon,
+                    clinicAddress: doctor.clinicAddress,
+                    rating: doctor.rating,
+                    photoUrl: doctor.photoUrl,
+                  }} />
+                )
+              })}
             </div>
           </section>
 
@@ -93,16 +101,20 @@ const PatientDoctorsTab: React.FC<PatientDoctorsTabProps> = ({ allDoctors, speci
             <section>
               <h2 className="text-2xl font-bold mb-4">Doctors With Promotions</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {doctorsWithPromos.map(doctor => (
-                  <DoctorCard key={doctor.id} doctor={{
-                    id: doctor.id,
-                    fullName: doctor.fullName,
-                    specialtyName: getSpecialtyName(doctor.specialtyId),
-                    clinicAddress: doctor.clinicAddress,
-                    rating: doctor.rating,
-                    photoUrl: doctor.photoUrl,
-                  }} />
-                ))}
+                {doctorsWithPromos.map(doctor => {
+                  const specialty = getSpecialty(doctor.specialtyId);
+                  return (
+                    <DoctorCard key={doctor.id} doctor={{
+                      id: doctor.id,
+                      fullName: doctor.fullName,
+                      specialtyName: specialty?.name || 'N/A',
+                      specialtyIcon: specialty?.icon,
+                      clinicAddress: doctor.clinicAddress,
+                      rating: doctor.rating,
+                      photoUrl: doctor.photoUrl,
+                    }} />
+                  )
+                })}
               </div>
             </section>
           )}

@@ -14,8 +14,8 @@ const AgencyPage: React.FC = () => {
   const promotions = agency ? getPromotionsByAgencyId(agency.id).filter(p => p.status === 'approved') : [];
   const specialties = getSpecialties();
 
-  const getSpecialtyName = (specialtyId: string) => {
-    return specialties.find(s => s.id === specialtyId)?.name || 'N/A';
+  const getSpecialty = (specialtyId: string) => {
+    return specialties.find(s => s.id === specialtyId);
   };
 
   if (!agency || !agency.isActive) {
@@ -62,16 +62,20 @@ const AgencyPage: React.FC = () => {
         <h2 className="text-3xl font-bold mb-6 text-center">Our Doctors</h2>
         {doctors.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {doctors.map(doctor => (
-              <DoctorCard key={doctor.id} doctor={{
-                id: doctor.id,
-                fullName: doctor.fullName,
-                specialtyName: getSpecialtyName(doctor.specialtyId),
-                clinicAddress: agency.name, // Use agency name as location for card
-                rating: doctor.rating,
-                photoUrl: doctor.photoUrl,
-              }} />
-            ))}
+            {doctors.map(doctor => {
+              const specialty = getSpecialty(doctor.specialtyId);
+              return (
+                <DoctorCard key={doctor.id} doctor={{
+                  id: doctor.id,
+                  fullName: doctor.fullName,
+                  specialtyName: specialty?.name || 'N/A',
+                  specialtyIcon: specialty?.icon,
+                  clinicAddress: agency.name, // Use agency name as location for card
+                  rating: doctor.rating,
+                  photoUrl: doctor.photoUrl,
+                }} />
+              )
+            })}
           </div>
         ) : (
           <p className="text-center text-lg text-muted-foreground">This agency currently has no doctors listed.</p>

@@ -12,6 +12,7 @@ import { showSuccess, showError } from '@/utils/toast';
 import { sendAppointmentReminder } from '@/utils/notifications';
 import { generateFutureAvailabilitySlots } from '@/utils/time'; // Import the new utility
 import { format, addDays, startOfDay } from 'date-fns';
+import { getLoggedInUser } from '@/utils/auth';
 
 const BookingPage: React.FC = () => {
   const { doctorId } = useParams<{ doctorId: string }>();
@@ -19,6 +20,14 @@ const BookingPage: React.FC = () => {
   const [doctor, setDoctor] = useState<Doctor | undefined>(undefined);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [availableSlots, setAvailableSlots] = useState<{ date: string; slots: string[] }[]>([]);
+  const currentUser = getLoggedInUser();
+
+  useEffect(() => {
+    if (!currentUser || currentUser.type !== 'patient') {
+      showError('You must be logged in as a patient to book an appointment.');
+      navigate('/login');
+    }
+  }, [currentUser, navigate]);
 
   useEffect(() => {
     if (doctorId) {
@@ -40,9 +49,13 @@ const BookingPage: React.FC = () => {
       return;
     }
 
+    const patientId = currentUser?.id;
+    if (!patientId) {
+      showError('Could not identify patient. Please log in again.');
+      return;
+    }
+
     try {
-      // In a real app, you'd get the logged-in patient's ID. We'll use a placeholder.
-      const patientId = 'pat-demo'; 
       const newAppointment: Omit<Appointment, 'id'> = {
         patientId,
         doctorId: doctor.id,
@@ -67,8 +80,8 @@ const BookingPage: React.FC = () => {
     }
   };
 
-  if (!doctor) {
-    return <div className="text-center py-10">Loading doctor details...</div>;
+  if (!doctor || !currentUser) {
+    return <div className="text-center py-10">Loading...</div>;
   }
 
   return (

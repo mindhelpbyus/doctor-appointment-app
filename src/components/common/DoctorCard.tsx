@@ -8,6 +8,7 @@ interface DoctorInfo {
   id: string;
   fullName: string;
   specialtyName: string;
+  specialtyIcon?: React.ElementType;
   clinicAddress: string;
   rating: number;
   photoUrl?: string;
@@ -19,6 +20,8 @@ interface DoctorCardProps {
 
 const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
   const defaultDoctorImage = 'https://images.unsplash.com/photo-1550831107-15534086750c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+  const Icon = doctor.specialtyIcon;
+
   return (
     <Card className="flex flex-col items-center text-center p-6 border-none rounded-2xl shadow-subtle transition-all duration-300 hover:shadow-medium hover:border-primary hover:scale-[1.02] bg-background"> {/* Enhanced card styling */}
       <img
@@ -28,18 +31,26 @@ const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
       />
       <CardHeader className="p-0 pb-3"> {/* Increased bottom padding */}
         <CardTitle className="text-xl font-recoleta font-semibold text-foreground">{doctor.fullName}</CardTitle> {/* Serif font for name */}
-        <CardDescription className="text-muted-foreground font-averta text-base">{doctor.specialtyName}</CardDescription> {/* Base font size */}
+        <CardDescription className="text-muted-foreground font-averta text-base flex items-center justify-center gap-2">
+          {Icon && <Icon className="h-4 w-4" />}
+          {doctor.specialtyName}
+        </CardDescription>
       </CardHeader>
-      <CardContent className="flex-grow flex flex-col justify-between items-center p-0 space-y-3"> {/* Increased spacing */}
+      <CardContent className="flex-grow flex flex-col justify-between items-center p-0 space-y-3 w-full"> {/* Added w-full */}
         <div className="flex items-center text-sm text-stone font-averta"> {/* Stone color for address */}
           <MapPinIcon className="h-4 w-4 mr-1 text-primary" /> {doctor.clinicAddress.split(',')[0]}
         </div>
         <div className="flex items-center text-sm text-yellow-500 font-averta">
           <StarIcon className="h-4 w-4 mr-1 fill-yellow-500" /> {doctor.rating.toFixed(1)}
         </div>
-        <Link to={`/doctor/${doctor.id}`} className="w-full mt-5"> {/* Increased top margin */}
-          <Button className="w-full" variant="custom-primary" size="custom-sm">View Profile</Button>
-        </Link>
+        <div className="w-full mt-5 flex flex-col sm:flex-row gap-2">
+          <Link to={`/doctor/${doctor.id}`} className="flex-1">
+            <Button className="w-full" variant="custom-secondary" size="custom-sm">View Profile</Button>
+          </Link>
+          <Link to={`/book/${doctor.id}`} className="flex-1">
+            <Button className="w-full" variant="custom-primary" size="custom-sm">Book Now</Button>
+          </Link>
+        </div>
       </CardContent>
     </Card>
   );
