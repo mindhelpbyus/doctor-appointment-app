@@ -29,7 +29,7 @@ const HomePage = () => {
             className="w-full h-[65vh] min-h-[550px] bg-gradient-to-r from-charcoal to-stone flex items-center justify-center text-center text-background p-6 rounded-2xl overflow-hidden shadow-medium" // Enhanced background and shadow
           >
             <div className="w-full max-w-4xl"> {/* Increased max-width for content */}
-              <h1 className="text-5xl md:text-7xl font-recoleta font-extrabold mb-6 leading-tight text-accent"> {/* Larger, more prominent heading */}
+              <h1 className="text-5xl md:text-7xl font-recoleta font-extrabold mb-6 leading-tight text-primary"> {/* Changed text-accent to text-primary */}
                 Find and book your perfect provider.
               </h1>
               <p className="text-xl md:text-2xl mb-10 opacity-90 font-averta text-stone"> {/* Larger subheading, subtle color */}
