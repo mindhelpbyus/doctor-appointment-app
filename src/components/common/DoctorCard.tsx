@@ -18,10 +18,11 @@ interface DoctorCardProps {
 }
 
 const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
+  const defaultDoctorImage = 'https://images.unsplash.com/photo-1550831107-15534086750c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
   return (
     <Card className="flex flex-col items-center text-center p-6 border-none rounded-2xl shadow-subtle transition-all duration-300 hover:shadow-medium hover:border-primary hover:scale-[1.02] bg-background"> {/* Enhanced card styling */}
       <img
-        src={doctor.photoUrl || 'https://via.placeholder.com/150/008363/FFFFFF?text=Dr'}
+        src={doctor.photoUrl || defaultDoctorImage}
         alt={doctor.fullName}
         className="w-28 h-28 rounded-full object-cover mb-4 border-4 border-primary shadow-md" // Larger image, thicker border
       />

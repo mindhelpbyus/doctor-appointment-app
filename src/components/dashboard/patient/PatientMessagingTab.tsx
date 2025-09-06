@@ -37,6 +37,8 @@ const PatientMessagingTab: React.FC<PatientMessagingTabProps> = ({ patientId, in
   const [newMessageContent, setNewMessageContent] = useState('');
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
+  const defaultAvatarUrl = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+
   const currentConversationId = urlConversationId || initialConversationId;
 
   const loadConversations = useCallback(() => {
@@ -45,13 +47,13 @@ const PatientMessagingTab: React.FC<PatientMessagingTabProps> = ({ patientId, in
     const enrichedConversations = fetchedConversations.map(conv => {
       const otherParticipantId = conv.participantIds.find(id => id !== patientId);
       let otherParticipantName: string = 'Unknown User';
-      let otherParticipantPhotoUrl: string = 'https://via.placeholder.com/40'; // Default placeholder
+      let otherParticipantPhotoUrl: string = defaultAvatarUrl; // Default placeholder
 
       if (otherParticipantId) {
         const doctor = getDoctorById(otherParticipantId);
         if (doctor) {
           otherParticipantName = doctor.fullName;
-          otherParticipantPhotoUrl = doctor.photoUrl || otherParticipantPhotoUrl;
+          otherParticipantPhotoUrl = doctor.photoUrl || defaultAvatarUrl;
         }
       }
       return { ...conv, otherParticipantName, otherParticipantPhotoUrl };
@@ -161,7 +163,7 @@ const PatientMessagingTab: React.FC<PatientMessagingTabProps> = ({ patientId, in
 
   const selectedConversation = conversations.find(c => c.id === selectedConversationId);
   const selectedParticipantName = selectedConversation?.otherParticipantName || 'Unknown User';
-  const selectedParticipantPhotoUrl = selectedConversation?.otherParticipantPhotoUrl || 'https://via.placeholder.com/40';
+  const selectedParticipantPhotoUrl = selectedConversation?.otherParticipantPhotoUrl || defaultAvatarUrl;
 
   if (conversations.length === 0 && !selectedConversationId) {
     return (

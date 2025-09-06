@@ -64,7 +64,7 @@ const DoctorProfilePage: React.FC = () => {
       <Card className="shadow-medium rounded-2xl border-none bg-background"> {/* Stronger shadow, no border */}
         <CardHeader className="flex flex-col md:flex-row items-center gap-8 p-8 lg:p-12 border-b border-granite"> {/* Increased gap and padding, subtle border */}
           <img
-            src={doctor.photoUrl || 'https://via.placeholder.com/200/008363/FFFFFF?text=Dr'}
+            src={doctor.photoUrl || 'https://images.unsplash.com/photo-1550831107-15534086750c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
             alt={doctor.fullName}
             className="w-40 h-40 rounded-full object-cover border-4 border-primary shadow-lg flex-shrink-0" // Larger image, thicker border, shadow
           />

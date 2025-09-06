@@ -22,17 +22,19 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, currentUserId, cu
   const [newMessageContent, setNewMessageContent] = useState('');
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
+  const defaultAvatarUrl = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+
   const otherParticipantId = conversation.participantIds.find(id => id !== currentUserId);
   
   let otherParticipantName: string = 'Unknown User';
-  let otherParticipantPhotoUrl: string = 'https://via.placeholder.com/40'; // Default placeholder
+  let otherParticipantPhotoUrl: string = defaultAvatarUrl; // Default placeholder
 
   if (otherParticipantId) {
     if (currentUserType === 'patient') {
       const doctor = getDoctorById(otherParticipantId);
       if (doctor) {
         otherParticipantName = doctor.fullName;
-        otherParticipantPhotoUrl = doctor.photoUrl || otherParticipantPhotoUrl;
+        otherParticipantPhotoUrl = doctor.photoUrl || defaultAvatarUrl;
       }
     } else { // currentUserType === 'doctor'
       const patient = getPatientById(otherParticipantId);

@@ -28,6 +28,8 @@ const MessagingSection: React.FC<MessagingSectionProps> = ({ currentDoctorId }) 
   const [newMessageContent, setNewMessageContent] = useState('');
   const scrollAreaRef = useRef<HTMLDivElement>(null); // Corrected type for useRef
 
+  const defaultAvatarUrl = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+
   const loadConversations = useCallback(() => {
     const fetchedConversations = getConversationsForUser(currentDoctorId);
     setConversations(fetchedConversations);
@@ -108,7 +110,7 @@ const MessagingSection: React.FC<MessagingSectionProps> = ({ currentDoctorId }) 
   };
 
   const otherParticipantName = activeConversation?.participantIds.find(id => id !== currentDoctorId) ? getPatientById(activeConversation.participantIds.find(id => id !== currentDoctorId)!)?.name || 'Unknown Patient' : 'Unknown';
-  const otherParticipantPhotoUrl = 'https://via.placeholder.com/40'; // Patients don't have photos in mock data
+  const otherParticipantPhotoUrl = defaultAvatarUrl; // Patients don't have photos in mock data
 
   return (
     <ChatLayout>
