@@ -2,10 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { TrendingUp, Calendar, Smile } from 'lucide-react';
 import { storageManager } from '@/utils/dataStorage';
-import { JournalEntry } from '@/data/journal';
 
 interface PatientMoodTrackerTabProps {
   patientId: string;
@@ -23,33 +21,28 @@ const PatientMoodTrackerTab: React.FC<PatientMoodTrackerTabProps> = ({ patientId
         date: new Date(entry.createdAt).toDateString(),
         mood: entry.mood,
         timestamp: new Date(entry.createdAt).getTime(),
-      }));
+      })).sort((a, b) => b.timestamp - a.timestamp); // Sort by most recent
       
       setMoodData(moodEntries);
       
       const today = new Date().toDateString();
       const todayEntry = moodEntries.find(entry => entry.date === today);
-      if (todayEntry) {
-        setTodayMood(todayEntry.mood);
-      } else {
-        setTodayMood(null);
-      }
+      setTodayMood(todayEntry ? todayEntry.mood : null);
 
-      // Calculate entries this week
       const now = new Date();
-      const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay())); // Sunday
-      startOfWeek.setHours(0, 0, 0, 0); // Set to beginning of the day
-
-      const weekEntries = moodEntries.filter(entry => new Date(entry.timestamp) >= startOfWeek);
+      const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
+      startOfWeek.setHours(0, 0, 0, 0);
+      const weekEntries = moodEntries.filter(entry => entry.timestamp >= startOfWeek.getTime());
       setEntriesThisWeek(weekEntries.length);
     }
   }, [patientId]);
 
-  const getMoodEmoji = (mood: number) => {
-    if (mood >= 8) return '😊';
-    if (mood >= 6) return '🙂';
-    if (mood >= 4) return '😐';
-    if (mood >= 2) return '😔';
+  const getMoodEmoji = (mood: number | null) => {
+    if (mood === null) return '🤔';
+    if (mood >= 9) return '😄';
+    if (mood >= 7) return '😊';
+    if (mood >= 5) return '😐';
+    if (mood >= 3) return '😔';
     return '😢';
   };
 
@@ -67,15 +60,9 @@ const PatientMoodTrackerTab: React.FC<PatientMoodTrackerTabProps> = ({ patientId
             <CardTitle className="text-sm font-medium">Today's Mood</CardTitle>
             <Smile className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            {todayMood !== null ? (
-              <div className="text-center">
-                <div className="text-4xl mb-2">{getMoodEmoji(todayMood)}</div>
-                <div className="text-2xl font-bold">{todayMood}/10</div>
-              </div>
-            ) : (
-              <p className="text-muted-foreground">Log a journal entry to track mood</p>
-            )}
+          <CardContent className="text-center">
+            <div className="text-5xl my-2">{getMoodEmoji(todayMood)}</div>
+            <div className="text-2xl font-bold">{todayMood !== null ? `${todayMood}/10` : 'N/A'}</div>
           </CardContent>
         </Card>
         
@@ -86,9 +73,7 @@ const PatientMoodTrackerTab: React.FC<PatientMoodTrackerTabProps> = ({ patientId
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{averageMood.toFixed(1)}/10</div>
-            <p className="text-xs text-muted-foreground">
-              Based on {moodData.length} entries
-            </p>
+            <p className="text-xs text-muted-foreground">Based on {moodData.length} entries</p>
           </CardContent>
         </Card>
         
@@ -122,9 +107,7 @@ const PatientMoodTrackerTab: React.FC<PatientMoodTrackerTabProps> = ({ patientId
               ))}
             </div>
           ) : (
-            <p className="text-muted-foreground text-center py-8">
-              Start journaling to see your mood history here.
-            </p>
+            <p className="text-muted-foreground text-center py-8">Start journaling to see your mood history here.</p>
           )}
         </CardContent>
       </Card>

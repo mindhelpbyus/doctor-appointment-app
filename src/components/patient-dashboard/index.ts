@@ -6,3 +6,4 @@ export { default as PatientMessagingTab } from './PatientMessagingTab';
 export { default as PatientSettingsTab } from './PatientSettingsTab';
 export { default as PatientJournalTab } from './PatientJournalTab';
 export { default as PatientMoodTrackerTab } from './PatientMoodTrackerTab';
+export { default as CurrentDoctorCard } from './CurrentDoctorCard';

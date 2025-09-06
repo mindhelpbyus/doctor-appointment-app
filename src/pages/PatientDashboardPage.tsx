@@ -7,15 +7,17 @@ import { getLoggedInUser, logoutUser } from '@/utils/auth';
 import {
   getPatientById,
   getAppointments,
-  getDoctorById,
+  getDoctors,
   getSpecialties,
   getConversationsForUser,
+  getPromotions,
 } from '@/services/localApi';
 import { Patient } from '@/data/patients';
 import { Appointment } from '@/data/appointments';
 import { Doctor } from '@/data/doctors';
 import { Specialty } from '@/data/specialties';
 import { Conversation } from '@/data/chat';
+import { Promotion } from '@/data/promotions';
 import { showError } from '@/utils/toast';
 
 import {
@@ -31,15 +33,16 @@ import {
 
 const PatientDashboardPage: React.FC = () => {
   const navigate = useNavigate();
-  const { conversationId } = useParams<{ conversationId?: string }>(); // For deep linking to a conversation
+  const { conversationId } = useParams<{ conversationId?: string }>();
 
   const [patient, setPatient] = useState<Patient | undefined>(undefined);
   const [activeTab, setActiveTab] = useState('overview');
   const [upcomingAppointments, setUpcomingAppointments] = useState<Appointment[]>([]);
   const [pastAppointments, setPastAppointments] = useState<Appointment[]>([]);
-  const [recentlyViewedDoctors, setRecentlyViewedDoctors] = useState<Doctor[]>([]);
+  const [allDoctors, setAllDoctors] = useState<Doctor[]>([]);
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
   const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [promotions, setPromotions] = useState<Promotion[]>([]);
 
   const currentUserId = getLoggedInUser()?.id;
   const currentUserType = getLoggedInUser()?.type;
@@ -64,13 +67,10 @@ const PatientDashboardPage: React.FC = () => {
     setUpcomingAppointments(allAppointments.filter(a => new Date(a.datetime) >= now && a.status === 'booked'));
     setPastAppointments(allAppointments.filter(a => new Date(a.datetime) < now || a.status !== 'booked'));
 
-    const viewedDoctors = fetchedPatient.recentlyViewedDoctors
-      .map(id => getDoctorById(id))
-      .filter((d): d is Doctor => !!d);
-    setRecentlyViewedDoctors(viewedDoctors);
-
+    setAllDoctors(getDoctors());
     setSpecialties(getSpecialties());
     setConversations(getConversationsForUser(currentUserId));
+    setPromotions(getPromotions().filter(p => p.status === 'approved'));
   }, [currentUserId, currentUserType, navigate]);
 
   useEffect(() => {
@@ -79,7 +79,7 @@ const PatientDashboardPage: React.FC = () => {
 
   useEffect(() => {
     if (conversationId) {
-      setActiveTab('messages'); // Switch to messages tab if conversationId is in URL
+      setActiveTab('messages');
     }
   }, [conversationId]);
 
@@ -112,7 +112,7 @@ const PatientDashboardPage: React.FC = () => {
       case 6: return 'grid-cols-6';
       case 7: return 'grid-cols-7';
       case 8: return 'grid-cols-8';
-      default: return 'grid-cols-1'; // Fallback
+      default: return 'grid-cols-1';
     }
   };
 
@@ -151,8 +151,9 @@ const PatientDashboardPage: React.FC = () => {
 
           <TabsContent value="doctors">
             <PatientDoctorsTab
-              recentlyViewedDoctors={recentlyViewedDoctors}
+              allDoctors={allDoctors}
               specialties={specialties}
+              promotions={promotions}
             />
           </TabsContent>
 

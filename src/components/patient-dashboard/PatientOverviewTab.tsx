@@ -5,10 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, BookOpen, TrendingUp, MessageSquare } from 'lucide-react';
 import { Appointment } from '@/data/appointments';
-import { Doctor } from '@/data/doctors';
 import { Conversation } from '@/data/chat';
-import { getDoctorById, getPatientById } from '@/services/localApi';
+import { getDoctorById } from '@/services/localApi';
 import { storageManager } from '@/utils/dataStorage';
+import { CurrentDoctorCard } from '.';
+import { Doctor } from '@/data/doctors';
 
 interface PatientOverviewTabProps {
   patientId: string;
@@ -25,6 +26,7 @@ const PatientOverviewTab: React.FC<PatientOverviewTabProps> = ({
 }) => {
   const [journalEntriesCount, setJournalEntriesCount] = useState(0);
   const [moodAverage, setMoodAverage] = useState(0);
+  const [currentDoctor, setCurrentDoctor] = useState<Doctor | undefined>(undefined);
 
   useEffect(() => {
     if (patientId) {
@@ -40,17 +42,19 @@ const PatientOverviewTab: React.FC<PatientOverviewTabProps> = ({
     }
   }, [patientId]);
 
-  const totalSessions = upcomingAppointments.length + pastAppointments.length;
-  const unreadMessagesCount = conversations.reduce((sum, conv) => {
-    const otherParticipantId = conv.participantIds.find(id => id !== patientId);
-    if (otherParticipantId) {
-      return sum + conv.unreadCount;
+  useEffect(() => {
+    // Determine the current doctor
+    if (upcomingAppointments.length > 0) {
+      setCurrentDoctor(getDoctorById(upcomingAppointments[0].doctorId));
+    } else if (pastAppointments.length > 0) {
+      // Sort past appointments to find the most recent one
+      const sortedPast = [...pastAppointments].sort((a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime());
+      setCurrentDoctor(getDoctorById(sortedPast[0].doctorId));
     }
-    return sum;
-  }, 0);
+  }, [upcomingAppointments, pastAppointments]);
 
-  const getDoctorName = (doctorId: string) => getDoctorById(doctorId)?.fullName || 'Unknown Doctor';
-  const getPatientName = (patientId: string) => getPatientById(patientId)?.name || 'Unknown Patient';
+  const totalSessions = upcomingAppointments.length + pastAppointments.length;
+  const unreadMessagesCount = conversations.reduce((sum, conv) => sum + conv.unreadCount, 0);
 
   return (
     <div className="space-y-6">
@@ -101,6 +105,19 @@ const PatientOverviewTab: React.FC<PatientOverviewTabProps> = ({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {currentDoctor ? (
+          <CurrentDoctorCard doctor={currentDoctor} patientId={patientId} />
+        ) : (
+          <Card>
+            <CardHeader>
+              <CardTitle>Your Doctors</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">Book an appointment to see your doctor's details here.</p>
+            </CardContent>
+          </Card>
+        )}
+
         <Card>
           <CardHeader>
             <CardTitle>Upcoming Appointments</CardTitle>
@@ -108,10 +125,10 @@ const PatientOverviewTab: React.FC<PatientOverviewTabProps> = ({
           <CardContent>
             <div className="space-y-4">
               {upcomingAppointments.length > 0 ? (
-                upcomingAppointments.map(appt => (
+                upcomingAppointments.slice(0, 3).map(appt => (
                   <div key={appt.id} className="flex items-center justify-between p-3 border rounded-lg">
                     <div>
-                      <p className="font-medium">{getDoctorName(appt.doctorId)}</p>
+                      <p className="font-medium">{getDoctorById(appt.doctorId)?.fullName}</p>
                       <p className="text-sm text-muted-foreground">{new Date(appt.datetime).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}</p>
                     </div>
                     <Badge>{appt.type === 'video' ? 'Video' : 'In-person'}</Badge>
@@ -120,40 +137,6 @@ const PatientOverviewTab: React.FC<PatientOverviewTabProps> = ({
               ) : (
                 <p className="text-muted-foreground">No upcoming appointments.</p>
               )}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {/* Mock Recent Activity */}
-              <div className="flex items-start gap-3">
-                <BookOpen className="w-4 h-4 mt-1 text-primary" />
-                <div>
-                  <p className="text-sm">New journal entry added (mock)</p>
-                  <p className="text-xs text-muted-foreground">2 hours ago</p>
-                </div>
-              </div>
-              {conversations.length > 0 && (
-                <div className="flex items-start gap-3">
-                  <MessageSquare className="w-4 h-4 mt-1 text-primary" />
-                  <div>
-                    <p className="text-sm">New message from {getDoctorName(conversations[0].participantIds.find(id => id !== patientId) || '')}</p>
-                    <p className="text-xs text-muted-foreground">1 day ago</p>
-                  </div>
-                </div>
-              )}
-              <div className="flex items-start gap-3">
-                <Calendar className="w-4 h-4 mt-1 text-primary" />
-                <div>
-                  <p className="text-sm">Appointment with {getDoctorName(pastAppointments[0]?.doctorId || '')} completed</p>
-                  <p className="text-xs text-muted-foreground">3 days ago</p>
-                </div>
-              </div>
             </div>
           </CardContent>
         </Card>
