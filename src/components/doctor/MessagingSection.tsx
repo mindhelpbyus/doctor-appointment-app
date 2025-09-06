@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react'; // Import useRef
 import { useParams, useNavigate } from 'react-router-dom';
 import ChatLayout from '@/components/chat/ChatLayout';
 import ConversationList from '@/components/chat/ConversationList';
 import ChatWindow from '@/components/chat/ChatWindow';
-import { getConversationsForUser, getConversationById, getDoctorById, getPatientById, updateConversation, updateMessage, getMessagesForConversation } from '@/services/localApi';
+import { getConversationsForUser, getConversationById, getDoctorById, getPatientById, updateConversation, updateMessage, getMessagesForConversation, addMessage } from '@/services/localApi'; // Ensure addMessage is imported
 import { Conversation, Message } from '@/data/chat';
 import { getLoggedInUser } from '@/utils/auth';
 import { Input } from '@/components/ui/input';
@@ -26,7 +26,7 @@ const MessagingSection: React.FC<MessagingSectionProps> = ({ currentDoctorId }) 
   const [activeConversation, setActiveConversation] = useState<Conversation | undefined>(undefined);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessageContent, setNewMessageContent] = useState('');
-  const scrollAreaRef = React.useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null); // Corrected type for useRef
 
   const loadConversations = useCallback(() => {
     const fetchedConversations = getConversationsForUser(currentDoctorId);
@@ -84,7 +84,7 @@ const MessagingSection: React.FC<MessagingSectionProps> = ({ currentDoctorId }) 
     const otherParticipantId = activeConversation.participantIds.find(id => id !== currentDoctorId);
     if (!otherParticipantId) return;
 
-    const newMessage: Omit<Message, 'id'> = {
+    const newMessageData: Omit<Message, 'id'> = {
       conversationId: activeConversation.id,
       senderId: currentDoctorId,
       receiverId: otherParticipantId,
@@ -93,22 +93,12 @@ const MessagingSection: React.FC<MessagingSectionProps> = ({ currentDoctorId }) 
       read: false,
     };
 
-    // Add message and then reload messages and conversations
-    const addedMessage = getDoctorById(currentDoctorId) ? getMessagesForConversation(activeConversation.id).concat(newMessage) : []; // Simulate addMessage
-    setMessages(addedMessage); // Optimistic update
+    const addedMessage = addMessage(newMessageData); // Use the actual addMessage function
+    setMessages(prevMessages => [...prevMessages, addedMessage]); // Update state with the new message
     setNewMessageContent('');
     
-    // In a real app, addMessage would update local storage and then trigger a reload
-    // For this demo, we'll manually update the conversation and then reload
-    const updatedConversation = {
-      ...activeConversation,
-      lastMessageContent: newMessage.content,
-      lastMessageTimestamp: newMessage.timestamp,
-      unreadCount: activeConversation.unreadCount + 1, // Increment for the other participant
-    };
-    updateConversation(updatedConversation);
-    loadConversations(); // Refresh conversation list
-    loadMessages(activeConversation.id); // Reload messages to ensure consistency
+    loadConversations(); // Refresh conversation list to update last message/unread count
+    // No need to call loadMessages(activeConversation.id) here as setMessages already updated the state.
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -129,7 +119,7 @@ const MessagingSection: React.FC<MessagingSectionProps> = ({ currentDoctorId }) 
         <ConversationList
           conversations={conversations}
           currentUserId={currentDoctorId}
-          currentUserType="doctor"
+          currentUserType="doctor" // This component is specifically for doctors
           activeConversationId={urlConversationId}
         />
       </div>

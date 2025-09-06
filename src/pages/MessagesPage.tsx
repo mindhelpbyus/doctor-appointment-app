@@ -17,11 +17,12 @@ const MessagesPage: React.FC = () => {
 
   useEffect(() => {
     const loggedInUser = getLoggedInUser();
-    if (loggedInUser) {
+    // Only allow 'patient' or 'doctor' types to access this page
+    if (loggedInUser && (loggedInUser.type === 'patient' || loggedInUser.type === 'doctor')) {
       setCurrentUserId(loggedInUser.id);
       setCurrentUserType(loggedInUser.type);
     } else {
-      // If no user is logged in, redirect to login page
+      // If no user is logged in or not a patient/doctor, redirect to login page
       navigate('/login');
     }
   }, [navigate]);
@@ -50,8 +51,9 @@ const MessagesPage: React.FC = () => {
     loadConversations(); // Refresh conversation list to update last message/unread count
   };
 
-  if (!currentUserId || !currentUserType) {
-    return <div className="text-center py-10">Please log in to view messages.</div>;
+  // Ensure currentUserId and currentUserType are valid before rendering chat components
+  if (!currentUserId || !(currentUserType === 'patient' || currentUserType === 'doctor')) {
+    return <div className="text-center py-10">Please log in as a patient or doctor to view messages.</div>;
   }
 
   return (
@@ -65,7 +67,7 @@ const MessagesPage: React.FC = () => {
           <ConversationList
             conversations={conversations}
             currentUserId={currentUserId}
-            currentUserType={currentUserType}
+            currentUserType={currentUserType} // Now guaranteed to be 'patient' | 'doctor'
             activeConversationId={conversationId}
           />
         </div>
@@ -74,7 +76,7 @@ const MessagesPage: React.FC = () => {
             <ChatWindow
               conversation={activeConversation}
               currentUserId={currentUserId}
-              currentUserType={currentUserType}
+              currentUserType={currentUserType} // Now guaranteed to be 'patient' | 'doctor'
               onNewMessage={handleNewMessage}
             />
           ) : (

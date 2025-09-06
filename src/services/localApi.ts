@@ -116,12 +116,14 @@ export const addMessage = (message: Omit<Message, 'id'>): Message => {
       ...conversation,
       lastMessageContent: message.content,
       lastMessageTimestamp: message.timestamp,
-      // Increment unread count for the *other* participant
-      unreadCount: conversation.participantIds[0] === message.senderId ? conversation.unreadCount + 1 : conversation.unreadCount + 1, // Simplified for now
+      // For simplicity in this demo, we'll just increment the unreadCount.
+      // The ChatWindow will reset it when opened.
+      // A more robust solution would track unread counts per participant.
+      unreadCount: conversation.unreadCount + 1,
     };
     updateConversation(updatedConversation);
   }
-  return newMessage;
+  return newMessage; // Return the full message with ID
 };
 
 export const createConversation = (patientId: string, doctorId: string): Conversation => {

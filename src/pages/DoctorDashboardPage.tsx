@@ -25,6 +25,7 @@ import {
   getPatientById,
   getSpecialtyById,
   getSpecialties,
+  getMessagesForConversation, // Imported getMessagesForConversation
 } from '@/services/localApi';
 import { Doctor } from '@/data/doctors';
 import { Appointment } from '@/data/appointments';
