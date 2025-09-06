@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { MapPinIcon } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 interface Agency {
   id: string;
@@ -9,6 +10,7 @@ interface Agency {
   slug: string;
   logo: string;
   address: string;
+  type: string;
 }
 
 interface AgencyCardProps {
@@ -27,6 +29,7 @@ const AgencyCard: React.FC<AgencyCardProps> = ({ agency }) => {
           />
         </CardHeader>
         <CardContent className="flex-grow flex flex-col justify-center items-center p-0 space-y-1">
+          <Badge variant="secondary" className="mb-2">{agency.type}</Badge>
           <CardTitle className="text-base font-semibold leading-tight">{agency.name}</CardTitle>
           <div className="flex items-center text-xs text-muted-foreground">
             <MapPinIcon className="h-3 w-3 mr-1 text-primary" />
