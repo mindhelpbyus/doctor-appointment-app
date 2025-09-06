@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./components/layout/MainLayout";
+// Corrected imports: Import named exports from the barrel file
 import { Index, NotFound, SearchPage, LoginPage, RegisterPage, AppointmentsPage, AgencyPage } from "./pages";
 
 const queryClient = new QueryClient();
