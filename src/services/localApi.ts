@@ -8,7 +8,8 @@ import { admins, Admin } from '@/data/admins';
 import { agencyUsers, AgencyUser } from '@/data/agencyUsers';
 import { conversations, messages, Conversation, Message } from '@/data/chat';
 import { agencyPerformanceReport, doctorPerformanceReports, promotionReports, AgencyPerformanceReport, DoctorPerformanceReport, PromotionReport } from '@/data/reports';
-import { IAvailability } from '@/models/Doctor'; // Import IAvailability
+import { IAvailability } from '@/models/Doctor';
+import { visitSummaries, VisitSummary } from '@/data/visitSummaries'; // Import VisitSummary
 
 // --- Seeding Logic ---
 const seedEntity = (key: string, data: unknown[]) => {
@@ -27,6 +28,7 @@ const seedAllData = () => {
   seedEntity('agencyUsers', agencyUsers);
   seedEntity('conversations', conversations);
   seedEntity('messages', messages);
+  seedEntity('visitSummaries', visitSummaries); // Seed visit summaries
   // No need to seed reports as they are static mock data for now.
 };
 
@@ -57,6 +59,7 @@ export const getAdmins = (): Admin[] => getEntity<Admin>('admins');
 export const getAgencyUsers = (): AgencyUser[] => getEntity<AgencyUser>('agencyUsers');
 export const getConversations = (): Conversation[] => getEntity<Conversation>('conversations');
 export const getMessages = (): Message[] => getEntity<Message>('messages');
+export const getVisitSummaries = (): VisitSummary[] => getEntity<VisitSummary>('visitSummaries'); // New getter
 
 // New report getters
 export const getAgencyPerformanceReport = (): AgencyPerformanceReport => agencyPerformanceReport;
@@ -90,6 +93,7 @@ export const updateDoctor = (doctor: Doctor): void => updateEntity<Doctor>('doct
 export const updatePromotion = (promotion: Promotion): void => updateEntity<Promotion>('promotions', promotion);
 export const updateConversation = (conversation: Conversation): void => updateEntity<Conversation>('conversations', conversation);
 export const updateMessage = (message: Message): void => updateEntity<Message>('messages', message);
+export const updateVisitSummary = (visitSummary: VisitSummary): void => updateEntity<VisitSummary>('visitSummaries', visitSummary); // New updater
 
 // New function to update doctor's weekly availability
 export const updateDoctorWeeklyAvailability = (doctorId: string, weeklyAvailability: IAvailability[]): void => {
@@ -205,3 +209,4 @@ export const getOrCreateConversation = (patientId: string, doctorId: string): Co
   }
   return conversation;
 };
+export const getVisitSummaryByAppointmentId = (appointmentId: string): VisitSummary | undefined => getVisitSummaries().find(vs => vs.appointmentId === appointmentId);
