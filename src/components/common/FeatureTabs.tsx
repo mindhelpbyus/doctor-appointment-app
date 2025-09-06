@@ -47,7 +47,7 @@ const FeatureTabs: React.FC = () => {
     <Tabs defaultValue="scheduling" className="w-full">
       <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 h-auto bg-light-grey p-2 rounded-xl shadow-inner"> {/* Refined TabsList styling */}
         {features.map((feature) => (
-          <TabsTrigger key={feature.value} value={feature.value} className="flex flex-col items-center gap-2 p-4 h-full data-[state=active]:bg-background data-[state=active]:shadow-subtle data-[state=active]:text-primary data-[state=active]:font-semibold rounded-lg transition-all duration-200 text-stone hover:text-charcoal font-averta"> {/* Refined TabsTrigger styling */}
+          <TabsTrigger key={feature.value} value={feature.value} className="flex flex-col items-center gap-2 p-4 h-full data-[state=active]:bg-background data-[state=active]:shadow-subtle data-[state=active]:text-primary data-[state=active]:font-semibold rounded-lg transition-all duration-200 text-muted-foreground hover:text-primary font-averta"> {/* Refined TabsTrigger styling */}
             <feature.icon className="h-6 w-6 text-current" /> {/* text-current to inherit color */}
             <span className="text-center text-sm font-semibold">{feature.title}</span>
           </TabsTrigger>
