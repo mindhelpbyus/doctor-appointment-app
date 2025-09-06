@@ -14,7 +14,9 @@ import PatientDashboardPage from './PatientDashboardPage';
 import ProviderOnboardingPage from './ProviderOnboardingPage';
 import MessagesPage from './MessagesPage';
 import DoctorDashboardPage from './DoctorDashboardPage';
-import AgenciesPage from './AgenciesPage'; // Import new AgenciesPage
+import AgenciesPage from './AgenciesPage';
+import AboutUsPage from './AboutUsPage'; // Import new AboutUsPage
+import ContactPage from './ContactPage'; // Import new ContactPage
 
 export {
   HomePage,
@@ -33,5 +35,7 @@ export {
   ProviderOnboardingPage,
   MessagesPage,
   DoctorDashboardPage,
-  AgenciesPage, // Export new AgenciesPage
+  AgenciesPage,
+  AboutUsPage, // Export new AboutUsPage
+  ContactPage, // Export new ContactPage
 };
