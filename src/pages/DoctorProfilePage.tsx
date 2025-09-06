@@ -5,16 +5,19 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { StarIcon, MapPinIcon, CalendarDaysIcon, PhoneIcon, MailIcon, MessageSquare } from 'lucide-react';
-import { getDoctorById, getSpecialtyById, getOrCreateConversation } from '@/services/localApi';
+import { getDoctorById, getSpecialtyById, getOrCreateConversation, getReviewsByDoctorId } from '@/services/localApi';
 import { Doctor } from '@/data/doctors';
+import { Review } from '@/data/reviews';
 import { getLoggedInUser } from '@/utils/auth';
 import { showError } from '@/utils/toast';
+import { DoctorReviews } from '@/components/doctor';
 
 const DoctorProfilePage: React.FC = () => {
   const { doctorId } = useParams<{ doctorId: string }>();
   const navigate = useNavigate();
   const [doctor, setDoctor] = useState<Doctor | undefined>(undefined);
   const [specialtyName, setSpecialtyName] = useState<string>('');
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [currentPatientId, setCurrentPatientId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -31,6 +34,8 @@ const DoctorProfilePage: React.FC = () => {
       if (foundDoctor) {
         const specialty = getSpecialtyById(foundDoctor.specialtyId);
         setSpecialtyName(specialty?.name || 'N/A');
+        const doctorReviews = getReviewsByDoctorId(doctorId);
+        setReviews(doctorReviews);
       }
     }
   }, [doctorId]);
@@ -60,7 +65,7 @@ const DoctorProfilePage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-5xl mx-auto p-4 py-8"> {/* Increased max-width and vertical padding */}
+    <div className="max-w-5xl mx-auto p-4 py-8 space-y-8"> {/* Increased max-width and vertical padding */}
       <Card className="shadow-medium rounded-2xl border-none bg-background"> {/* Stronger shadow, no border */}
         <CardHeader className="flex flex-col md:flex-row items-center gap-8 p-8 lg:p-12 border-b border-granite"> {/* Increased gap and padding, subtle border */}
           <img
@@ -74,9 +79,9 @@ const DoctorProfilePage: React.FC = () => {
             <div className="flex items-center justify-center md:justify-start text-lg text-stone mb-1 font-averta"> {/* Stone color */}
               <MapPinIcon className="h-5 w-5 mr-2 text-primary" /> {doctor.clinicAddress}
             </div>
-            <div className="flex items-center justify-center md:justify-start text-lg text-yellow-500 font-averta">
-              <StarIcon className="h-5 w-5 mr-2 fill-yellow-500" /> {doctor.rating.toFixed(1)} Rating
-            </div>
+            <a href="#reviews-section" className="inline-flex items-center justify-center md:justify-start text-lg text-yellow-500 font-averta cursor-pointer hover:underline">
+              <StarIcon className="h-5 w-5 mr-2 fill-yellow-500" /> {doctor.rating.toFixed(1)} Rating ({reviews.length} reviews)
+            </a>
           </div>
         </CardHeader>
         <CardContent className="p-8 lg:p-12 space-y-8"> {/* Increased padding and spacing */}
@@ -110,6 +115,10 @@ const DoctorProfilePage: React.FC = () => {
           </section>
         </CardContent>
       </Card>
+
+      <section id="reviews-section">
+        <DoctorReviews reviews={reviews} />
+      </section>
     </div>
   );
 };
