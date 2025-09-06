@@ -12,7 +12,7 @@ const InsuranceSection: React.FC = () => {
       <div className="container mx-auto text-center">
         <h2 className="text-4xl font-bold font-recoleta text-foreground mb-4">Find an In-Network Doctor</h2>
         <p className="text-lg text-muted-foreground mb-8 font-averta">
-          We partner with देश's top insurance providers to make your care more accessible.
+          We partner with the nation's top insurance providers to make your care more accessible.
         </p>
         <div className="flex justify-center items-center max-w-2xl mx-auto mb-8">
           <Input placeholder="Enter your insurance provider" className="rounded-r-none" />
