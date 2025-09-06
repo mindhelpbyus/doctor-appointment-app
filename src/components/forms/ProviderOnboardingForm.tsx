@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { addAgency } from '@/services/localApi';
 import { showError, showSuccess } from '@/utils/toast';
 import { Link } from 'react-router-dom';
+import { Agency } from '@/data/agencies'; // Import Agency type
 
 const agencySchema = z.object({
   name: z.string().min(3, 'Agency name must be at least 3 characters.'),
@@ -35,7 +36,9 @@ const ProviderOnboardingForm: React.FC = () => {
 
   function onSubmit(values: z.infer<typeof agencySchema>) {
     try {
-      addAgency(values);
+      // Cast values to the expected type, as zodResolver ensures validity
+      const agencyData: Omit<Agency, 'id' | 'slug' | 'isActive' | 'theme' | 'logo' | 'headerImage'> = values;
+      addAgency(agencyData);
       showSuccess('Application submitted for review!');
       setIsSubmitted(true);
     } catch (error) {

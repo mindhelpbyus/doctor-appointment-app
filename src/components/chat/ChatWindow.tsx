@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SendIcon } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { getMessagesForConversation, addMessage, getDoctorById, getPatientById, getConversationById, updateConversation } from '@/services/localApi';
+import { getMessagesForConversation, addMessage, getDoctorById, getPatientById, getConversationById, updateConversation, updateMessage } from '@/services/localApi'; // Imported updateMessage
 import { Message, Conversation } from '@/data/chat';
 import MessageBubble from './MessageBubble';
 import { Doctor } from '@/data/doctors';
@@ -23,9 +23,25 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, currentUserId, cu
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const otherParticipantId = conversation.participantIds.find(id => id !== currentUserId);
-  const otherParticipant: Doctor | Patient | undefined = currentUserType === 'patient' 
-    ? getDoctorById(otherParticipantId!) 
-    : getPatientById(otherParticipantId!);
+  
+  let otherParticipantName: string = 'Unknown User';
+  let otherParticipantPhotoUrl: string = 'https://via.placeholder.com/40'; // Default placeholder
+
+  if (otherParticipantId) {
+    if (currentUserType === 'patient') {
+      const doctor = getDoctorById(otherParticipantId);
+      if (doctor) {
+        otherParticipantName = doctor.fullName;
+        otherParticipantPhotoUrl = doctor.photoUrl || otherParticipantPhotoUrl;
+      }
+    } else { // currentUserType === 'doctor'
+      const patient = getPatientById(otherParticipantId);
+      if (patient) {
+        otherParticipantName = patient.name;
+        // Patients don't have photoUrl in the current data, use default
+      }
+    }
+  }
 
   const loadMessages = () => {
     const fetchedMessages = getMessagesForConversation(conversation.id);
@@ -93,11 +109,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, currentUserId, cu
     <div className="flex flex-col h-full">
       <div className="border-b p-4 flex items-center gap-3">
         <img
-          src={otherParticipant?.photoUrl || 'https://via.placeholder.com/40'}
-          alt={otherParticipant?.fullName || 'User'}
+          src={otherParticipantPhotoUrl}
+          alt={otherParticipantName}
           className="w-10 h-10 rounded-full object-cover"
         />
-        <h3 className="text-lg font-semibold">{otherParticipant?.fullName || 'Unknown User'}</h3>
+        <h3 className="text-lg font-semibold">{otherParticipantName}</h3>
       </div>
       <ScrollArea className="flex-grow p-4 space-y-4" ref={scrollAreaRef}>
         {messages.map((msg) => (

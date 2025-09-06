@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { addPromotion } from '@/services/localApi';
 import { showError, showSuccess } from '@/utils/toast';
+import { Promotion } from '@/data/promotions'; // Import Promotion type
 
 const promotionSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters.'),
@@ -41,10 +42,12 @@ const CreatePromotionForm: React.FC<CreatePromotionFormProps> = ({ agencyId, onS
 
   function onSubmit(values: z.infer<typeof promotionSchema>) {
     try {
-      addPromotion({
+      // Cast values to the expected type, as zodResolver ensures validity
+      const promotionData: Omit<Promotion, 'id' | 'status'> = {
         ...values,
         targetAgencyId: agencyId,
-      });
+      };
+      addPromotion(promotionData);
       showSuccess('Promotion submitted for approval!');
       onSuccess();
     } catch (error) {

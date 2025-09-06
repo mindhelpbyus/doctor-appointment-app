@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import DoctorCard from '@/components/common/DoctorCard';
-import { getPatientById, getAppointments, getDoctorById, getSpecialtyById } from '@/services/localApi';
+import { getPatientById, getAppointments, getDoctorById, getSpecialties } from '@/services/localApi'; // Changed getSpecialtyById to getSpecialties
 import { Patient } from '@/data/patients';
 import { Appointment } from '@/data/appointments';
 import { Doctor } from '@/data/doctors';
@@ -37,7 +37,7 @@ const PatientDashboardPage: React.FC = () => {
     }
     
     // We need specialties to pass to DoctorCard
-    setSpecialties(getSpecialtyById() ? [getSpecialtyById()] : []);
+    setSpecialties(getSpecialties()); // Corrected to use getSpecialties()
   }, [currentPatientId]);
 
   const getDoctorName = (id: string) => getDoctorById(id)?.fullName || 'Unknown Doctor';

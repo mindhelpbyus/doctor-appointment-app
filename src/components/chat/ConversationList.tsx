@@ -20,9 +20,25 @@ const ConversationList: React.FC<ConversationListProps> = ({ conversations, curr
       ) : (
         conversations.map((conv) => {
           const otherParticipantId = conv.participantIds.find(id => id !== currentUserId);
-          const otherParticipant = currentUserType === 'patient' 
-            ? getDoctorById(otherParticipantId!) 
-            : getPatientById(otherParticipantId!);
+          
+          let otherParticipantName: string = 'Unknown User';
+          let otherParticipantPhotoUrl: string = 'https://via.placeholder.com/40'; // Default placeholder
+
+          if (otherParticipantId) {
+            if (currentUserType === 'patient') {
+              const doctor = getDoctorById(otherParticipantId);
+              if (doctor) {
+                otherParticipantName = doctor.fullName;
+                otherParticipantPhotoUrl = doctor.photoUrl || otherParticipantPhotoUrl;
+              }
+            } else { // currentUserType === 'doctor'
+              const patient = getPatientById(otherParticipantId);
+              if (patient) {
+                otherParticipantName = patient.name;
+                // Patients don't have photoUrl in the current data, use default
+              }
+            }
+          }
 
           const lastMessageTime = new Date(conv.lastMessageTimestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
@@ -36,12 +52,12 @@ const ConversationList: React.FC<ConversationListProps> = ({ conversations, curr
               )}
             >
               <Avatar className="h-10 w-10">
-                <AvatarImage src={otherParticipant?.photoUrl || 'https://via.placeholder.com/40'} />
-                <AvatarFallback>{otherParticipant?.fullName?.charAt(0) || '?'}</AvatarFallback>
+                <AvatarImage src={otherParticipantPhotoUrl} />
+                <AvatarFallback>{otherParticipantName.charAt(0) || '?'}</AvatarFallback>
               </Avatar>
               <div className="flex-grow">
                 <div className="flex justify-between items-center">
-                  <h4 className="font-semibold">{otherParticipant?.fullName || 'Unknown User'}</h4>
+                  <h4 className="font-semibold">{otherParticipantName}</h4>
                   <span className="text-xs text-muted-foreground">{lastMessageTime}</span>
                 </div>
                 <p className="text-sm text-muted-foreground truncate">{conv.lastMessageContent}</p>
