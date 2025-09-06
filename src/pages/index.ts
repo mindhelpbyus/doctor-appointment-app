@@ -10,6 +10,7 @@ import AdminPage from './AdminPage';
 import BookingPage from './BookingPage';
 import ProviderLoginPage from './ProviderLoginPage';
 import AgencyDashboardPage from './AgencyDashboardPage';
+import PatientDashboardPage from './PatientDashboardPage';
 
 export {
   HomePage,
@@ -24,4 +25,5 @@ export {
   BookingPage,
   ProviderLoginPage,
   AgencyDashboardPage,
+  PatientDashboardPage,
 };
