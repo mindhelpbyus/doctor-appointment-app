@@ -19,7 +19,7 @@ const seedAllData = () => {
   seedEntity('doctors', doctors);
   seedEntity('patients', patients);
   seedEntity('promotions', promotions);
-  seedEntity('specialties', specialties);
+  // Specialties are not seeded as they contain non-serializable components (icons)
   seedEntity('admins', admins);
 };
 
@@ -45,7 +45,7 @@ export const getAppointments = (): Appointment[] => getEntity<Appointment>('appo
 export const getDoctors = (): Doctor[] => getEntity<Doctor>('doctors');
 export const getPatients = (): Patient[] => getEntity<Patient>('patients');
 export const getPromotions = (): Promotion[] => getEntity<Promotion>('promotions');
-export const getSpecialties = (): Specialty[] => getEntity<Specialty>('specialties');
+export const getSpecialties = (): Specialty[] => specialties; // Return directly to preserve components
 export const getAdmins = (): Admin[] => getEntity<Admin>('admins');
 
 // --- Specific Updaters ---
