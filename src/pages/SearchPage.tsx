@@ -20,6 +20,8 @@ const SearchPage: React.FC = () => {
   const [filteredDoctors, setFilteredDoctors] = useState<Doctor[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const initialQuery = searchParams.get('q') || '';
+  const initialLocation = searchParams.get('loc') || '';
+  const [hasSearched, setHasSearched] = useState(!!(initialQuery || initialLocation));
 
   useEffect(() => {
     const doctorsData = getDoctors();
@@ -32,33 +34,49 @@ const SearchPage: React.FC = () => {
     return specialties.find(s => s.id === specialtyId);
   };
 
-  const performSearch = (query: string) => {
-    if (!query) {
-      setFilteredDoctors([]); // Clear results if query is empty
+  const performSearch = (query: string, location: string) => {
+    if (!query && !location) {
+      setFilteredDoctors([]);
+      setHasSearched(false);
       return;
     }
 
+    setHasSearched(true);
+    let results = allDoctors;
     const lowercasedQuery = query.toLowerCase();
-    const results = allDoctors.filter(doctor => {
-      const specialtyName = getSpecialty(doctor.specialtyId)?.name || '';
-      return (
-        doctor.fullName.toLowerCase().includes(lowercasedQuery) ||
-        specialtyName.toLowerCase().includes(lowercasedQuery) ||
-        doctor.clinicAddress.toLowerCase().includes(lowercasedQuery)
+    const lowercasedLocation = location.toLowerCase();
+
+    if (query) {
+      results = results.filter(doctor => {
+        const specialtyName = getSpecialty(doctor.specialtyId)?.name || '';
+        return (
+          doctor.fullName.toLowerCase().includes(lowercasedQuery) ||
+          specialtyName.toLowerCase().includes(lowercasedQuery)
+        );
+      });
+    }
+
+    if (location) {
+      results = results.filter(doctor => 
+        doctor.clinicAddress.toLowerCase().includes(lowercasedLocation)
       );
-    });
+    }
+
     setFilteredDoctors(results);
   };
 
   useEffect(() => {
     if (allDoctors.length > 0 && specialties.length > 0) {
-      performSearch(initialQuery);
+      performSearch(initialQuery, initialLocation);
     }
-  }, [allDoctors, specialties, initialQuery]);
+  }, [allDoctors, specialties, initialQuery, initialLocation]);
 
-  const handleSearch = (query: string) => {
-    setSearchParams(query ? { q: query } : {});
-    performSearch(query);
+  const handleSearch = (query: string, location: string) => {
+    const params = new URLSearchParams();
+    if (query) params.set('q', query);
+    if (location) params.set('loc', location);
+    setSearchParams(params);
+    performSearch(query, location);
   };
 
   return (
@@ -69,11 +87,11 @@ const SearchPage: React.FC = () => {
       </h1>
       <SearchBar 
         onSearch={handleSearch} 
-        placeholder="Search by doctor, specialty, or location..." 
-        defaultValue={initialQuery} 
+        defaultQuery={initialQuery}
+        defaultLocation={initialLocation}
       />
 
-      {initialQuery ? (
+      {hasSearched ? (
         <section>
           {filteredDoctors.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -94,7 +112,7 @@ const SearchPage: React.FC = () => {
             </div>
           ) : (
             <div className="text-center py-10">
-              <p className="text-lg text-muted-foreground">No doctors found matching your search.</p>
+              <p className="text-lg text-muted-foreground">No doctors found matching your search criteria.</p>
             </div>
           )}
         </section>

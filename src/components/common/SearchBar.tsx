@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search as SearchIcon, User, Stethoscope, Building } from 'lucide-react';
+import { Search as SearchIcon, User, Stethoscope, Building, MapPin, Crosshair } from 'lucide-react';
 import {
   Command,
   CommandEmpty,
@@ -14,35 +14,42 @@ import { getDoctors, getSpecialties, getAgencies } from '@/services/localApi';
 import { Doctor } from '@/data/doctors';
 import { Specialty } from '@/data/specialties';
 import { Agency } from '@/data/agencies';
+import { showSuccess } from '@/utils/toast';
 
 interface SearchBarProps {
-  onSearch: (query: string) => void;
+  onSearch: (query: string, location: string) => void;
   placeholder?: string;
-  defaultValue?: string;
+  defaultQuery?: string;
+  defaultLocation?: string;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search doctors, specialties, clinics...", defaultValue = '' }) => {
-  const [query, setQuery] = useState(defaultValue);
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search doctors, specialties...", defaultQuery = '', defaultLocation = '' }) => {
+  const [query, setQuery] = useState(defaultQuery);
+  const [location, setLocation] = useState(defaultLocation);
   const [suggestions, setSuggestions] = useState<{ doctors: Doctor[], specialties: Specialty[], agencies: Agency[] }>({ doctors: [], specialties: [], agencies: [] });
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const navigate = useNavigate();
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setQuery(defaultValue);
-  }, [defaultValue]);
+    setQuery(defaultQuery);
+  }, [defaultQuery]);
 
   useEffect(() => {
-    const allDoctors = getDoctors();
-    const allSpecialties = getSpecialties();
-    const allAgencies = getAgencies();
+    setLocation(defaultLocation);
+  }, [defaultLocation]);
 
-    const lowercasedQuery = query.toLowerCase();
-
+  useEffect(() => {
     if (query.length > 1) {
+      const allDoctors = getDoctors();
+      const allSpecialties = getSpecialties();
+      const allAgencies = getAgencies();
+      const lowercasedQuery = query.toLowerCase();
+      
       const filteredDoctors = allDoctors.filter(d => d.fullName.toLowerCase().includes(lowercasedQuery)).slice(0, 3);
       const filteredSpecialties = allSpecialties.filter(s => s.name.toLowerCase().includes(lowercasedQuery)).slice(0, 3);
       const filteredAgencies = allAgencies.filter(a => a.name.toLowerCase().includes(lowercasedQuery)).slice(0, 3);
+      
       setSuggestions({ doctors: filteredDoctors, specialties: filteredSpecialties, agencies: filteredAgencies });
       setIsPopoverOpen(true);
     } else {
@@ -58,14 +65,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search d
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleSearch = () => {
     setIsPopoverOpen(false);
-    onSearch(query);
+    onSearch(query, location);
   };
 
   const handleSelect = (path: string) => {
@@ -73,31 +78,49 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search d
     navigate(path);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
-  };
-
-  const handleInputFocus = () => {
-    if (query.length > 1) {
-      setIsPopoverOpen(true);
-    }
+  const handleUseMyLocation = () => {
+    // In a real app, this would use navigator.geolocation.
+    // For this demo, we'll simulate finding a nearby city from our data.
+    const mockLocation = "Central City";
+    setLocation(mockLocation);
+    showSuccess(`Location set to ${mockLocation}`);
   };
 
   return (
     <div className="relative w-full max-w-3xl mx-auto" ref={searchContainerRef}>
-      <div className="flex w-full space-x-3 p-1 bg-background rounded-full shadow-medium border border-granite focus-within:border-primary transition-all duration-300">
-        <div className="flex-grow relative">
+      <div className="flex w-full items-center space-x-2 p-1.5 bg-background rounded-full shadow-medium border border-granite focus-within:border-primary transition-all duration-300">
+        {/* Query Input */}
+        <div className="flex-grow relative flex items-center">
           <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-stone" />
           <Input
             type="text"
             placeholder={placeholder}
             value={query}
-            onChange={handleInputChange}
-            onFocus={handleInputFocus}
+            onChange={(e) => setQuery(e.target.value)}
+            onFocus={() => query.length > 1 && setIsPopoverOpen(true)}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             className="w-full border-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent text-foreground placeholder:text-stone pl-12 pr-4 py-3 text-lg font-averta"
           />
         </div>
+        
+        <div className="w-px h-6 bg-granite self-center"></div>
+
+        {/* Location Input */}
+        <div className="flex-grow relative flex items-center">
+          <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-stone" />
+          <Input
+            type="text"
+            placeholder="City or Zip Code"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+            className="w-full border-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent text-foreground placeholder:text-stone pl-12 pr-10 py-3 text-lg font-averta"
+          />
+          <Button variant="ghost" size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full" onClick={handleUseMyLocation}>
+            <Crosshair className="h-5 w-5 text-stone hover:text-primary" />
+          </Button>
+        </div>
+
         <Button onClick={handleSearch} variant="custom-primary" size="custom-sm" className="rounded-full px-6 py-3 text-lg shadow-md hover:shadow-lg transition-all duration-300">
           Search
         </Button>
@@ -108,7 +131,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search d
           <Command>
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
-              
               {suggestions.doctors.length > 0 && (
                 <CommandGroup heading="Doctors">
                   {suggestions.doctors.map((doctor) => (
@@ -119,26 +141,16 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search d
                   ))}
                 </CommandGroup>
               )}
-
               {suggestions.specialties.length > 0 && (
                 <CommandGroup heading="Specialties">
                   {suggestions.specialties.map((specialty) => (
-                    <CommandItem
-                      key={specialty.id}
-                      onSelect={() => {
-                        setQuery(specialty.name);
-                        onSearch(specialty.name);
-                        setIsPopoverOpen(false);
-                      }}
-                      value={specialty.name}
-                    >
+                    <CommandItem key={specialty.id} onSelect={() => { setQuery(specialty.name); onSearch(specialty.name, location); setIsPopoverOpen(false); }} value={specialty.name}>
                       <Stethoscope className="mr-2 h-4 w-4" />
                       <span>{specialty.name}</span>
                     </CommandItem>
                   ))}
                 </CommandGroup>
               )}
-
               {suggestions.agencies.length > 0 && (
                 <CommandGroup heading="Agencies">
                   {suggestions.agencies.map((agency) => (

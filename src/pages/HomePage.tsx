@@ -19,9 +19,13 @@ const HomePage = () => {
     setSpecialties(getSpecialties());
   }, []);
 
-  const handleSearch = (query: string) => {
-    if (query.trim()) {
-      navigate(`/search?q=${encodeURIComponent(query.trim())}`);
+  const handleSearch = (query: string, location: string) => {
+    const searchParams = new URLSearchParams();
+    if (query.trim()) searchParams.set('q', query.trim());
+    if (location.trim()) searchParams.set('loc', location.trim());
+    
+    if (searchParams.toString()) {
+      navigate(`/search?${searchParams.toString()}`);
     } else {
       navigate('/search');
     }
