@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { getAgencyUsers } from '@/services/localApi';
+import { getAgencyUsers, getDoctorById } from '@/services/localApi'; // Import getDoctorById
 import { showError, showSuccess } from '@/utils/toast';
 
 const ProviderLoginPage: React.FC = () => {
@@ -23,14 +23,28 @@ const ProviderLoginPage: React.FC = () => {
     }
   };
 
-  const handleDemoLogin = () => {
+  const handleDemoAgencyProviderLogin = () => {
     const demoProvider = getAgencyUsers().find(u => u.id === 'user-demo');
     if (demoProvider) {
       setEmail(demoProvider.email); // Pre-fill email for visual feedback
-      showSuccess('Logged in as Demo Provider!');
+      showSuccess('Logged in as Demo Agency Provider!');
       navigate(`/agency-dashboard/${demoProvider.agencyId}`);
     } else {
-      showError('Demo provider account not found.');
+      showError('Demo agency provider account not found.');
+    }
+  };
+
+  const handleDemoIndividualDoctorLogin = () => {
+    // For individual doctors, we'll directly navigate to a demo doctor's profile page.
+    // Dr. Evelyn Reed (doc-1) is an independent doctor in our mock data.
+    const demoDoctorId = 'doc-1'; 
+    const demoDoctor = getDoctorById(demoDoctorId);
+
+    if (demoDoctor) {
+      showSuccess(`Viewing profile for Dr. ${demoDoctor.fullName}!`);
+      navigate(`/doctor/${demoDoctorId}`);
+    } else {
+      showError('Demo individual doctor profile not found.');
     }
   };
 
@@ -39,7 +53,7 @@ const ProviderLoginPage: React.FC = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Provider Login</CardTitle>
-          <CardDescription>Access your agency dashboard.</CardDescription>
+          <CardDescription>Access your agency dashboard or view a doctor profile.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
@@ -58,7 +72,10 @@ const ProviderLoginPage: React.FC = () => {
             <Input id="password" type="password" required defaultValue="password" />
           </div>
           <Button onClick={handleLogin} className="w-full">Login</Button>
-          <Button variant="outline" className="w-full" onClick={handleDemoLogin}>Login as Demo Provider</Button>
+          <div className="space-y-2 pt-2">
+            <Button variant="outline" className="w-full" onClick={handleDemoAgencyProviderLogin}>Login as Demo Agency Provider</Button>
+            <Button variant="secondary" className="w-full" onClick={handleDemoIndividualDoctorLogin}>View Demo Individual Doctor Profile</Button>
+          </div>
           <p className="text-center text-sm text-muted-foreground pt-2">
             Want to list your practice on HealthConnect?{' '}
             <Link to="/onboard-provider" className="text-primary hover:underline">Register here</Link>
