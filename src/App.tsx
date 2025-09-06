@@ -4,7 +4,20 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./components/layout/MainLayout";
-import { HomePage, NotFound, SearchPage, LoginPage, RegisterPage, AppointmentsPage, AgencyPage, DoctorProfilePage, AdminPage, BookingPage } from "./pages";
+import { 
+  HomePage, 
+  NotFound, 
+  SearchPage, 
+  LoginPage, 
+  RegisterPage, 
+  AppointmentsPage, 
+  AgencyPage, 
+  DoctorProfilePage, 
+  AdminPage, 
+  BookingPage,
+  ProviderLoginPage,
+  AgencyDashboardPage
+} from "./pages";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +33,8 @@ const App = () => (
             <Route path="search" element={<SearchPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
+            <Route path="provider-login" element={<ProviderLoginPage />} />
+            <Route path="agency-dashboard/:agencyId" element={<AgencyDashboardPage />} />
             <Route path="appointments" element={<AppointmentsPage />} />
             <Route path="a/:agencySlug/*" element={<AgencyPage />} />
             <Route path="doctor/:doctorId" element={<DoctorProfilePage />} />

@@ -8,6 +8,8 @@ import AgencyPage from './AgencyPage';
 import DoctorProfilePage from './DoctorProfilePage';
 import AdminPage from './AdminPage';
 import BookingPage from './BookingPage';
+import ProviderLoginPage from './ProviderLoginPage';
+import AgencyDashboardPage from './AgencyDashboardPage';
 
 export {
   HomePage,
@@ -20,4 +22,6 @@ export {
   DoctorProfilePage,
   AdminPage,
   BookingPage,
+  ProviderLoginPage,
+  AgencyDashboardPage,
 };

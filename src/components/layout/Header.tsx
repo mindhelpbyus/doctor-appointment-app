@@ -23,7 +23,7 @@ const Header: React.FC = () => {
               <SearchIcon className="h-5 w-5" /> Search
             </Button>
             <Link to="/appointments" className="hover:underline">My Appointments</Link>
-            <Link to="/admin" className="hover:underline">Admin</Link>
+            <Link to="/provider-login" className="hover:underline">Provider Login</Link>
             <Link to="/login">
               <Button variant="secondary">Login</Button>
             </Link>
@@ -47,6 +47,7 @@ const Header: React.FC = () => {
                 <nav className="flex flex-col space-y-4 p-4">
                   <Link to="/" className="text-lg font-semibold hover:text-primary">Home</Link>
                   <Link to="/appointments" className="text-lg font-semibold hover:text-primary">My Appointments</Link>
+                  <Link to="/provider-login" className="text-lg font-semibold hover:text-primary">Provider Login</Link>
                   <Link to="/admin" className="text-lg font-semibold hover:text-primary">Admin</Link>
                   <Link to="/login">
                     <Button className="w-full">Login</Button>
@@ -62,6 +63,3 @@ const Header: React.FC = () => {
       </header>
     </>
   );
-};
-
-export default Header;
