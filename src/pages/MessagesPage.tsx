@@ -1,27 +1,36 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
 import ChatLayout from '@/components/chat/ChatLayout';
 import ConversationList from '@/components/chat/ConversationList';
 import ChatWindow from '@/components/chat/ChatWindow';
-import { getConversationsForUser, getDoctorById, getPatientById, getConversationById } from '@/services/localApi';
+import { getConversationsForUser, getConversationById } from '@/services/localApi';
 import { Conversation } from '@/data/chat';
-import { Separator } from '@/components/ui/separator';
+import { getLoggedInUser } from '@/utils/auth'; // Import getLoggedInUser
 
 const MessagesPage: React.FC = () => {
-  // --- Mock User Context ---
-  // In a real application, currentUserId and currentUserType would come from an authentication context.
-  // For demonstration, we'll hardcode a patient user.
-  const currentUserId = 'pat-1'; // Example: 'pat-1' for a patient, 'doc-3' for a doctor
-  const currentUserType: 'patient' | 'doctor' = 'patient'; // 'patient' or 'doctor'
-  // --- End Mock User Context ---
-
   const { conversationId } = useParams<{ conversationId: string }>();
+  const navigate = useNavigate(); // Initialize useNavigate
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConversation, setActiveConversation] = useState<Conversation | undefined>(undefined);
+  const [currentUserId, setCurrentUserId] = useState<string | undefined>(undefined);
+  const [currentUserType, setCurrentUserType] = useState<'patient' | 'doctor' | 'agencyUser' | 'admin' | undefined>(undefined);
+
+  useEffect(() => {
+    const loggedInUser = getLoggedInUser();
+    if (loggedInUser) {
+      setCurrentUserId(loggedInUser.id);
+      setCurrentUserType(loggedInUser.type);
+    } else {
+      // If no user is logged in, redirect to login page
+      navigate('/login');
+    }
+  }, [navigate]);
 
   const loadConversations = useCallback(() => {
-    const fetchedConversations = getConversationsForUser(currentUserId);
-    setConversations(fetchedConversations);
+    if (currentUserId) {
+      const fetchedConversations = getConversationsForUser(currentUserId);
+      setConversations(fetchedConversations);
+    }
   }, [currentUserId]);
 
   useEffect(() => {
@@ -35,19 +44,15 @@ const MessagesPage: React.FC = () => {
     } else {
       setActiveConversation(undefined);
     }
-  }, [conversationId, conversations]); // Re-evaluate active conversation if conversations change
+  }, [conversationId, conversations]);
 
   const handleNewMessage = () => {
     loadConversations(); // Refresh conversation list to update last message/unread count
   };
 
-  const getParticipantName = (id: string) => {
-    const patient = getPatientById(id);
-    if (patient) return patient.name;
-    const doctor = getDoctorById(id);
-    if (doctor) return doctor.fullName;
-    return 'Unknown';
-  };
+  if (!currentUserId || !currentUserType) {
+    return <div className="text-center py-10">Please log in to view messages.</div>;
+  }
 
   return (
     <div className="space-y-8">
@@ -65,7 +70,7 @@ const MessagesPage: React.FC = () => {
           />
         </div>
         <div className="flex-grow">
-          {activeConversation ? (
+          {activeConversation && currentUserId && currentUserType ? (
             <ChatWindow
               conversation={activeConversation}
               currentUserId={currentUserId}

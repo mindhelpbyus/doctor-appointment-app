@@ -5,20 +5,20 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { showSuccess, showError } from '@/utils/toast';
-import { getPatients } from '@/services/localApi'; // Import getPatients
+import { getPatients } from '@/services/localApi';
+import { loginUser } from '@/utils/auth'; // Import loginUser
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    // This is a mock authentication. In a real app, you'd verify a password.
     const user = getPatients().find(u => u.email === email);
 
     if (user) {
+      loginUser(user.id, 'patient'); // Log in the patient
       showSuccess('Login successful!');
-      // In a real app, you'd set a session/token for the patient
-      navigate('/dashboard'); // Navigate to patient dashboard
+      navigate('/dashboard');
     } else {
       showError('Patient not found. Please check your email.');
     }
@@ -27,7 +27,8 @@ const LoginPage: React.FC = () => {
   const handleDemoLogin = () => {
     const demoPatient = getPatients().find(p => p.id === 'pat-demo');
     if (demoPatient) {
-      setEmail(demoPatient.email); // Pre-fill email for visual feedback
+      setEmail(demoPatient.email);
+      loginUser(demoPatient.id, 'patient'); // Log in the demo patient
       showSuccess('Logged in as Demo Patient!');
       navigate('/dashboard');
     } else {
@@ -36,7 +37,7 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-160px)]"> {/* Adjust height based on header/footer */}
+    <div className="flex items-center justify-center min-h-[calc(100vh-160px)]">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Login</CardTitle>

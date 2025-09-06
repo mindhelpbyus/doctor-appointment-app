@@ -1,25 +1,30 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { StarIcon, MapPinIcon, CalendarDaysIcon, PhoneIcon, MailIcon, MessageSquare } from 'lucide-react'; // Import MessageSquare icon
-import { getDoctorById, getSpecialtyById, getOrCreateConversation } from '@/services/localApi'; // Import getOrCreateConversation
+import { StarIcon, MapPinIcon, CalendarDaysIcon, PhoneIcon, MailIcon, MessageSquare } from 'lucide-react';
+import { getDoctorById, getSpecialtyById, getOrCreateConversation } from '@/services/localApi';
 import { Doctor } from '@/data/doctors';
+import { getLoggedInUser } from '@/utils/auth'; // Import getLoggedInUser
+import { showError } from '@/utils/toast'; // Import showError
 
 const DoctorProfilePage: React.FC = () => {
   const { doctorId } = useParams<{ doctorId: string }>();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
   const [doctor, setDoctor] = useState<Doctor | undefined>(undefined);
   const [specialtyName, setSpecialtyName] = useState<string>('');
-
-  // --- Mock Patient ID ---
-  // In a real app, this would come from an auth context.
-  const currentPatientId = 'pat-1'; 
-  // --- End Mock Patient ID ---
+  const [currentPatientId, setCurrentPatientId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
+    const loggedInUser = getLoggedInUser();
+    if (loggedInUser && loggedInUser.type === 'patient') {
+      setCurrentPatientId(loggedInUser.id);
+    } else {
+      setCurrentPatientId(undefined); // Ensure it's undefined if not a patient
+    }
+
     if (doctorId) {
       const foundDoctor = getDoctorById(doctorId);
       setDoctor(foundDoctor);
@@ -31,6 +36,11 @@ const DoctorProfilePage: React.FC = () => {
   }, [doctorId]);
 
   const handleMessageDoctor = () => {
+    if (!currentPatientId) {
+      showError('Please log in as a patient to message doctors.');
+      navigate('/login');
+      return;
+    }
     if (doctor && currentPatientId) {
       const conversation = getOrCreateConversation(currentPatientId, doctor.id);
       navigate(`/messages/${conversation.id}`);
@@ -88,7 +98,7 @@ const DoctorProfilePage: React.FC = () => {
           </section>
 
           <section className="flex gap-4">
-            <h2 className="text-2xl font-semibold mb-3 sr-only">Actions</h2> {/* Hidden for accessibility */}
+            <h2 className="text-2xl font-semibold mb-3 sr-only">Actions</h2>
             <Link to={`/book/${doctor.id}`}>
               <Button size="lg" className="flex items-center gap-2">
                 <CalendarDaysIcon className="h-5 w-5" /> Schedule Now

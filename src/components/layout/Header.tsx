@@ -1,19 +1,28 @@
 "use client";
 
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom'; // Import useLocation
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { MenuIcon, SearchIcon, MessageSquare } from 'lucide-react';
+import { MenuIcon, SearchIcon, MessageSquare, LogOut } from 'lucide-react'; // Import LogOut icon
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import GlobalSearch from '@/components/common/GlobalSearch';
+import { getLoggedInUser, logoutUser } from '@/utils/auth'; // Import auth utilities
 
 const Header: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const location = useLocation(); // Initialize useLocation
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  // Define paths where the Messages link should be hidden
-  const hideMessagesPaths = ['/', '/login', '/register', '/provider-login', '/onboard-provider'];
-  const shouldHideMessages = hideMessagesPaths.some(path => location.pathname.startsWith(path));
+  useEffect(() => {
+    setIsLoggedIn(!!getLoggedInUser());
+  }, [location.pathname]); // Re-check login status on route change
+
+  const handleLogout = () => {
+    logoutUser();
+    setIsLoggedIn(false);
+    navigate('/'); // Redirect to home after logout
+  };
 
   return (
     <>
@@ -29,18 +38,27 @@ const Header: React.FC = () => {
             <Button variant="ghost" onClick={() => setIsSearchOpen(true)} className="flex items-center gap-2">
               <SearchIcon className="h-5 w-5" /> Search
             </Button>
-            {!shouldHideMessages && ( // Conditionally render Messages link
-              <Link to="/messages" className="hover:text-primary flex items-center gap-2">
-                <MessageSquare className="h-5 w-5" /> Messages
-              </Link>
+            {isLoggedIn && ( // Show Messages and Logout if logged in
+              <>
+                <Link to="/messages" className="hover:text-primary flex items-center gap-2">
+                  <MessageSquare className="h-5 w-5" /> Messages
+                </Link>
+                <Button variant="ghost" onClick={handleLogout} className="flex items-center gap-2">
+                  <LogOut className="h-5 w-5" /> Logout
+                </Button>
+              </>
             )}
-            <Link to="/login" className="hover:text-primary">Patient Login</Link>
-            <Link to="/provider-login">
-              <Button variant="outline">Provider Login</Button>
-            </Link>
-            <Link to="/register">
-              <Button>Sign Up</Button>
-            </Link>
+            {!isLoggedIn && ( // Show login/signup if not logged in
+              <>
+                <Link to="/login" className="hover:text-primary">Patient Login</Link>
+                <Link to="/provider-login">
+                  <Button variant="outline">Provider Login</Button>
+                </Link>
+                <Link to="/register">
+                  <Button>Sign Up</Button>
+                </Link>
+              </>
+            )}
           </nav>
 
           {/* Mobile Navigation */}
@@ -57,18 +75,27 @@ const Header: React.FC = () => {
               <SheetContent side="right" className="w-[250px] sm:w-[300px]">
                 <nav className="flex flex-col space-y-4 p-4">
                   <Link to="/" className="text-lg font-semibold hover:text-primary">Home</Link>
-                  {!shouldHideMessages && ( // Conditionally render Messages link
-                    <Link to="/messages" className="text-lg font-semibold hover:text-primary flex items-center gap-2">
-                      <MessageSquare className="h-5 w-5 mr-2" /> Messages
-                    </Link>
+                  {isLoggedIn && (
+                    <>
+                      <Link to="/messages" className="text-lg font-semibold hover:text-primary flex items-center gap-2">
+                        <MessageSquare className="h-5 w-5 mr-2" /> Messages
+                      </Link>
+                      <Button variant="ghost" onClick={handleLogout} className="w-full justify-start text-lg font-semibold flex items-center gap-2">
+                        <LogOut className="h-5 w-5 mr-2" /> Logout
+                      </Button>
+                    </>
                   )}
-                  <Link to="/login" className="text-lg font-semibold hover:text-primary">Patient Login</Link>
-                  <Link to="/provider-login">
-                    <Button variant="outline" className="w-full">Provider Login</Button>
-                  </Link>
-                  <Link to="/register">
-                    <Button className="w-full">Sign Up</Button>
-                  </Link>
+                  {!isLoggedIn && (
+                    <>
+                      <Link to="/login" className="text-lg font-semibold hover:text-primary">Patient Login</Link>
+                      <Link to="/provider-login">
+                        <Button variant="outline" className="w-full">Provider Login</Button>
+                      </Link>
+                      <Link to="/register">
+                        <Button className="w-full">Sign Up</Button>
+                      </Link>
+                    </>
+                  )}
                 </nav>
               </SheetContent>
             </Sheet>

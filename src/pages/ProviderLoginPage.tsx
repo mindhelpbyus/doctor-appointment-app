@@ -4,18 +4,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { getAgencyUsers, getDoctorById } from '@/services/localApi'; // Import getDoctorById
+import { getAgencyUsers, getDoctorById } from '@/services/localApi';
 import { showError, showSuccess } from '@/utils/toast';
+import { loginUser } from '@/utils/auth'; // Import loginUser
 
 const ProviderLoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    // This is a mock authentication. In a real app, you'd verify a password.
     const user = getAgencyUsers().find(u => u.email === email);
 
     if (user) {
+      loginUser(user.id, 'agencyUser'); // Log in the agency user
       showSuccess('Login successful!');
       navigate(`/agency-dashboard/${user.agencyId}`);
     } else {
@@ -26,7 +27,8 @@ const ProviderLoginPage: React.FC = () => {
   const handleDemoAgencyProviderLogin = () => {
     const demoProvider = getAgencyUsers().find(u => u.id === 'user-demo');
     if (demoProvider) {
-      setEmail(demoProvider.email); // Pre-fill email for visual feedback
+      setEmail(demoProvider.email);
+      loginUser(demoProvider.id, 'agencyUser'); // Log in the demo agency user
       showSuccess('Logged in as Demo Agency Provider!');
       navigate(`/agency-dashboard/${demoProvider.agencyId}`);
     } else {
@@ -35,14 +37,13 @@ const ProviderLoginPage: React.FC = () => {
   };
 
   const handleDemoIndividualDoctorLogin = () => {
-    // For individual doctors, we'll directly navigate to a demo doctor's profile page.
-    // Dr. Evelyn Reed (doc-1) is an independent doctor in our mock data.
-    const demoDoctorId = 'doc-1'; 
+    const demoDoctorId = 'doc-1'; // Dr. Evelyn Reed
     const demoDoctor = getDoctorById(demoDoctorId);
 
     if (demoDoctor) {
-      showSuccess(`Viewing profile for Dr. ${demoDoctor.fullName}!`);
-      navigate(`/doctor/${demoDoctorId}`);
+      loginUser(demoDoctor.id, 'doctor'); // Log in the individual doctor
+      showSuccess(`Logged in as Dr. ${demoDoctor.fullName}!`);
+      navigate('/messages'); // Navigate to messages page for the doctor
     } else {
       showError('Demo individual doctor profile not found.');
     }
@@ -74,7 +75,7 @@ const ProviderLoginPage: React.FC = () => {
           <Button onClick={handleLogin} className="w-full">Login</Button>
           <div className="space-y-2 pt-2">
             <Button variant="outline" className="w-full" onClick={handleDemoAgencyProviderLogin}>Login as Demo Agency Provider</Button>
-            <Button variant="secondary" className="w-full" onClick={handleDemoIndividualDoctorLogin}>View Demo Individual Doctor Profile</Button>
+            <Button variant="secondary" className="w-full" onClick={handleDemoIndividualDoctorLogin}>Login as Demo Individual Doctor</Button>
           </div>
           <p className="text-center text-sm text-muted-foreground pt-2">
             Want to list your practice on HealthConnect?{' '}
