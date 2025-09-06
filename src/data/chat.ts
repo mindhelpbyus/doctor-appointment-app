@@ -17,6 +17,9 @@ export interface Conversation {
   lastMessageTimestamp: string; // ISO 8601 string
   unreadCount: number;
   topic?: ConversationTopic; // New optional field for conversation topic
+  // Dynamically added properties for display in UI
+  otherParticipantName?: string;
+  otherParticipantPhotoUrl?: string;
 }
 
 // Initial mock data for conversations
