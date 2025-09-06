@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SearchIcon } from 'lucide-react';
@@ -6,10 +6,15 @@ import { SearchIcon } from 'lucide-react';
 interface SearchBarProps {
   onSearch: (query: string) => void;
   placeholder?: string;
+  defaultValue?: string;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search by doctor, specialty, or location..." }) => {
-  const [query, setQuery] = useState('');
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search...", defaultValue = '' }) => {
+  const [query, setQuery] = useState(defaultValue);
+
+  useEffect(() => {
+    setQuery(defaultValue);
+  }, [defaultValue]);
 
   const handleSearch = () => {
     onSearch(query);

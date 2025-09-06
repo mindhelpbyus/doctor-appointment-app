@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import SearchBar from '@/components/common/SearchBar';
 import DoctorCard from '@/components/common/DoctorCard';
 import { getDoctors, getSpecialties } from '@/services/localApi';
@@ -9,12 +10,13 @@ const SearchPage: React.FC = () => {
   const [allDoctors, setAllDoctors] = useState<Doctor[]>([]);
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
   const [filteredDoctors, setFilteredDoctors] = useState<Doctor[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialQuery = searchParams.get('q') || '';
 
   useEffect(() => {
     const doctorsData = getDoctors();
     const specialtiesData = getSpecialties();
     setAllDoctors(doctorsData);
-    setFilteredDoctors(doctorsData);
     setSpecialties(specialtiesData);
   }, []);
 
@@ -22,7 +24,7 @@ const SearchPage: React.FC = () => {
     return specialties.find(s => s.id === specialtyId)?.name || '';
   };
 
-  const handleSearch = (query: string) => {
+  const performSearch = (query: string) => {
     if (!query) {
       setFilteredDoctors(allDoctors);
       return;
@@ -40,10 +42,25 @@ const SearchPage: React.FC = () => {
     setFilteredDoctors(results);
   };
 
+  useEffect(() => {
+    if (allDoctors.length > 0 && specialties.length > 0) {
+      performSearch(initialQuery);
+    }
+  }, [allDoctors, specialties, initialQuery]);
+
+  const handleSearch = (query: string) => {
+    setSearchParams(query ? { q: query } : {});
+    performSearch(query);
+  };
+
   return (
     <div className="space-y-8">
       <h1 className="text-4xl font-bold text-center">Find Your Doctor</h1>
-      <SearchBar onSearch={handleSearch} />
+      <SearchBar 
+        onSearch={handleSearch} 
+        placeholder="Search by doctor, specialty, or location..." 
+        defaultValue={initialQuery} 
+      />
 
       <section>
         {filteredDoctors.length > 0 ? (
