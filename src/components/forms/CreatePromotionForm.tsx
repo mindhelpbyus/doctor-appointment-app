@@ -76,7 +76,7 @@ const CreatePromotionForm: React.FC<CreatePromotionFormProps> = ({ agencyId, onS
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</Label>
+              <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea placeholder="Describe the promotion..." {...field} />
               </FormControl>
@@ -139,7 +139,7 @@ const CreatePromotionForm: React.FC<CreatePromotionFormProps> = ({ agencyId, onS
             name="validTo"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Valid To</Label>
+                <FormLabel>Valid To</FormLabel>
                 <FormControl>
                   <Input type="date" {...field} />
                 </FormControl>

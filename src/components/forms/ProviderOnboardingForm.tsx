@@ -92,7 +92,7 @@ const ProviderOnboardingForm: React.FC = () => {
           name="address"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Address</Label>
+              <FormLabel>Address</FormLabel>
               <FormControl>
                 <Input placeholder="123 Main St, Anytown, USA" {...field} />
               </FormControl>
@@ -119,7 +119,7 @@ const ProviderOnboardingForm: React.FC = () => {
             name="type"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Practice Type</Label>
+                <FormLabel>Practice Type</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
