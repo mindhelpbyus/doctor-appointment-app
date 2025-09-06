@@ -62,6 +62,17 @@ export const addAppointment = (appointment: Omit<Appointment, 'id'>): void => {
   localStorage.setItem('appointments', JSON.stringify(newItems));
 };
 
+export const addPromotion = (promotion: Omit<Promotion, 'id' | 'status'>): void => {
+  const items = getEntity<Promotion>('promotions');
+  const newPromotion: Promotion = {
+    ...promotion,
+    id: `promo-${Date.now()}`,
+    status: 'pending', // New promotions always start as pending for admin approval
+  };
+  const newItems = [...items, newPromotion];
+  localStorage.setItem('promotions', JSON.stringify(newItems));
+};
+
 // --- Complex Getters ---
 export const getDoctorById = (id: string): Doctor | undefined => getDoctors().find(d => d.id === id);
 export const getSpecialtyById = (id: string): Specialty | undefined => getSpecialties().find(s => s.id === id);
