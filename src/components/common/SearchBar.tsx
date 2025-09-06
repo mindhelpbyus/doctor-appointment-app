@@ -49,23 +49,28 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search d
   }, [geoData, geoError]);
 
   useEffect(() => {
-    if (query.length > 1) {
-      const allDoctors = getDoctors();
-      const allSpecialties = getSpecialties();
-      const allAgencies = getAgencies();
-      const lowercasedQuery = query.toLowerCase();
-      
+    if (!isPopoverOpen) {
+      setSuggestions({ doctors: [], specialties: [], agencies: [] });
+      return;
+    }
+
+    const allDoctors = getDoctors();
+    const allSpecialties = getSpecialties();
+    const allAgencies = getAgencies();
+    const lowercasedQuery = query.toLowerCase();
+
+    if (query.length > 0) {
       const filteredDoctors = allDoctors.filter(d => d.fullName.toLowerCase().includes(lowercasedQuery)).slice(0, 3);
       const filteredSpecialties = allSpecialties.filter(s => s.name.toLowerCase().includes(lowercasedQuery)).slice(0, 3);
       const filteredAgencies = allAgencies.filter(a => a.name.toLowerCase().includes(lowercasedQuery)).slice(0, 3);
-      
       setSuggestions({ doctors: filteredDoctors, specialties: filteredSpecialties, agencies: filteredAgencies });
-      setIsPopoverOpen(true);
     } else {
-      setSuggestions({ doctors: [], specialties: [], agencies: [] });
-      setIsPopoverOpen(false);
+      // Show popular suggestions when query is empty but input is focused
+      const topDoctors = allDoctors.sort((a, b) => b.rating - a.rating).slice(0, 3);
+      const popularSpecialties = allSpecialties.filter(s => ['Cardiology', 'Dermatology', 'Pediatrics'].includes(s.name));
+      setSuggestions({ doctors: topDoctors, specialties: popularSpecialties, agencies: [] });
     }
-  }, [query]);
+  }, [query, isPopoverOpen]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -120,7 +125,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search d
             placeholder={placeholder}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            onFocus={() => query.length > 1 && setIsPopoverOpen(true)}
+            onFocus={() => setIsPopoverOpen(true)}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             className="w-full border-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent text-foreground placeholder:text-stone pl-12 pr-4 py-3 text-lg font-averta"
           />
@@ -137,7 +142,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search d
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               {suggestions.doctors.length > 0 && (
-                <CommandGroup heading="Doctors">
+                <CommandGroup heading={query ? "Doctors" : "Top Rated Doctors"}>
                   {suggestions.doctors.map((doctor) => (
                     <CommandItem key={doctor.id} onSelect={() => handleSelect(`/doctor/${doctor.id}`)} value={doctor.fullName}>
                       <User className="mr-2 h-4 w-4" />
@@ -147,7 +152,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search d
                 </CommandGroup>
               )}
               {suggestions.specialties.length > 0 && (
-                <CommandGroup heading="Specialties">
+                <CommandGroup heading={query ? "Specialties" : "Popular Specialties"}>
                   {suggestions.specialties.map((specialty) => (
                     <CommandItem key={specialty.id} onSelect={() => { setQuery(specialty.name); onSearch(specialty.name, location); setIsPopoverOpen(false); }} value={specialty.name}>
                       <Stethoscope className="mr-2 h-4 w-4" />
