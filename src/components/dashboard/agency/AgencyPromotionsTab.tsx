@@ -171,37 +171,39 @@ const AgencyPromotionsTab: React.FC<AgencyPromotionsTabProps> = ({ agencyId, pro
         </CardHeader>
         <CardContent>
           {promotions.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Offer</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {promotions.map((promo) => (
-                  <TableRow key={promo.id}>
-                    <TableCell className="font-medium">{promo.title}</TableCell>
-                    <TableCell>
-                      {promo.discountType === 'percent' ? `${promo.discountValue}% off` : `$${promo.discountValue} off`}
-                    </TableCell>
-                    <TableCell>{format(new Date(promo.validFrom), 'MMM d')} - {format(new Date(promo.validTo), 'MMM d, yyyy')}</TableCell>
-                    <TableCell>
-                      <Badge variant={promo.status === 'approved' ? 'default' : promo.status === 'pending' ? 'secondary' : 'destructive'}>
-                        {promo.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Button variant="ghost" size="sm">Edit</Button>
-                      <Button variant="ghost" size="sm" className="text-red-500">Delete</Button>
-                    </TableCell>
+            <div className="relative w-full overflow-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Title</TableHead>
+                    <TableHead>Offer</TableHead>
+                    <TableHead>Duration</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {promotions.map((promo) => (
+                    <TableRow key={promo.id}>
+                      <TableCell className="font-medium">{promo.title}</TableCell>
+                      <TableCell>
+                        {promo.discountType === 'percent' ? `${promo.discountValue}% off` : `$${promo.discountValue} off`}
+                      </TableCell>
+                      <TableCell>{format(new Date(promo.validFrom), 'MMM d')} - {format(new Date(promo.validTo), 'MMM d, yyyy')}</TableCell>
+                      <TableCell>
+                        <Badge variant={promo.status === 'approved' ? 'default' : promo.status === 'pending' ? 'secondary' : 'destructive'}>
+                          {promo.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Button variant="ghost" size="sm">Edit</Button>
+                        <Button variant="ghost" size="sm" className="text-red-500">Delete</Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           ) : (
             <p className="text-muted-foreground">No promotions created for your agency yet.</p>
           )}

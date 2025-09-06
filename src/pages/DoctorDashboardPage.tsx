@@ -132,18 +132,6 @@ const DoctorDashboardPage: React.FC = () => {
     { value: 'settings', label: 'Settings' },
   ];
 
-  const getGridColsClass = (count: number) => {
-    switch (count) {
-      case 1: return 'grid-cols-1';
-      case 2: return 'grid-cols-2';
-      case 3: return 'grid-cols-3';
-      case 4: return 'grid-cols-4';
-      case 5: return 'grid-cols-5';
-      case 6: return 'grid-cols-6';
-      default: return 'grid-cols-1';
-    }
-  };
-
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -177,13 +165,15 @@ const DoctorDashboardPage: React.FC = () => {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className={`grid w-full ${getGridColsClass(tabs.length)} mb-8`}>
-            {tabs.map((tab) => (
-              <TabsTrigger key={tab.value} value={tab.value}>
-                {tab.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          <div className="w-full overflow-x-auto pb-2">
+            <TabsList className="min-w-max mb-8">
+              {tabs.map((tab) => (
+                <TabsTrigger key={tab.value} value={tab.value}>
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
 
           <TabsContent value="overview" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -239,24 +229,26 @@ const DoctorDashboardPage: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   {upcomingAppointments.length > 0 ? (
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Patient</TableHead>
-                          <TableHead>Date & Time</TableHead>
-                          <TableHead>Type</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {upcomingAppointments.map(appt => (
-                          <TableRow key={appt.id}>
-                            <TableCell className="font-medium">{getPatientName(appt.patientId)}</TableCell>
-                            <TableCell>{new Date(appt.datetime).toLocaleString()}</TableCell>
-                            <TableCell><Badge>{appt.type}</Badge></TableCell>
+                    <div className="relative w-full overflow-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Patient</TableHead>
+                            <TableHead>Date & Time</TableHead>
+                            <TableHead>Type</TableHead>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                        </TableHeader>
+                        <TableBody>
+                          {upcomingAppointments.map(appt => (
+                            <TableRow key={appt.id}>
+                              <TableCell className="font-medium">{getPatientName(appt.patientId)}</TableCell>
+                              <TableCell>{new Date(appt.datetime).toLocaleString()}</TableCell>
+                              <TableCell><Badge>{appt.type}</Badge></TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
                   ) : (
                     <p className="text-muted-foreground">No upcoming appointments.</p>
                   )}

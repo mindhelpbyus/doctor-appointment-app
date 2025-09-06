@@ -51,33 +51,35 @@ const DoctorClientsTab: React.FC<DoctorClientsTabProps> = ({ currentDoctorId }) 
         </CardHeader>
         <CardContent>
           {patients.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {patients.map((patient) => (
-                  <TableRow key={patient.id}>
-                    <TableCell className="font-medium">{patient.name}</TableCell>
-                    <TableCell>{patient.email}</TableCell>
-                    <TableCell>{patient.location}</TableCell>
-                    <TableCell className="text-right space-x-2">
-                      <Button variant="outline" size="sm" onClick={() => handleMessagePatient(patient.id)}>
-                        <MessageSquare className="h-4 w-4 mr-2" /> Message
-                      </Button>
-                      {/* <Button variant="ghost" size="sm">
-                        <Eye className="h-4 w-4 mr-2" /> View Profile
-                      </Button> */}
-                    </TableCell>
+            <div className="relative w-full overflow-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Location</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {patients.map((patient) => (
+                    <TableRow key={patient.id}>
+                      <TableCell className="font-medium">{patient.name}</TableCell>
+                      <TableCell>{patient.email}</TableCell>
+                      <TableCell>{patient.location}</TableCell>
+                      <TableCell className="text-right space-x-2">
+                        <Button variant="outline" size="sm" onClick={() => handleMessagePatient(patient.id)}>
+                          <MessageSquare className="h-4 w-4 mr-2" /> Message
+                        </Button>
+                        {/* <Button variant="ghost" size="sm">
+                          <Eye className="h-4 w-4 mr-2" /> View Profile
+                        </Button> */}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           ) : (
             <p className="text-muted-foreground">No patients found.</p>
           )}

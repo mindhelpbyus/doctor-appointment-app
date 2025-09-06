@@ -102,20 +102,6 @@ const PatientDashboardPage: React.FC = () => {
     { value: 'settings', label: 'Settings' },
   ];
 
-  const getGridColsClass = (count: number) => {
-    switch (count) {
-      case 1: return 'grid-cols-1';
-      case 2: return 'grid-cols-2';
-      case 3: return 'grid-cols-3';
-      case 4: return 'grid-cols-4';
-      case 5: return 'grid-cols-5';
-      case 6: return 'grid-cols-6';
-      case 7: return 'grid-cols-7';
-      case 8: return 'grid-cols-8';
-      default: return 'grid-cols-1';
-    }
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <PatientDashboardHeader
@@ -125,13 +111,15 @@ const PatientDashboardPage: React.FC = () => {
 
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className={`grid w-full ${getGridColsClass(tabs.length)} mb-8`}>
-            {tabs.map((tab) => (
-              <TabsTrigger key={tab.value} value={tab.value}>
-                {tab.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          <div className="w-full overflow-x-auto pb-2">
+            <TabsList className="min-w-max mb-8">
+              {tabs.map((tab) => (
+                <TabsTrigger key={tab.value} value={tab.value}>
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
 
           <TabsContent value="overview">
             <PatientOverviewTab

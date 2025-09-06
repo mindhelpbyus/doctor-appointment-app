@@ -28,33 +28,35 @@ const AgencyDoctorsTab: React.FC<AgencyDoctorsTabProps> = ({ doctors, specialtie
         </CardHeader>
         <CardContent>
           {doctors.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Specialty</TableHead>
-                  <TableHead>Experience</TableHead>
-                  <TableHead>Rating</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {doctors.map((doc) => (
-                  <TableRow key={doc.id}>
-                    <TableCell className="font-medium">{doc.fullName}</TableCell>
-                    <TableCell>{getSpecialtyName(doc.specialtyId)}</TableCell>
-                    <TableCell>{doc.yearsExperience} years</TableCell>
-                    <TableCell>{doc.rating.toFixed(1)}</TableCell>
-                    <TableCell>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link to={`/doctor/${doc.id}`}>View Profile</Link>
-                      </Button>
-                      <Button variant="ghost" size="sm">Edit</Button>
-                    </TableCell>
+            <div className="relative w-full overflow-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Specialty</TableHead>
+                    <TableHead>Experience</TableHead>
+                    <TableHead>Rating</TableHead>
+                    <TableHead>Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {doctors.map((doc) => (
+                    <TableRow key={doc.id}>
+                      <TableCell className="font-medium">{doc.fullName}</TableCell>
+                      <TableCell>{getSpecialtyName(doc.specialtyId)}</TableCell>
+                      <TableCell>{doc.yearsExperience} years</TableCell>
+                      <TableCell>{doc.rating.toFixed(1)}</TableCell>
+                      <TableCell>
+                        <Button variant="ghost" size="sm" asChild>
+                          <Link to={`/doctor/${doc.id}`}>View Profile</Link>
+                        </Button>
+                        <Button variant="ghost" size="sm">Edit</Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           ) : (
             <p className="text-muted-foreground">No doctors affiliated with your agency yet.</p>
           )}

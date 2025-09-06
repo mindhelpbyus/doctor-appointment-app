@@ -74,30 +74,32 @@ const AdminPage: React.FC = () => {
               <CardTitle className="font-recoleta text-2xl text-foreground">Healthcare Agencies</CardTitle> {/* Serif font, larger */}
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-light-grey hover:bg-light-grey"> {/* Subtle background for header row */}
-                    <TableHead className="font-averta text-muted-foreground text-base">Name</TableHead>
-                    <TableHead className="font-averta text-muted-foreground text-base">Status</TableHead>
-                    <TableHead className="text-right font-averta text-muted-foreground text-base">Enable/Disable</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {agencies.map(agency => (
-                    <TableRow key={agency.id} className="border-b border-granite hover:bg-light-grey transition-colors"> {/* Subtle row border and hover */}
-                      <TableCell className="font-medium font-averta text-foreground">{agency.name}</TableCell>
-                      <TableCell className="font-averta text-muted-foreground">{agency.isActive ? 'Active' : 'Inactive'}</TableCell>
-                      <TableCell className="text-right">
-                        <Switch
-                          checked={agency.isActive}
-                          onCheckedChange={(checked) => handleAgencyStatusChange(agency, checked)}
-                          className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted-foreground" // Custom switch colors
-                        />
-                      </TableCell>
+              <div className="relative w-full overflow-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-light-grey hover:bg-light-grey"> {/* Subtle background for header row */}
+                      <TableHead className="font-averta text-muted-foreground text-base">Name</TableHead>
+                      <TableHead className="font-averta text-muted-foreground text-base">Status</TableHead>
+                      <TableHead className="text-right font-averta text-muted-foreground text-base">Enable/Disable</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {agencies.map(agency => (
+                      <TableRow key={agency.id} className="border-b border-granite hover:bg-light-grey transition-colors"> {/* Subtle row border and hover */}
+                        <TableCell className="font-medium font-averta text-foreground">{agency.name}</TableCell>
+                        <TableCell className="font-averta text-muted-foreground">{agency.isActive ? 'Active' : 'Inactive'}</TableCell>
+                        <TableCell className="text-right">
+                          <Switch
+                            checked={agency.isActive}
+                            onCheckedChange={(checked) => handleAgencyStatusChange(agency, checked)}
+                            className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted-foreground" // Custom switch colors
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -109,39 +111,41 @@ const AdminPage: React.FC = () => {
               <CardTitle className="font-recoleta text-2xl text-foreground">Doctors</CardTitle> {/* Serif font, larger */}
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-light-grey hover:bg-light-grey"> {/* Subtle background for header row */}
-                    <TableHead className="font-averta text-muted-foreground text-base">Name</TableHead>
-                    <TableHead className="font-averta text-muted-foreground text-base">Current Agency</TableHead>
-                    <TableHead className="text-right font-averta text-muted-foreground text-base">Assign Agency</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {doctors.map(doctor => (
-                    <TableRow key={doctor.id} className="border-b border-granite hover:bg-light-grey transition-colors"> {/* Subtle row border and hover */}
-                      <TableCell className="font-medium font-averta text-foreground">{doctor.fullName}</TableCell>
-                      <TableCell className="font-averta text-muted-foreground">{agencies.find(a => a.id === doctor.agencyId)?.name || 'Independent'}</TableCell>
-                      <TableCell className="text-right">
-                        <Select
-                          value={doctor.agencyId || 'none'}
-                          onValueChange={(value) => handleDoctorAgencyChange(doctor, value)}
-                        >
-                          <SelectTrigger className="w-[220px] rounded-md border-granite focus:border-primary text-foreground font-averta"> {/* Refined select styling */}
-                            <SelectValue placeholder="Select Agency" />
-                          </SelectTrigger>
-                          <SelectContent className="rounded-md shadow-subtle"> {/* Refined select content styling */}
-                            <SelectItem value="none" className="font-averta text-foreground">Independent</SelectItem>
-                            {agencies.map(agency => (
-                              <SelectItem key={agency.id} value={agency.id} className="font-averta text-foreground">{agency.name}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </TableCell>
+              <div className="relative w-full overflow-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-light-grey hover:bg-light-grey"> {/* Subtle background for header row */}
+                      <TableHead className="font-averta text-muted-foreground text-base">Name</TableHead>
+                      <TableHead className="font-averta text-muted-foreground text-base">Current Agency</TableHead>
+                      <TableHead className="text-right font-averta text-muted-foreground text-base">Assign Agency</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {doctors.map(doctor => (
+                      <TableRow key={doctor.id} className="border-b border-granite hover:bg-light-grey transition-colors"> {/* Subtle row border and hover */}
+                        <TableCell className="font-medium font-averta text-foreground">{doctor.fullName}</TableCell>
+                        <TableCell className="font-averta text-muted-foreground">{agencies.find(a => a.id === doctor.agencyId)?.name || 'Independent'}</TableCell>
+                        <TableCell className="text-right">
+                          <Select
+                            value={doctor.agencyId || 'none'}
+                            onValueChange={(value) => handleDoctorAgencyChange(doctor, value)}
+                          >
+                            <SelectTrigger className="w-[220px] rounded-md border-granite focus:border-primary text-foreground font-averta"> {/* Refined select styling */}
+                              <SelectValue placeholder="Select Agency" />
+                            </SelectTrigger>
+                            <SelectContent className="rounded-md shadow-subtle"> {/* Refined select content styling */}
+                              <SelectItem value="none" className="font-averta text-foreground">Independent</SelectItem>
+                              {agencies.map(agency => (
+                                <SelectItem key={agency.id} value={agency.id} className="font-averta text-foreground">{agency.name}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -153,31 +157,33 @@ const AdminPage: React.FC = () => {
               <CardTitle className="font-recoleta text-2xl text-foreground">Promotions</CardTitle> {/* Serif font, larger */}
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-light-grey hover:bg-light-grey"> {/* Subtle background for header row */}
-                    <TableHead className="font-averta text-muted-foreground text-base">Title</TableHead>
-                    <TableHead className="font-averta text-muted-foreground text-base">Status</TableHead>
-                    <TableHead className="text-right font-averta text-muted-foreground text-base">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {promotions.map(promo => (
-                    <TableRow key={promo.id} className="border-b border-granite hover:bg-light-grey transition-colors"> {/* Subtle row border and hover */}
-                      <TableCell className="font-medium font-averta text-foreground">{promo.title}</TableCell>
-                      <TableCell className="font-averta text-muted-foreground">{promo.status}</TableCell>
-                      <TableCell className="text-right space-x-2">
-                        {promo.status !== 'approved' && (
-                          <Button size="custom-sm" variant="custom-primary" className="shadow-sm hover:shadow-md" onClick={() => handlePromotionStatusChange(promo, 'approved')}>Approve</Button>
-                        )}
-                        {promo.status !== 'rejected' && (
-                          <Button size="custom-sm" variant="destructive" className="shadow-sm hover:shadow-md" onClick={() => handlePromotionStatusChange(promo, 'rejected')}>Reject</Button>
-                        )}
-                      </TableCell>
+              <div className="relative w-full overflow-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-light-grey hover:bg-light-grey"> {/* Subtle background for header row */}
+                      <TableHead className="font-averta text-muted-foreground text-base">Title</TableHead>
+                      <TableHead className="font-averta text-muted-foreground text-base">Status</TableHead>
+                      <TableHead className="text-right font-averta text-muted-foreground text-base">Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {promotions.map(promo => (
+                      <TableRow key={promo.id} className="border-b border-granite hover:bg-light-grey transition-colors"> {/* Subtle row border and hover */}
+                        <TableCell className="font-medium font-averta text-foreground">{promo.title}</TableCell>
+                        <TableCell className="font-averta text-muted-foreground">{promo.status}</TableCell>
+                        <TableCell className="text-right space-x-2">
+                          {promo.status !== 'approved' && (
+                            <Button size="custom-sm" variant="custom-primary" className="shadow-sm hover:shadow-md" onClick={() => handlePromotionStatusChange(promo, 'approved')}>Approve</Button>
+                          )}
+                          {promo.status !== 'rejected' && (
+                            <Button size="custom-sm" variant="destructive" className="shadow-sm hover:shadow-md" onClick={() => handlePromotionStatusChange(promo, 'rejected')}>Reject</Button>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
