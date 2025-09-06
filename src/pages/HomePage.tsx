@@ -1,15 +1,32 @@
-import { MadeWithDyad } from "@/components/made-with-dyad";
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import AgencyCard from '@/components/common/AgencyCard';
+import { getAgencies } from '@/services/localApi';
+
+interface Agency {
+  id: string;
+  name: string;
+  slug: string;
+  logoUrl: string;
+  address: string;
+}
 
 const HomePage = () => {
+  const [agencies, setAgencies] = useState<Agency[]>([]);
+
+  useEffect(() => {
+    setAgencies(getAgencies());
+  }, []);
+
   return (
-    <div className="min-h-[calc(100vh-160px)] flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <div className="text-center max-w-3xl">
+    <div className="space-y-16">
+      {/* Hero Section */}
+      <div className="text-center">
         <h1 className="text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
           Your Health, Simplified.
         </h1>
-        <p className="text-xl text-gray-700 mb-8">
+        <p className="text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
           Find and book appointments with top doctors and healthcare agencies effortlessly.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -25,9 +42,18 @@ const HomePage = () => {
           </Link>
         </div>
       </div>
-      <div className="mt-auto pt-10">
-        <MadeWithDyad />
-      </div>
+
+      {/* Featured Agencies Section */}
+      {agencies.length > 0 && (
+        <section>
+          <h2 className="text-3xl font-bold text-center mb-8">Featured Healthcare Providers</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {agencies.map(agency => (
+              <AgencyCard key={agency.id} agency={agency} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 };
