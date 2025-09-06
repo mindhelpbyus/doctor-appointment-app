@@ -136,7 +136,7 @@ const AgencyDashboardPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <AgencyDashboardHeader
-        userName={getLoggedInUser()?.name || 'Agency Admin'}
+        userName={agency.name || 'Agency Admin'}
         onLogout={handleLogout}
       />
 
