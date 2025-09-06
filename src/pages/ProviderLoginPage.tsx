@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -47,6 +47,10 @@ const ProviderLoginPage: React.FC = () => {
             <Input id="password" type="password" required defaultValue="password" />
           </div>
           <Button onClick={handleLogin} className="w-full">Login</Button>
+          <p className="text-center text-sm text-muted-foreground pt-2">
+            Want to list your practice on HealthConnect?{' '}
+            <Link to="/onboard-provider" className="text-primary hover:underline">Register here</Link>
+          </p>
         </CardContent>
       </Card>
     </div>

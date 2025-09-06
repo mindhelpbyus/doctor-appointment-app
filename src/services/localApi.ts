@@ -73,6 +73,28 @@ export const addPromotion = (promotion: Omit<Promotion, 'id' | 'status'>): void 
   localStorage.setItem('promotions', JSON.stringify(newItems));
 };
 
+export const addAgency = (agencyData: Omit<Agency, 'id' | 'slug' | 'isActive' | 'theme' | 'logo' | 'headerImage'>): void => {
+  const items = getEntity<Agency>('agencies');
+  const slug = agencyData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+  
+  const newAgency: Agency = {
+    ...agencyData,
+    id: `agency-${Date.now()}`,
+    slug,
+    logo: `https://via.placeholder.com/150/9CA3AF/FFFFFF?text=${agencyData.name.substring(0, 3).toUpperCase()}`,
+    headerImage: `https://via.placeholder.com/1200x300/E5E7EB/4B5563?text=${agencyData.name}`,
+    theme: { // Default theme
+      primaryColor: 'hsl(215 28% 17%)',
+      secondaryColor: 'hsl(220 13% 91%)',
+    },
+    isActive: false, // Needs admin approval
+  };
+
+  const newItems = [...items, newAgency];
+  localStorage.setItem('agencies', JSON.stringify(newItems));
+};
+
+
 // --- Complex Getters ---
 export const getDoctorById = (id: string): Doctor | undefined => getDoctors().find(d => d.id === id);
 export const getSpecialtyById = (id: string): Specialty | undefined => getSpecialties().find(s => s.id === id);

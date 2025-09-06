@@ -11,6 +11,7 @@ import BookingPage from './BookingPage';
 import ProviderLoginPage from './ProviderLoginPage';
 import AgencyDashboardPage from './AgencyDashboardPage';
 import PatientDashboardPage from './PatientDashboardPage';
+import ProviderOnboardingPage from './ProviderOnboardingPage';
 
 export {
   HomePage,
@@ -26,4 +27,5 @@ export {
   ProviderLoginPage,
   AgencyDashboardPage,
   PatientDashboardPage,
+  ProviderOnboardingPage,
 };

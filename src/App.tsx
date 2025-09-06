@@ -17,7 +17,8 @@ import {
   BookingPage,
   ProviderLoginPage,
   AgencyDashboardPage,
-  PatientDashboardPage
+  PatientDashboardPage,
+  ProviderOnboardingPage
 } from "./pages";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
             <Route path="provider-login" element={<ProviderLoginPage />} />
+            <Route path="onboard-provider" element={<ProviderOnboardingPage />} />
             <Route path="agency-dashboard/:agencyId" element={<AgencyDashboardPage />} />
             <Route path="appointments" element={<AppointmentsPage />} />
             <Route path="dashboard" element={<PatientDashboardPage />} />
