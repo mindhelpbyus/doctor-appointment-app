@@ -55,10 +55,10 @@ const HomePage = () => {
           </section>
         )}
 
-        {/* Browse by Agency Section */}
+        {/* Browse by Provider Section */}
         {agencies.length > 0 && (
           <section>
-            <h2 className="text-3xl font-bold text-center mb-8">Browse by Agency</h2>
+            <h2 className="text-3xl font-bold text-center mb-8">Browse by Provider</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               {agencies.map(agency => (
                 <AgencyCard key={agency.id} agency={agency} />
