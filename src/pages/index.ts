@@ -6,6 +6,7 @@ import RegisterPage from './RegisterPage';
 import AppointmentsPage from './AppointmentsPage';
 import AgencyPage from './AgencyPage';
 import DoctorProfilePage from './DoctorProfilePage';
+import AdminPage from './AdminPage';
 
 export {
   HomePage,
@@ -16,4 +17,5 @@ export {
   AppointmentsPage,
   AgencyPage,
   DoctorProfilePage,
+  AdminPage,
 };

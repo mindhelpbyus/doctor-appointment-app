@@ -16,6 +16,7 @@ const Header: React.FC = () => {
         <nav className="hidden md:flex space-x-4 items-center">
           <Link to="/search" className="hover:underline">Search Doctors</Link>
           <Link to="/appointments" className="hover:underline">My Appointments</Link>
+          <Link to="/admin" className="hover:underline">Admin</Link>
           <Link to="/login">
             <Button variant="secondary">Login</Button>
           </Link>
@@ -37,6 +38,7 @@ const Header: React.FC = () => {
                 <Link to="/" className="text-lg font-semibold hover:text-primary">Home</Link>
                 <Link to="/search" className="text-lg font-semibold hover:text-primary">Search Doctors</Link>
                 <Link to="/appointments" className="text-lg font-semibold hover:text-primary">My Appointments</Link>
+                <Link to="/admin" className="text-lg font-semibold hover:text-primary">Admin</Link>
                 <Link to="/login">
                   <Button className="w-full">Login</Button>
                 </Link>

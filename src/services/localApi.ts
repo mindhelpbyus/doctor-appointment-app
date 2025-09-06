@@ -4,6 +4,7 @@ import { doctors, Doctor } from '@/data/doctors';
 import { patients, Patient } from '@/data/patients';
 import { promotions, Promotion } from '@/data/promotions';
 import { specialties, Specialty } from '@/data/specialties';
+import { admins, Admin } from '@/data/admins';
 
 // --- Seeding Logic ---
 const seedEntity = (key: string, data: unknown[]) => {
@@ -19,6 +20,7 @@ const seedAllData = () => {
   seedEntity('patients', patients);
   seedEntity('promotions', promotions);
   seedEntity('specialties', specialties);
+  seedEntity('admins', admins);
 };
 
 // Initialize data on first load
@@ -30,6 +32,13 @@ const getEntity = <T>(key: string): T[] => {
   return storedData ? JSON.parse(storedData) : [];
 };
 
+// --- Generic Updater ---
+const updateEntity = <T extends { id: string }>(key: string, updatedItem: T): void => {
+  const items = getEntity<T>(key);
+  const newItems = items.map(item => (item.id === updatedItem.id ? updatedItem : item));
+  localStorage.setItem(key, JSON.stringify(newItems));
+};
+
 // --- Specific Getters ---
 export const getAgencies = (): Agency[] => getEntity<Agency>('agencies');
 export const getAppointments = (): Appointment[] => getEntity<Appointment>('appointments');
@@ -37,6 +46,13 @@ export const getDoctors = (): Doctor[] => getEntity<Doctor>('doctors');
 export const getPatients = (): Patient[] => getEntity<Patient>('patients');
 export const getPromotions = (): Promotion[] => getEntity<Promotion>('promotions');
 export const getSpecialties = (): Specialty[] => getEntity<Specialty>('specialties');
+export const getAdmins = (): Admin[] => getEntity<Admin>('admins');
+
+// --- Specific Updaters ---
+export const updateAgency = (agency: Agency): void => updateEntity<Agency>('agencies', agency);
+export const updateDoctor = (doctor: Doctor): void => updateEntity<Doctor>('doctors', doctor);
+export const updatePromotion = (promotion: Promotion): void => updateEntity<Promotion>('promotions', promotion);
+
 
 export const getDoctorById = (id: string): Doctor | undefined => {
   return getDoctors().find(doctor => doctor.id === id);

@@ -11,6 +11,7 @@ export interface Agency {
     primaryColor: string;
     secondaryColor: string;
   };
+  isActive: boolean;
 }
 
 export const agencies: Agency[] = [
@@ -27,6 +28,7 @@ export const agencies: Agency[] = [
       primaryColor: 'hsl(142 71% 45%)', // green-500
       secondaryColor: 'hsl(142 76% 90%)', // green-100
     },
+    isActive: true,
   },
   {
     id: 'agency-2',
@@ -41,6 +43,7 @@ export const agencies: Agency[] = [
       primaryColor: 'hsl(217 91% 60%)', // blue-600
       secondaryColor: 'hsl(219 91% 90%)', // blue-100
     },
+    isActive: true,
   },
   {
     id: 'agency-3',
@@ -55,5 +58,6 @@ export const agencies: Agency[] = [
       primaryColor: 'hsl(215 28% 17%)', // gray-800
       secondaryColor: 'hsl(220 13% 91%)', // gray-200
     },
+    isActive: true,
   },
 ];

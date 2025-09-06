@@ -11,18 +11,18 @@ const AgencyPage: React.FC = () => {
   
   const agency = agencySlug ? getAgencyBySlug(agencySlug) : undefined;
   const doctors = agency ? getDoctorsByAgencyId(agency.id) : [];
-  const promotions = agency ? getPromotionsByAgencyId(agency.id) : [];
+  const promotions = agency ? getPromotionsByAgencyId(agency.id).filter(p => p.status === 'approved') : [];
   const specialties = getSpecialties();
 
   const getSpecialtyName = (specialtyId: string) => {
     return specialties.find(s => s.id === specialtyId)?.name || 'N/A';
   };
 
-  if (!agency) {
+  if (!agency || !agency.isActive) {
     return (
       <div className="text-center py-10">
         <h1 className="text-3xl font-bold">Agency Not Found</h1>
-        <p className="text-lg text-muted-foreground">The agency you are looking for does not exist.</p>
+        <p className="text-lg text-muted-foreground">The agency you are looking for does not exist or is currently unavailable.</p>
       </div>
     );
   }
