@@ -12,7 +12,7 @@ const Header: React.FC = () => {
   const location = useLocation(); // Initialize useLocation
 
   // Define paths where the Messages link should be hidden
-  const hideMessagesPaths = ['/login', '/register', '/provider-login', '/onboard-provider'];
+  const hideMessagesPaths = ['/', '/login', '/register', '/provider-login', '/onboard-provider'];
   const shouldHideMessages = hideMessagesPaths.some(path => location.pathname.startsWith(path));
 
   return (
