@@ -1,136 +1,167 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import DoctorCard from '@/components/common/DoctorCard';
-import { getPatientById, getAppointments, getDoctorById, getSpecialties } from '@/services/localApi'; // Changed getSpecialtyById to getSpecialties
+"use client";
+
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { getLoggedInUser, logoutUser } from '@/utils/auth';
+import {
+  getPatientById,
+  getAppointments,
+  getDoctorById,
+  getSpecialties,
+  getConversationsForUser,
+} from '@/services/localApi';
 import { Patient } from '@/data/patients';
 import { Appointment } from '@/data/appointments';
 import { Doctor } from '@/data/doctors';
 import { Specialty } from '@/data/specialties';
+import { Conversation } from '@/data/chat';
+import { showError } from '@/utils/toast';
+
+import {
+  PatientDashboardHeader,
+  PatientOverviewTab,
+  PatientAppointmentsTab,
+  PatientDoctorsTab,
+  PatientMessagingTab,
+  PatientSettingsTab,
+} from '@/components/patient-dashboard';
 
 const PatientDashboardPage: React.FC = () => {
-  // In a real app, this would come from an auth context. We'll hardcode a user.
-  const currentPatientId = 'pat-1';
+  const navigate = useNavigate();
+  const { conversationId } = useParams<{ conversationId?: string }>(); // For deep linking to a conversation
 
   const [patient, setPatient] = useState<Patient | undefined>(undefined);
+  const [activeTab, setActiveTab] = useState('overview');
   const [upcomingAppointments, setUpcomingAppointments] = useState<Appointment[]>([]);
   const [pastAppointments, setPastAppointments] = useState<Appointment[]>([]);
-  const [recentlyViewed, setRecentlyViewed] = useState<Doctor[]>([]);
+  const [recentlyViewedDoctors, setRecentlyViewedDoctors] = useState<Doctor[]>([]);
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+
+  const currentUserId = getLoggedInUser()?.id;
+  const currentUserType = getLoggedInUser()?.type;
+
+  const loadPatientData = useCallback(() => {
+    if (!currentUserId || currentUserType !== 'patient') {
+      showError('Please log in as a patient to view your dashboard.');
+      navigate('/login');
+      return;
+    }
+
+    const fetchedPatient = getPatientById(currentUserId);
+    if (!fetchedPatient) {
+      showError('Patient data not found.');
+      navigate('/login');
+      return;
+    }
+    setPatient(fetchedPatient);
+
+    const allAppointments = getAppointments().filter(a => a.patientId === fetchedPatient.id);
+    const now = new Date();
+    setUpcomingAppointments(allAppointments.filter(a => new Date(a.datetime) >= now && a.status === 'booked'));
+    setPastAppointments(allAppointments.filter(a => new Date(a.datetime) < now || a.status !== 'booked'));
+
+    const viewedDoctors = fetchedPatient.recentlyViewedDoctors
+      .map(id => getDoctorById(id))
+      .filter((d): d is Doctor => !!d);
+    setRecentlyViewedDoctors(viewedDoctors);
+
+    setSpecialties(getSpecialties());
+    setConversations(getConversationsForUser(currentUserId));
+  }, [currentUserId, currentUserType, navigate]);
 
   useEffect(() => {
-    const patientData = getPatientById(currentPatientId);
-    setPatient(patientData);
+    loadPatientData();
+  }, [loadPatientData]);
 
-    if (patientData) {
-      const allAppointments = getAppointments().filter(a => a.patientId === patientData.id);
-      const now = new Date();
-      
-      setUpcomingAppointments(allAppointments.filter(a => new Date(a.datetime) >= now && a.status === 'booked'));
-      setPastAppointments(allAppointments.filter(a => new Date(a.datetime) < now || a.status !== 'booked'));
-
-      const viewedDoctors = patientData.recentlyViewedDoctors
-        .map(id => getDoctorById(id))
-        .filter((d): d is Doctor => !!d);
-      setRecentlyViewed(viewedDoctors);
+  useEffect(() => {
+    if (conversationId) {
+      setActiveTab('messages'); // Switch to messages tab if conversationId is in URL
     }
-    
-    // We need specialties to pass to DoctorCard
-    setSpecialties(getSpecialties()); // Corrected to use getSpecialties()
-  }, [currentPatientId]);
+  }, [conversationId]);
 
-  const getDoctorName = (id: string) => getDoctorById(id)?.fullName || 'Unknown Doctor';
-  const getSpecialtyName = (id: string) => specialties.find(s => s.id === getDoctorById(id)?.specialtyId)?.name || 'N/A';
+  const handleLogout = () => {
+    logoutUser();
+    navigate('/');
+  };
 
   if (!patient) {
-    return <div>Loading patient data...</div>;
+    return <div className="text-center py-10">Loading patient dashboard...</div>;
   }
 
+  const tabs = [
+    { value: 'overview', label: 'Overview' },
+    { value: 'appointments', label: 'Appointments' },
+    { value: 'doctors', label: 'Find Doctors' },
+    { value: 'messages', label: 'Messages' },
+    { value: 'settings', label: 'Settings' },
+  ];
+
+  const getGridColsClass = (count: number) => {
+    switch (count) {
+      case 1: return 'grid-cols-1';
+      case 2: return 'grid-cols-2';
+      case 3: return 'grid-cols-3';
+      case 4: return 'grid-cols-4';
+      case 5: return 'grid-cols-5';
+      case 6: return 'grid-cols-6';
+      default: return 'grid-cols-1'; // Fallback
+    }
+  };
+
   return (
-    <div className="space-y-8">
-      <header>
-        <h1 className="text-4xl font-bold">Welcome, {patient.name}!</h1>
-        <p className="text-muted-foreground">Here's your health dashboard.</p>
-      </header>
+    <div className="min-h-screen bg-background">
+      <PatientDashboardHeader
+        patientName={patient.name}
+        onLogout={handleLogout}
+      />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Upcoming Appointments</CardTitle>
-          <CardDescription>Your scheduled upcoming appointments.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Doctor</TableHead>
-                <TableHead>Date & Time</TableHead>
-                <TableHead>Type</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {upcomingAppointments.length > 0 ? upcomingAppointments.map(appt => (
-                <TableRow key={appt.id}>
-                  <TableCell>{getDoctorName(appt.doctorId)}</TableCell>
-                  <TableCell>{new Date(appt.datetime).toLocaleString()}</TableCell>
-                  <TableCell><Badge variant="default">{appt.type}</Badge></TableCell>
-                </TableRow>
-              )) : (
-                <TableRow>
-                  <TableCell colSpan={3} className="text-center">No upcoming appointments.</TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+      <div className="container mx-auto px-4 py-8">
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className={`grid w-full ${getGridColsClass(tabs.length)} mb-8`}>
+            {tabs.map((tab) => (
+              <TabsTrigger key={tab.value} value={tab.value}>
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
 
-      <section>
-        <h2 className="text-3xl font-bold mb-4">Recently Viewed Doctors</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {recentlyViewed.map(doctor => (
-            <DoctorCard key={doctor.id} doctor={{
-              id: doctor.id,
-              fullName: doctor.fullName,
-              specialtyName: getSpecialtyName(doctor.id),
-              clinicAddress: doctor.clinicAddress,
-              rating: doctor.rating,
-              photoUrl: doctor.photoUrl,
-            }} />
-          ))}
-        </div>
-      </section>
+          <TabsContent value="overview">
+            <PatientOverviewTab
+              patientId={patient.id}
+              upcomingAppointments={upcomingAppointments}
+              pastAppointments={pastAppointments}
+              conversations={conversations}
+            />
+          </TabsContent>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Past Appointments</CardTitle>
-          <CardDescription>Your appointment history.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Doctor</TableHead>
-                <TableHead>Date & Time</TableHead>
-                <TableHead>Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {pastAppointments.length > 0 ? pastAppointments.map(appt => (
-                <TableRow key={appt.id}>
-                  <TableCell>{getDoctorName(appt.doctorId)}</TableCell>
-                  <TableCell>{new Date(appt.datetime).toLocaleString()}</TableCell>
-                  <TableCell><Badge variant={appt.status === 'completed' ? 'secondary' : 'destructive'}>{appt.status}</Badge></TableCell>
-                </TableRow>
-              )) : (
-                <TableRow>
-                  <TableCell colSpan={3} className="text-center">No past appointments.</TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+          <TabsContent value="appointments">
+            <PatientAppointmentsTab
+              upcomingAppointments={upcomingAppointments}
+              pastAppointments={pastAppointments}
+            />
+          </TabsContent>
+
+          <TabsContent value="doctors">
+            <PatientDoctorsTab
+              recentlyViewedDoctors={recentlyViewedDoctors}
+              specialties={specialties}
+            />
+          </TabsContent>
+
+          <TabsContent value="messages">
+            <PatientMessagingTab
+              patientId={patient.id}
+              initialConversationId={conversationId}
+            />
+          </TabsContent>
+
+          <TabsContent value="settings">
+            <PatientSettingsTab />
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 };
