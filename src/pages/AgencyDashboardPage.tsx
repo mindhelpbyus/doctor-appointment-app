@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   Card,
   CardContent,
@@ -28,9 +28,9 @@ import {
   getDoctorsByAgencyId,
   getAppointmentsForDoctors,
   getPromotionsByAgencyId,
-  getSpecialtyById,
   getSpecialties,
   addPromotion,
+  getAgencyUserById, // Import getAgencyUserById
 } from '@/services/localApi';
 import { Agency } from '@/data/agencies';
 import { Doctor } from '@/data/doctors';
@@ -71,9 +71,16 @@ const AgencyDashboardPage: React.FC = () => {
       return;
     }
 
-    const fetchedAgency = getAgencyById(agencyId);
-    if (!fetchedAgency || fetchedAgency.id !== getLoggedInUser()?.agencyId) {
+    const loggedInAgencyUser = getAgencyUserById(currentUserId); // Fetch the full agency user object
+    if (!loggedInAgencyUser || loggedInAgencyUser.agencyId !== agencyId) {
       showError('Access Denied: You do not have permission to view this agency dashboard.');
+      navigate('/provider-login');
+      return;
+    }
+
+    const fetchedAgency = getAgencyById(agencyId);
+    if (!fetchedAgency) {
+      showError('Agency not found.');
       navigate('/provider-login');
       return;
     }

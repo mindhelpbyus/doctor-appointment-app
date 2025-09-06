@@ -147,6 +147,7 @@ export const getSpecialtyById = (id: string): Specialty | undefined => getSpecia
 export const getAgencyBySlug = (slug: string): Agency | undefined => getAgencies().find(a => a.slug === slug);
 export const getAgencyById = (id: string): Agency | undefined => getAgencies().find(a => a.id === id);
 export const getPatientById = (id: string): Patient | undefined => getPatients().find(p => p.id === id);
+export const getAgencyUserById = (id: string): AgencyUser | undefined => getAgencyUsers().find(u => u.id === id); // New getter
 export const getDoctorsByAgencyId = (agencyId: string): Doctor[] => getDoctors().filter(d => d.agencyId === agencyId);
 export const getPromotionsByAgencyId = (agencyId: string): Promotion[] => getPromotions().filter(p => p.targetAgencyId === agencyId);
 export const getAppointmentsForDoctors = (doctorIds: string[]): Appointment[] => {
