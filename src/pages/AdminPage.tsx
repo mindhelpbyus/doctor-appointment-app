@@ -58,39 +58,40 @@ const AdminPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8">
-      <h1 className="text-4xl font-bold text-center font-averta text-foreground">Admin Dashboard</h1>
+    <div className="space-y-10 py-8"> {/* Increased spacing and vertical padding */}
+      <h1 className="text-4xl font-recoleta font-bold text-center text-foreground">Admin Dashboard</h1> {/* Serif font, larger */}
       <Tabs defaultValue="agencies">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="agencies" className="font-averta text-foreground">Manage Agencies</TabsTrigger>
-          <TabsTrigger value="doctors" className="font-averta text-foreground">Manage Doctors</TabsTrigger>
-          <TabsTrigger value="promotions" className="font-averta text-foreground">Manage Promotions</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3 bg-light-grey p-2 rounded-xl shadow-inner"> {/* Refined TabsList styling */}
+          <TabsTrigger value="agencies" className="font-averta text-foreground data-[state=active]:bg-background data-[state=active]:shadow-subtle data-[state=active]:text-basil data-[state=active]:font-semibold rounded-lg transition-all duration-200 text-stone hover:text-charcoal">Manage Agencies</TabsTrigger>
+          <TabsTrigger value="doctors" className="font-averta text-foreground data-[state=active]:bg-background data-[state=active]:shadow-subtle data-[state=active]:text-basil data-[state=active]:font-semibold rounded-lg transition-all duration-200 text-stone hover:text-charcoal">Manage Doctors</TabsTrigger>
+          <TabsTrigger value="promotions" className="font-averta text-foreground data-[state=active]:bg-background data-[state=active]:shadow-subtle data-[state=active]:text-basil data-[state=active]:font-semibold rounded-lg transition-all duration-200 text-stone hover:text-charcoal">Manage Promotions</TabsTrigger>
         </TabsList>
 
         {/* Agencies Tab */}
         <TabsContent value="agencies">
-          <Card className="rounded-2xl shadow-lg">
-            <CardHeader>
-              <CardTitle className="font-averta text-foreground">Healthcare Agencies</CardTitle>
+          <Card className="rounded-2xl shadow-medium border-none bg-background"> {/* Enhanced card styling */}
+            <CardHeader className="pb-4">
+              <CardTitle className="font-recoleta text-2xl text-foreground">Healthcare Agencies</CardTitle> {/* Serif font, larger */}
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead className="font-averta text-muted-foreground">Name</TableHead>
-                    <TableHead className="font-averta text-muted-foreground">Status</TableHead>
-                    <TableHead className="text-right font-averta text-muted-foreground">Enable/Disable</TableHead>
+                  <TableRow className="bg-light-grey hover:bg-light-grey"> {/* Subtle background for header row */}
+                    <TableHead className="font-averta text-muted-foreground text-base">Name</TableHead>
+                    <TableHead className="font-averta text-muted-foreground text-base">Status</TableHead>
+                    <TableHead className="text-right font-averta text-muted-foreground text-base">Enable/Disable</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {agencies.map(agency => (
-                    <TableRow key={agency.id}>
+                    <TableRow key={agency.id} className="border-b border-granite hover:bg-spritz transition-colors"> {/* Subtle row border and hover */}
                       <TableCell className="font-medium font-averta text-foreground">{agency.name}</TableCell>
                       <TableCell className="font-averta text-muted-foreground">{agency.isActive ? 'Active' : 'Inactive'}</TableCell>
                       <TableCell className="text-right">
                         <Switch
                           checked={agency.isActive}
                           onCheckedChange={(checked) => handleAgencyStatusChange(agency, checked)}
+                          className="data-[state=checked]:bg-basil data-[state=unchecked]:bg-stone" // Custom switch colors
                         />
                       </TableCell>
                     </TableRow>
@@ -103,22 +104,22 @@ const AdminPage: React.FC = () => {
 
         {/* Doctors Tab */}
         <TabsContent value="doctors">
-          <Card className="rounded-2xl shadow-lg">
-            <CardHeader>
-              <CardTitle className="font-averta text-foreground">Doctors</CardTitle>
+          <Card className="rounded-2xl shadow-medium border-none bg-background"> {/* Enhanced card styling */}
+            <CardHeader className="pb-4">
+              <CardTitle className="font-recoleta text-2xl text-foreground">Doctors</CardTitle> {/* Serif font, larger */}
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead className="font-averta text-muted-foreground">Name</TableHead>
-                    <TableHead className="font-averta text-muted-foreground">Current Agency</TableHead>
-                    <TableHead className="text-right font-averta text-muted-foreground">Assign Agency</TableHead>
+                  <TableRow className="bg-light-grey hover:bg-light-grey"> {/* Subtle background for header row */}
+                    <TableHead className="font-averta text-muted-foreground text-base">Name</TableHead>
+                    <TableHead className="font-averta text-muted-foreground text-base">Current Agency</TableHead>
+                    <TableHead className="text-right font-averta text-muted-foreground text-base">Assign Agency</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {doctors.map(doctor => (
-                    <TableRow key={doctor.id}>
+                    <TableRow key={doctor.id} className="border-b border-granite hover:bg-spritz transition-colors"> {/* Subtle row border and hover */}
                       <TableCell className="font-medium font-averta text-foreground">{doctor.fullName}</TableCell>
                       <TableCell className="font-averta text-muted-foreground">{agencies.find(a => a.id === doctor.agencyId)?.name || 'Independent'}</TableCell>
                       <TableCell className="text-right">
@@ -126,10 +127,10 @@ const AdminPage: React.FC = () => {
                           value={doctor.agencyId || 'none'}
                           onValueChange={(value) => handleDoctorAgencyChange(doctor, value)}
                         >
-                          <SelectTrigger className="w-[220px] rounded-sm border-foreground focus:border-basil">
-                            <SelectValue placeholder="Select Agency" className="font-averta text-foreground" />
+                          <SelectTrigger className="w-[220px] rounded-md border-granite focus:border-basil text-foreground font-averta"> {/* Refined select styling */}
+                            <SelectValue placeholder="Select Agency" />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent className="rounded-md shadow-subtle"> {/* Refined select content styling */}
                             <SelectItem value="none" className="font-averta text-foreground">Independent</SelectItem>
                             {agencies.map(agency => (
                               <SelectItem key={agency.id} value={agency.id} className="font-averta text-foreground">{agency.name}</SelectItem>
@@ -147,30 +148,30 @@ const AdminPage: React.FC = () => {
 
         {/* Promotions Tab */}
         <TabsContent value="promotions">
-          <Card className="rounded-2xl shadow-lg">
-            <CardHeader>
-              <CardTitle className="font-averta text-foreground">Promotions</CardTitle>
+          <Card className="rounded-2xl shadow-medium border-none bg-background"> {/* Enhanced card styling */}
+            <CardHeader className="pb-4">
+              <CardTitle className="font-recoleta text-2xl text-foreground">Promotions</CardTitle> {/* Serif font, larger */}
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead className="font-averta text-muted-foreground">Title</TableHead>
-                    <TableHead className="font-averta text-muted-foreground">Status</TableHead>
-                    <TableHead className="text-right font-averta text-muted-foreground">Actions</TableHead>
+                  <TableRow className="bg-light-grey hover:bg-light-grey"> {/* Subtle background for header row */}
+                    <TableHead className="font-averta text-muted-foreground text-base">Title</TableHead>
+                    <TableHead className="font-averta text-muted-foreground text-base">Status</TableHead>
+                    <TableHead className="text-right font-averta text-muted-foreground text-base">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {promotions.map(promo => (
-                    <TableRow key={promo.id}>
+                    <TableRow key={promo.id} className="border-b border-granite hover:bg-spritz transition-colors"> {/* Subtle row border and hover */}
                       <TableCell className="font-medium font-averta text-foreground">{promo.title}</TableCell>
                       <TableCell className="font-averta text-muted-foreground">{promo.status}</TableCell>
                       <TableCell className="text-right space-x-2">
                         {promo.status !== 'approved' && (
-                          <Button size="custom-sm" variant="custom-primary" onClick={() => handlePromotionStatusChange(promo, 'approved')}>Approve</Button>
+                          <Button size="custom-sm" variant="custom-primary" className="shadow-sm hover:shadow-md" onClick={() => handlePromotionStatusChange(promo, 'approved')}>Approve</Button>
                         )}
                         {promo.status !== 'rejected' && (
-                          <Button size="custom-sm" variant="destructive" onClick={() => handlePromotionStatusChange(promo, 'rejected')}>Reject</Button>
+                          <Button size="custom-sm" variant="destructive" className="shadow-sm hover:shadow-md" onClick={() => handlePromotionStatusChange(promo, 'rejected')}>Reject</Button>
                         )}
                       </TableCell>
                     </TableRow>

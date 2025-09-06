@@ -37,15 +37,15 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-160px)]">
-      <Card className="w-full max-w-md rounded-2xl shadow-lg">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-averta text-foreground">Login</CardTitle>
-          <CardDescription className="font-averta text-muted-foreground">Enter your credentials to access your account.</CardDescription>
+    <div className="flex items-center justify-center min-h-[calc(100vh-160px)] py-12"> {/* Added vertical padding */}
+      <Card className="w-full max-w-md rounded-2xl shadow-medium border-none bg-background p-6"> {/* Enhanced card styling */}
+        <CardHeader className="text-center pb-6"> {/* Increased bottom padding */}
+          <CardTitle className="text-3xl font-recoleta text-foreground mb-2">Login</CardTitle> {/* Serif font, larger */}
+          <CardDescription className="font-averta text-muted-foreground text-base">Enter your credentials to access your account.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6"> {/* Increased spacing */}
           <div className="space-y-2">
-            <Label htmlFor="email" className="font-averta text-foreground">Email</Label>
+            <Label htmlFor="email" className="font-averta text-foreground text-sm font-semibold">Email</Label> {/* Semibold label */}
             <Input
               id="email"
               type="email"
@@ -53,18 +53,18 @@ const LoginPage: React.FC = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="rounded-sm border-foreground focus:border-basil"
+              className="rounded-md border-granite focus:border-basil text-foreground placeholder:text-stone font-averta px-4 py-2" // Refined input styling
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password" className="font-averta text-foreground">Password</Label>
-            <Input id="password" type="password" required defaultValue="password" className="rounded-sm border-foreground focus:border-basil" />
+            <Label htmlFor="password" className="font-averta text-foreground text-sm font-semibold">Password</Label> {/* Semibold label */}
+            <Input id="password" type="password" required defaultValue="password" className="rounded-md border-granite focus:border-basil text-foreground placeholder:text-stone font-averta px-4 py-2" /> {/* Refined input styling */}
           </div>
-          <Button type="submit" className="w-full" onClick={handleLogin} variant="custom-primary" size="custom-sm">Login</Button>
-          <Button variant="custom-secondary" className="w-full" onClick={handleDemoLogin} size="custom-sm">Login as Demo Patient</Button>
-          <p className="text-center text-sm text-muted-foreground font-averta">
+          <Button type="submit" className="w-full shadow-md hover:shadow-lg" onClick={handleLogin} variant="custom-primary" size="custom-sm">Login</Button> {/* Button with shadow */}
+          <Button variant="custom-secondary" className="w-full shadow-md hover:shadow-lg" onClick={handleDemoLogin} size="custom-sm">Login as Demo Patient</Button> {/* Button with shadow */}
+          <p className="text-center text-sm text-muted-foreground font-averta pt-2"> {/* Added top padding */}
             Don't have an account?{' '}
-            <Link to="/register" className="text-basil hover:text-dark-basil">Register</Link>
+            <Link to="/register" className="text-basil hover:text-dark-basil font-semibold">Register</Link> {/* Semibold link */}
           </p>
         </CardContent>
       </Card>

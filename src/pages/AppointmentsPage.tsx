@@ -31,32 +31,34 @@ const AppointmentsPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="space-y-8">
-      <h1 className="text-4xl font-bold text-center font-averta text-foreground">My Appointments</h1>
+    <div className="space-y-10 py-8"> {/* Increased spacing and vertical padding */}
+      <h1 className="text-4xl font-recoleta font-bold text-center text-foreground">My Appointments</h1> {/* Serif font, larger */}
 
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-6"> {/* Adjusted grid for larger screens */}
         {upcomingAppointments.length > 0 ? (
           upcomingAppointments.map(appointment => (
-            <Card key={appointment.id} className="rounded-2xl shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 font-averta text-foreground">
-                  {appointment.type === 'video' ? <VideoIcon className="h-5 w-5 text-basil" /> : <CalendarIcon className="h-5 w-5 text-basil" />}
-                  {appointment.doctorName} - {appointment.doctorSpecialty}
+            <Card key={appointment.id} className="rounded-2xl shadow-subtle border-none bg-background hover:shadow-medium transition-all duration-300"> {/* Enhanced card styling */}
+              <CardHeader className="pb-4"> {/* Increased bottom padding */}
+                <CardTitle className="flex items-center gap-3 font-recoleta text-2xl text-foreground leading-snug"> {/* Serif font, larger, tighter leading */}
+                  {appointment.type === 'video' ? <VideoIcon className="h-6 w-6 text-basil" /> : <CalendarIcon className="h-6 w-6 text-basil" />} {/* Larger icons */}
+                  Dr. {appointment.doctorName.split(' ')[1]} - {appointment.doctorSpecialty}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2 font-averta">
-                <p className="text-lg font-medium text-foreground">{new Date(appointment.datetime).toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'short' })}</p>
+              <CardContent className="space-y-3 font-averta text-lg"> {/* Increased spacing, larger text */}
+                <p className="font-medium text-foreground">{new Date(appointment.datetime).toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'short' })}</p>
                 <p className="text-muted-foreground">Type: {appointment.type === 'video' ? 'Video Consult' : 'In-person'}</p>
-                <div className="flex gap-2 mt-4">
-                  <Button variant="custom-secondary" size="custom-sm">Reschedule</Button>
-                  <Button variant="destructive" size="custom-sm">Cancel</Button>
-                  {appointment.type === 'video' && <Button variant="custom-primary" size="custom-sm">Join Video</Button>}
+                <div className="flex gap-3 mt-5"> {/* Increased spacing and top margin */}
+                  <Button variant="custom-secondary" size="custom-sm" className="shadow-sm hover:shadow-md">Reschedule</Button>
+                  <Button variant="destructive" size="custom-sm" className="shadow-sm hover:shadow-md">Cancel</Button>
+                  {appointment.type === 'video' && <Button variant="custom-primary" size="custom-sm" className="shadow-sm hover:shadow-md">Join Video</Button>}
                 </div>
               </CardContent>
             </Card>
           ))
         ) : (
-          <p className="text-center text-lg col-span-full font-averta text-muted-foreground">No upcoming appointments. <Link to="/search" className="text-basil hover:text-dark-basil">Book one now!</Link></p>
+          <p className="text-center text-xl col-span-full font-averta text-muted-foreground py-10"> {/* Larger text, increased padding */}
+            No upcoming appointments. <Link to="/search" className="text-basil hover:text-dark-basil font-semibold">Book one now!</Link>
+          </p>
         )}
       </section>
     </div>

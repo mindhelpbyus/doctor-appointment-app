@@ -63,15 +63,15 @@ const ProviderLoginPage: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-160px)]">
-      <Card className="w-full max-w-md rounded-2xl shadow-lg">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-averta text-foreground">Provider Login</CardTitle>
-          <CardDescription className="font-averta text-muted-foreground">Access your agency dashboard or view a doctor profile.</CardDescription>
+    <div className="flex items-center justify-center min-h-[calc(100vh-160px)] py-12"> {/* Added vertical padding */}
+      <Card className="w-full max-w-md rounded-2xl shadow-medium border-none bg-background p-6"> {/* Enhanced card styling */}
+        <CardHeader className="text-center pb-6"> {/* Increased bottom padding */}
+          <CardTitle className="text-3xl font-recoleta text-foreground mb-2">Provider Login</CardTitle> {/* Serif font, larger */}
+          <CardDescription className="font-averta text-muted-foreground text-base">Access your agency dashboard or view a doctor profile.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6"> {/* Increased spacing */}
           <div className="space-y-2">
-            <Label htmlFor="email" className="font-averta text-foreground">Email</Label>
+            <Label htmlFor="email" className="font-averta text-foreground text-sm font-semibold">Email</Label> {/* Semibold label */}
             <Input
               id="email"
               type="email"
@@ -79,22 +79,22 @@ const ProviderLoginPage: React.FC = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="rounded-sm border-foreground focus:border-basil"
+              className="rounded-md border-granite focus:border-basil text-foreground placeholder:text-stone font-averta px-4 py-2" // Refined input styling
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password" className="font-averta text-foreground">Password</Label>
-            <Input id="password" type="password" required defaultValue="password" className="rounded-sm border-foreground focus:border-basil" />
+            <Label htmlFor="password" className="font-averta text-foreground text-sm font-semibold">Password</Label> {/* Semibold label */}
+            <Input id="password" type="password" required defaultValue="password" className="rounded-md border-granite focus:border-basil text-foreground placeholder:text-stone font-averta px-4 py-2" /> {/* Refined input styling */}
           </div>
-          <Button onClick={handleLogin} className="w-full" variant="custom-primary" size="custom-sm">Login</Button>
-          <div className="space-y-2 pt-2">
-            <Button variant="custom-secondary" className="w-full" onClick={handleDemoAgencyProviderLogin} size="custom-sm">Login as Demo Agency Admin</Button>
-            <Button variant="custom-tertiary" className="w-full" onClick={handleDemoIndividualDoctorLogin} size="custom-sm">Login as Demo Individual Doctor</Button>
-            <Button variant="ghost" className="w-full text-basil hover:text-dark-basil" onClick={handleDemoAgencyDoctorLogin} size="custom-sm">Login as Demo Agency Doctor</Button>
+          <Button onClick={handleLogin} className="w-full shadow-md hover:shadow-lg" variant="custom-primary" size="custom-sm">Login</Button> {/* Button with shadow */}
+          <div className="space-y-3 pt-2"> {/* Increased spacing and top padding */}
+            <Button variant="custom-secondary" className="w-full shadow-md hover:shadow-lg" onClick={handleDemoAgencyProviderLogin} size="custom-sm">Login as Demo Agency Admin</Button>
+            <Button variant="custom-tertiary" className="w-full shadow-md hover:shadow-lg" onClick={handleDemoIndividualDoctorLogin} size="custom-sm">Login as Demo Individual Doctor</Button>
+            <Button variant="ghost" className="w-full text-basil hover:text-dark-basil font-semibold" onClick={handleDemoAgencyDoctorLogin} size="custom-sm">Login as Demo Agency Doctor</Button> {/* Semibold link */}
           </div>
-          <p className="text-center text-sm text-muted-foreground pt-2 font-averta">
+          <p className="text-center text-sm text-muted-foreground pt-4 font-averta"> {/* Increased top padding */}
             Want to list your practice on HealthConnect?{' '}
-            <Link to="/onboard-provider" className="text-basil hover:text-dark-basil">Register here</Link>
+            <Link to="/onboard-provider" className="text-basil hover:text-dark-basil font-semibold">Register here</Link> {/* Semibold link */}
           </p>
         </CardContent>
       </Card>

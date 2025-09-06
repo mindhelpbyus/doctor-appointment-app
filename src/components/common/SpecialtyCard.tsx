@@ -11,10 +11,10 @@ const SpecialtyCard: React.FC<SpecialtyCardProps> = ({ specialty }) => {
   const Icon = specialty.icon;
   return (
     <Link to={`/search?q=${specialty.name}`} className="block hover:no-underline">
-      <Card className="h-full flex flex-col items-center justify-center p-6 text-center rounded-2xl shadow-lg hover:shadow-xl hover:border-basil transition-all duration-300">
-        <Icon className="h-12 w-12 mb-4 text-basil" />
+      <Card className="h-full flex flex-col items-center justify-center p-6 text-center rounded-2xl shadow-subtle hover:shadow-medium hover:border-basil hover:scale-[1.02] transition-all duration-300 bg-background border-none"> {/* Enhanced card styling */}
+        <Icon className="h-14 w-14 mb-4 text-basil" /> {/* Larger icon */}
         <CardContent className="p-0">
-          <h3 className="text-lg font-semibold font-averta text-foreground">{specialty.name}</h3>
+          <h3 className="text-lg font-recoleta font-semibold text-foreground">{specialty.name}</h3> {/* Serif font for name */}
         </CardContent>
       </Card>
     </Link>
