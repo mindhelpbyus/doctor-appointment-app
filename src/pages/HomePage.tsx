@@ -7,7 +7,7 @@ import SpecialtyCard from '@/components/common/SpecialtyCard';
 import AgencyCard from '@/components/common/AgencyCard';
 import SearchBar from '@/components/common/SearchBar';
 import { Button } from '@/components/ui/button';
-import { TopDoctors, InsuranceSection, Testimonials } from '@/components/home';
+import { TopDoctors, LocationBasedFeatures, Testimonials } from '@/components/home';
 
 const HomePage = () => {
   const [agencies, setAgencies] = useState<Agency[]>([]);
@@ -81,8 +81,8 @@ const HomePage = () => {
       {/* Top-rated doctors */}
       <TopDoctors />
 
-      {/* Insurance Section */}
-      <InsuranceSection />
+      {/* Location-Based Features Section */}
+      <LocationBasedFeatures />
 
       {/* Testimonials */}
       <Testimonials />
