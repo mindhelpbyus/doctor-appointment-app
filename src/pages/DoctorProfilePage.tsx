@@ -1,15 +1,34 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { StarIcon, MapPinIcon, CalendarDaysIcon, PhoneIcon, MailIcon } from 'lucide-react';
-import { mockDoctors } from '@/data/mockData';
+import { getDoctorById } from '@/services/localApi';
+
+type Doctor = {
+  id: string;
+  name: string;
+  specialty: string;
+  location: string;
+  rating: number;
+  imageUrl?: string;
+  bio: string;
+  phone: string;
+  email: string;
+};
 
 const DoctorProfilePage: React.FC = () => {
   const { doctorId } = useParams<{ doctorId: string }>();
-  const doctor = mockDoctors.find(d => d.id === doctorId);
+  const [doctor, setDoctor] = useState<Doctor | undefined>(undefined);
+
+  useEffect(() => {
+    if (doctorId) {
+      const foundDoctor = getDoctorById(doctorId);
+      setDoctor(foundDoctor);
+    }
+  }, [doctorId]);
 
   if (!doctor) {
     return (

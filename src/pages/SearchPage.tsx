@@ -1,19 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from '@/components/common/SearchBar';
 import DoctorCard from '@/components/common/DoctorCard';
-import { mockDoctors } from '@/data/mockData';
+import { getDoctors } from '@/services/localApi';
+
+// Define the Doctor type based on its structure
+type Doctor = {
+  id: string;
+  name: string;
+  specialty: string;
+  location: string;
+  rating: number;
+  imageUrl?: string;
+  bio: string;
+  phone: string;
+  email: string;
+};
 
 const SearchPage: React.FC = () => {
-  const [filteredDoctors, setFilteredDoctors] = useState(mockDoctors);
+  const [allDoctors, setAllDoctors] = useState<Doctor[]>([]);
+  const [filteredDoctors, setFilteredDoctors] = useState<Doctor[]>([]);
+
+  useEffect(() => {
+    const doctors = getDoctors();
+    setAllDoctors(doctors);
+    setFilteredDoctors(doctors);
+  }, []);
 
   const handleSearch = (query: string) => {
     if (!query) {
-      setFilteredDoctors(mockDoctors);
+      setFilteredDoctors(allDoctors);
       return;
     }
 
     const lowercasedQuery = query.toLowerCase();
-    const results = mockDoctors.filter(doctor =>
+    const results = allDoctors.filter(doctor =>
       doctor.name.toLowerCase().includes(lowercasedQuery) ||
       doctor.specialty.toLowerCase().includes(lowercasedQuery) ||
       doctor.location.toLowerCase().includes(lowercasedQuery)
