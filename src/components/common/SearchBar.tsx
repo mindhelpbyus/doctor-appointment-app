@@ -29,6 +29,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search d
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setQuery(defaultValue);
+  }, [defaultValue]);
+
+  useEffect(() => {
     const allDoctors = getDoctors();
     const allSpecialties = getSpecialties();
     const allAgencies = getAgencies();
