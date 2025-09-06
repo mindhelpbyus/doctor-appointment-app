@@ -2,7 +2,7 @@ import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-const Index = () => {
+const HomePage = () => {
   return (
     <div className="min-h-[calc(100vh-160px)] flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="text-center max-w-3xl">
@@ -32,4 +32,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default HomePage;

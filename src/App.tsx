@@ -4,8 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./components/layout/MainLayout";
-// Corrected imports: Import named exports from the barrel file
-import { Index, NotFound, SearchPage, LoginPage, RegisterPage, AppointmentsPage, AgencyPage, DoctorProfilePage } from "./pages";
+import { HomePage, NotFound, SearchPage, LoginPage, RegisterPage, AppointmentsPage, AgencyPage, DoctorProfilePage } from "./pages";
 
 const queryClient = new QueryClient();
 
@@ -17,13 +16,13 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainLayout />}>
-            <Route index element={<Index />} />
+            <Route index element={<HomePage />} />
             <Route path="search" element={<SearchPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
             <Route path="appointments" element={<AppointmentsPage />} />
             <Route path="a/:agencySlug/*" element={<AgencyPage />} />
-            <Route path="doctor/:doctorId" element={<DoctorProfilePage />} /> {/* New route for doctor profiles */}
+            <Route path="doctor/:doctorId" element={<DoctorProfilePage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Route>

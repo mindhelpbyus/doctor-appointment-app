@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CalendarIcon, VideoIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const AppointmentsPage: React.FC = () => {
   // Placeholder for upcoming appointments
