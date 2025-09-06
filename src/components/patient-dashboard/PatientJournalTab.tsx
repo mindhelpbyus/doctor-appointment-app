@@ -6,10 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { PlusCircle, Edit, Trash2 } from 'lucide-react';
+import { PlusCircle, Edit, Trash2, BookOpen, Tag, Calendar } from 'lucide-react';
 import { storageManager } from '@/utils/dataStorage';
 import { JournalEntry } from '@/data/journal';
 import { showSuccess, showError } from '@/utils/toast';
+import { Badge } from '@/components/ui/badge'; // Import Badge component
 
 interface PatientJournalTabProps {
   patientId: string;
@@ -17,9 +18,11 @@ interface PatientJournalTabProps {
 
 const PatientJournalTab: React.FC<PatientJournalTabProps> = ({ patientId }) => {
   const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
-  const [newEntryTitle, setNewEntryTitle] = useState('');
-  const [newEntryContent, setNewEntryContent] = useState('');
-  const [newEntryMood, setNewEntryMood] = useState<number>(5); // Default mood
+  const [isWriting, setIsWriting] = useState(false);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [mood, setMood] = useState(5); // Default mood
+  const [tags, setTags] = useState(''); // New state for tags
   const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
 
   const loadJournalEntries = () => {
@@ -31,36 +34,46 @@ const PatientJournalTab: React.FC<PatientJournalTabProps> = ({ patientId }) => {
     loadJournalEntries();
   }, [patientId]);
 
-  const handleAddEntry = () => {
-    if (!newEntryTitle.trim() || !newEntryContent.trim()) {
+  const resetForm = () => {
+    setTitle('');
+    setContent('');
+    setMood(5);
+    setTags('');
+    setEditingEntryId(null);
+    setIsWriting(false);
+  };
+
+  const handleSaveEntry = () => {
+    if (!title.trim() || !content.trim()) {
       showError('Title and content cannot be empty.');
       return;
     }
 
     const newEntry: Omit<JournalEntry, 'id' | 'createdAt'> = {
-      title: newEntryTitle.trim(),
-      content: newEntryContent.trim(),
-      mood: newEntryMood,
+      title: title.trim(),
+      content: content.trim(),
+      mood: mood,
       patientId: patientId,
+      tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0),
     };
 
     storageManager.addJournalEntry(newEntry, patientId);
     showSuccess('Journal entry added!');
-    setNewEntryTitle('');
-    setNewEntryContent('');
-    setNewEntryMood(5);
+    resetForm();
     loadJournalEntries(); // Refresh entries
   };
 
   const handleEditEntry = (entry: JournalEntry) => {
     setEditingEntryId(entry.id);
-    setNewEntryTitle(entry.title);
-    setNewEntryContent(entry.content);
-    setNewEntryMood(entry.mood);
+    setTitle(entry.title);
+    setContent(entry.content);
+    setMood(entry.mood);
+    setTags(entry.tags.join(', ')); // Convert array back to string for editing
+    setIsWriting(true); // Open the writing form
   };
 
   const handleUpdateEntry = () => {
-    if (!editingEntryId || !newEntryTitle.trim() || !newEntryContent.trim()) {
+    if (!editingEntryId || !title.trim() || !content.trim()) {
       showError('Title and content cannot be empty.');
       return;
     }
@@ -68,19 +81,17 @@ const PatientJournalTab: React.FC<PatientJournalTabProps> = ({ patientId }) => {
     const updatedEntry: JournalEntry = {
       id: editingEntryId,
       patientId: patientId,
-      title: newEntryTitle.trim(),
-      content: newEntryContent.trim(),
-      mood: newEntryMood,
+      title: title.trim(),
+      content: content.trim(),
+      mood: mood,
       createdAt: journalEntries.find(e => e.id === editingEntryId)?.createdAt || new Date().toISOString(), // Keep original creation date
+      tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0),
     };
 
     storageManager.updateJournalEntry(updatedEntry);
     
     showSuccess('Journal entry updated!');
-    setEditingEntryId(null);
-    setNewEntryTitle('');
-    setNewEntryContent('');
-    setNewEntryMood(5);
+    resetForm();
     loadJournalEntries(); // Refresh entries
   };
 
@@ -93,120 +104,159 @@ const PatientJournalTab: React.FC<PatientJournalTabProps> = ({ patientId }) => {
     }
   };
 
-  const getMoodEmoji = (mood: number) => {
-    if (mood >= 8) return '😊';
-    if (mood >= 6) return '🙂';
-    if (mood >= 4) return '😐';
-    if (mood >= 2) return '😔';
-    return '😢';
+  const getMoodColor = (moodValue: number) => {
+    if (moodValue >= 8) return 'text-green-600';
+    if (moodValue >= 6) return 'text-yellow-600';
+    if (moodValue >= 4) return 'text-orange-600';
+    return 'text-red-600';
+  };
+
+  const getMoodLabel = (moodValue: number) => {
+    if (moodValue >= 9) return 'Excellent';
+    if (moodValue >= 7) return 'Good';
+    if (moodValue >= 5) return 'Neutral';
+    if (moodValue >= 3) return 'Low';
+    return 'Very Low';
   };
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>{editingEntryId ? 'Edit Journal Entry' : 'Add New Journal Entry'}</CardTitle>
-          <CardDescription>Reflect on your day and track your mood.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="entry-title">Title</Label>
-            <Input
-              id="entry-title"
-              placeholder="What's on your mind?"
-              value={newEntryTitle}
-              onChange={(e) => setNewEntryTitle(e.target.value)}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="entry-content">Content</Label>
-            <Textarea
-              id="entry-content"
-              placeholder="Write about your thoughts and feelings..."
-              value={newEntryContent}
-              onChange={(e) => setNewEntryContent(e.target.value)}
-              rows={5}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="entry-mood">Mood (1-10)</Label>
-            <Input
-              id="entry-mood"
-              type="range"
-              min="1"
-              max="10"
-              value={newEntryMood}
-              onChange={(e) => setNewEntryMood(parseInt(e.target.value))}
-              className="w-full"
-            />
-            <div className="flex justify-between text-sm text-muted-foreground">
-              <span>1 (😢)</span>
-              <span>{newEntryMood} {getMoodEmoji(newEntryMood)}</span>
-              <span>10 (😊)</span>
-            </div>
-          </div>
-          <Button onClick={editingEntryId ? handleUpdateEntry : handleAddEntry} className="w-full">
-            {editingEntryId ? (
-              <>
-                <Edit className="h-4 w-4 mr-2" /> Update Entry
-              </>
-            ) : (
-              <>
-                <PlusCircle className="h-4 w-4 mr-2" /> Add Entry
-              </>
-            )}
-          </Button>
-          {editingEntryId && (
-            <Button variant="outline" onClick={() => {
-              setEditingEntryId(null);
-              setNewEntryTitle('');
-              setNewEntryContent('');
-              setNewEntryMood(5);
-            }} className="w-full mt-2">
-              Cancel Edit
-            </Button>
-          )}
-        </CardContent>
-      </Card>
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-semibold">Journal</h2>
+        <Button onClick={() => setIsWriting(true)} disabled={isWriting}>
+          <PlusCircle className="w-4 h-4 mr-2" />
+          New Entry
+        </Button>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Your Journal Entries ({journalEntries.length})</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {journalEntries.length > 0 ? (
-            journalEntries.map((entry) => (
-              <Card key={entry.id} className="p-4">
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <h3 className="text-lg font-semibold">{entry.title}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      {new Date(entry.createdAt).toLocaleString()}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">{getMoodEmoji(entry.mood)}</span>
-                    <span className="font-medium">{entry.mood}/10</span>
+      {isWriting && (
+        <Card>
+          <CardHeader>
+            <CardTitle>{editingEntryId ? 'Edit Journal Entry' : 'New Journal Entry'}</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label htmlFor="entry-title">Title</Label>
+              <Input
+                id="entry-title"
+                placeholder="Give your entry a title..."
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            
+            <div>
+              <Label htmlFor="entry-mood">
+                Mood (1-10): {mood} - {getMoodLabel(mood)}
+              </Label>
+              <Input
+                id="entry-mood"
+                type="range"
+                min="1"
+                max="10"
+                value={mood}
+                onChange={(e) => setMood(Number(e.target.value))}
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="entry-content">Content</Label>
+              <Textarea
+                id="entry-content"
+                placeholder="Write about your thoughts, feelings, experiences..."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                rows={6}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="entry-tags">Tags (comma-separated)</Label>
+              <Input
+                id="entry-tags"
+                placeholder="gratitude, anxiety, progress, therapy..."
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+              />
+            </div>
+
+            <div className="flex gap-2">
+              <Button onClick={editingEntryId ? handleUpdateEntry : handleSaveEntry}>
+                {editingEntryId ? 'Update Entry' : 'Save Entry'}
+              </Button>
+              <Button variant="outline" onClick={resetForm}>
+                Cancel
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      <div className="space-y-4">
+        {journalEntries.map((entry) => (
+          <Card key={entry.id}>
+            <CardHeader>
+              <div className="flex justify-between items-start">
+                <div>
+                  <CardTitle className="text-lg">{entry.title}</CardTitle>
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-4 h-4" />
+                      {new Date(entry.createdAt).toLocaleDateString()}
+                    </div>
+                    <div className={`font-medium ${getMoodColor(entry.mood)}`}>
+                      Mood: {entry.mood}/10 ({getMoodLabel(entry.mood)})
+                    </div>
                   </div>
                 </div>
-                <p className="text-gray-700 mb-3">{entry.content}</p>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={() => handleEditEntry(entry)}>
-                    <Edit className="h-4 w-4 mr-2" /> Edit
-                  </Button>
-                  <Button variant="destructive" size="sm" onClick={() => handleDeleteEntry(entry.id)}>
-                    <Trash2 className="h-4 w-4 mr-2" /> Delete
-                  </Button>
+                <BookOpen className="w-5 h-5 text-muted-foreground" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground mb-4 whitespace-pre-wrap">
+                {entry.content}
+              </p>
+              {entry.tags && entry.tags.length > 0 && (
+                <div className="flex items-center gap-2">
+                  <Tag className="w-4 h-4 text-muted-foreground" />
+                  <div className="flex flex-wrap gap-1">
+                    {entry.tags.map((tag, i) => (
+                      <Badge key={i} variant="secondary" className="text-xs">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
-              </Card>
-            ))
-          ) : (
-            <p className="text-muted-foreground text-center py-8">
-              No journal entries yet. Start by adding one above!
+              )}
+              <div className="flex gap-2 mt-4">
+                <Button variant="outline" size="sm" onClick={() => handleEditEntry(entry)}>
+                  <Edit className="h-4 w-4 mr-2" /> Edit
+                </Button>
+                <Button variant="destructive" size="sm" onClick={() => handleDeleteEntry(entry.id)}>
+                  <Trash2 className="h-4 w-4 mr-2" /> Delete
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {journalEntries.length === 0 && !isWriting && (
+        <Card>
+          <CardContent className="text-center py-12">
+            <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-medium mb-2">Start Your Journey</h3>
+            <p className="text-muted-foreground mb-4">
+              Journaling can help you process thoughts and track your mental health journey.
             </p>
-          )}
-        </CardContent>
-      </Card>
+            <Button onClick={() => setIsWriting(true)}>
+              <PlusCircle className="w-4 h-4 mr-2" />
+              Write Your First Entry
+            </Button>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
