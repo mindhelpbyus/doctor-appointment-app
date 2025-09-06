@@ -6,7 +6,8 @@ import { promotions, Promotion } from '@/data/promotions';
 import { specialties, Specialty } from '@/data/specialties';
 import { admins, Admin } from '@/data/admins';
 import { agencyUsers, AgencyUser } from '@/data/agencyUsers';
-import { conversations, messages, Conversation, Message } from '@/data/chat'; // Import new chat data
+import { conversations, messages, Conversation, Message } from '@/data/chat';
+import { agencyPerformanceReport, doctorPerformanceReports, promotionReports, AgencyPerformanceReport, DoctorPerformanceReport, PromotionReport } from '@/data/reports'; // Import new report data and interfaces
 
 // --- Seeding Logic ---
 const seedEntity = (key: string, data: unknown[]) => {
@@ -23,8 +24,9 @@ const seedAllData = () => {
   seedEntity('promotions', promotions);
   seedEntity('admins', admins);
   seedEntity('agencyUsers', agencyUsers);
-  seedEntity('conversations', conversations); // Seed chat conversations
-  seedEntity('messages', messages); // Seed chat messages
+  seedEntity('conversations', conversations);
+  seedEntity('messages', messages);
+  // No need to seed reports as they are static mock data for now.
 };
 
 // Initialize data on first load
@@ -49,11 +51,31 @@ export const getAppointments = (): Appointment[] => getEntity<Appointment>('appo
 export const getDoctors = (): Doctor[] => getEntity<Doctor>('doctors');
 export const getPatients = (): Patient[] => getEntity<Patient>('patients');
 export const getPromotions = (): Promotion[] => getEntity<Promotion>('promotions');
-export const getSpecialties = (): Specialty[] => specialties; // Specialties are static, no need for localStorage
+export const getSpecialties = (): Specialty[] => specialties;
 export const getAdmins = (): Admin[] => getEntity<Admin>('admins');
 export const getAgencyUsers = (): AgencyUser[] => getEntity<AgencyUser>('agencyUsers');
 export const getConversations = (): Conversation[] => getEntity<Conversation>('conversations');
 export const getMessages = (): Message[] => getEntity<Message>('messages');
+
+// New report getters
+export const getAgencyPerformanceReport = (): AgencyPerformanceReport => agencyPerformanceReport;
+export const getDoctorPerformanceReports = (agencyId?: string): DoctorPerformanceReport[] => {
+  if (agencyId) {
+    const agencyDoctors = getDoctorsByAgencyId(agencyId);
+    const agencyDoctorIds = new Set(agencyDoctors.map(d => d.id));
+    return doctorPerformanceReports.filter(report => agencyDoctorIds.has(report.doctorId));
+  }
+  return doctorPerformanceReports;
+};
+export const getPromotionReports = (agencyId?: string): PromotionReport[] => {
+  if (agencyId) {
+    const agencyPromotions = getPromotionsByAgencyId(agencyId);
+    const agencyPromotionIds = new Set(agencyPromotions.map(p => p.id));
+    return promotionReports.filter(report => agencyPromotionIds.has(report.promotionId));
+  }
+  return promotionReports;
+};
+
 
 // --- Specific Updaters ---
 export const updateAgency = (agency: Agency): void => updateEntity<Agency>('agencies', agency);
@@ -68,7 +90,7 @@ export const addAppointment = (appointment: Omit<Appointment, 'id'>): Appointmen
   const newAppointment = { ...appointment, id: `appt-${Date.now()}` };
   const newItems = [...items, newAppointment];
   localStorage.setItem('appointments', JSON.stringify(newItems));
-  return newAppointment; // Return the newly added appointment
+  return newAppointment;
 };
 
 export const addPromotion = (promotion: Omit<Promotion, 'id' | 'status'>): void => {
@@ -76,7 +98,7 @@ export const addPromotion = (promotion: Omit<Promotion, 'id' | 'status'>): void 
   const newPromotion: Promotion = {
     ...promotion,
     id: `promo-${Date.now()}`,
-    status: 'pending', // New promotions always start as pending for admin approval
+    status: 'pending',
   };
   const newItems = [...items, newPromotion];
   localStorage.setItem('promotions', JSON.stringify(newItems));
@@ -85,18 +107,18 @@ export const addPromotion = (promotion: Omit<Promotion, 'id' | 'status'>): void 
 export const addAgency = (agencyData: Omit<Agency, 'id' | 'slug' | 'isActive' | 'theme' | 'logo' | 'headerImage'>): void => {
   const items = getEntity<Agency>('agencies');
   const slug = agencyData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
-  
+
   const newAgency: Agency = {
     ...agencyData,
     id: `agency-${Date.now()}`,
     slug,
     logo: `https://via.placeholder.com/150/9CA3AF/FFFFFF?text=${agencyData.name.substring(0, 3).toUpperCase()}`,
     headerImage: `https://via.placeholder.com/1200x300/E5E7EB/4B5563?text=${agencyData.name}`,
-    theme: { // Default theme
+    theme: {
       primaryColor: 'hsl(215 28% 17%)',
       secondaryColor: 'hsl(220 13% 91%)',
     },
-    isActive: false, // Needs admin approval
+    isActive: false,
   };
 
   const newItems = [...items, newAgency];
@@ -109,21 +131,17 @@ export const addMessage = (message: Omit<Message, 'id'>): Message => {
   const newItems = [...items, newMessage];
   localStorage.setItem('messages', JSON.stringify(newItems));
 
-  // Update the corresponding conversation's last message and timestamp
   const conversation = getConversationById(message.conversationId);
   if (conversation) {
     const updatedConversation = {
       ...conversation,
       lastMessageContent: message.content,
       lastMessageTimestamp: message.timestamp,
-      // For simplicity in this demo, we'll just increment the unreadCount.
-      // The ChatWindow will reset it when opened.
-      // A more robust solution would track unread counts per participant.
       unreadCount: conversation.unreadCount + 1,
     };
     updateConversation(updatedConversation);
   }
-  return newMessage; // Return the full message with ID
+  return newMessage;
 };
 
 export const createConversation = (patientId: string, doctorId: string): Conversation => {
@@ -147,7 +165,7 @@ export const getSpecialtyById = (id: string): Specialty | undefined => getSpecia
 export const getAgencyBySlug = (slug: string): Agency | undefined => getAgencies().find(a => a.slug === slug);
 export const getAgencyById = (id: string): Agency | undefined => getAgencies().find(a => a.id === id);
 export const getPatientById = (id: string): Patient | undefined => getPatients().find(p => p.id === id);
-export const getAgencyUserById = (id: string): AgencyUser | undefined => getAgencyUsers().find(u => u.id === id); // New getter
+export const getAgencyUserById = (id: string): AgencyUser | undefined => getAgencyUsers().find(u => u.id === id);
 export const getDoctorsByAgencyId = (agencyId: string): Doctor[] => getDoctors().filter(d => d.agencyId === agencyId);
 export const getPromotionsByAgencyId = (agencyId: string): Promotion[] => getPromotions().filter(p => p.targetAgencyId === agencyId);
 export const getAppointmentsForDoctors = (doctorIds: string[]): Appointment[] => {

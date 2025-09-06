@@ -31,6 +31,9 @@ import {
   getSpecialties,
   addPromotion,
   getAgencyUserById,
+  getAgencyPerformanceReport, // New import
+  getDoctorPerformanceReports, // New import
+  getPromotionReports, // New import
 } from '@/services/localApi';
 import { Agency } from '@/data/agencies';
 import { Doctor } from '@/data/doctors';
@@ -46,6 +49,12 @@ import { Calendar as UiCalendar } from '@/components/ui/calendar';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { showSuccess, showError } from '@/utils/toast';
+import {
+  AgencyPerformanceReport,
+  DoctorPerformanceReport,
+  PromotionReport,
+} from '@/data/reports'; // Import report interfaces
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'; // For the chart
 
 const AgencyDashboardPage: React.FC = () => {
   const { agencyId } = useParams<{ agencyId: string }>();
@@ -63,6 +72,11 @@ const AgencyDashboardPage: React.FC = () => {
   const [newPromotionDiscountValue, setNewPromotionDiscountValue] = useState<number>(0);
   const [newPromotionValidFrom, setNewPromotionValidFrom] = useState<Date | undefined>(undefined);
   const [newPromotionValidTo, setNewPromotionValidTo] = useState<Date | undefined>(undefined);
+
+  // State for reports data
+  const [agencyPerformance, setAgencyPerformance] = useState<AgencyPerformanceReport | undefined>(undefined);
+  const [doctorPerformance, setDoctorPerformance] = useState<DoctorPerformanceReport[]>([]);
+  const [promotionReportsData, setPromotionReportsData] = useState<PromotionReport[]>([]);
 
   const currentUserId = getLoggedInUser()?.id;
   const currentUserType = getLoggedInUser()?.type;
@@ -96,6 +110,11 @@ const AgencyDashboardPage: React.FC = () => {
 
     const fetchedSpecialties = getSpecialties();
     setSpecialties(fetchedSpecialties);
+
+    // Fetch report data
+    setAgencyPerformance(getAgencyPerformanceReport());
+    setDoctorPerformance(getDoctorPerformanceReports(agencyId));
+    setPromotionReportsData(getPromotionReports(agencyId));
 
   }, [agencyId, currentUserId, currentUserType, navigate]);
 
@@ -263,7 +282,7 @@ const AgencyDashboardPage: React.FC = () => {
               <CardContent className="space-y-2">
                 <p><strong>Name:</strong> {agency.name}</p>
                 <p><strong>Address:</strong> {agency.address}</p>
-                <p><strong>Contact Email:</strong> {agency.contactEmail}</p>
+                <p><strong>Contact Email:</strong> {agency.contactEmail}</p> {/* Display contact email */}
                 <p><strong>Status:</strong> <Badge variant={agency.isActive ? 'default' : 'destructive'}>{agency.isActive ? 'Active' : 'Inactive'}</Badge></p>
               </CardContent>
             </Card>
@@ -457,20 +476,124 @@ const AgencyDashboardPage: React.FC = () => {
           </TabsContent>
 
           <TabsContent value="reports" className="space-y-6">
+            <h2 className="text-2xl font-bold mb-4">Agency Performance Overview</h2>
+            {agencyPerformance && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">${agencyPerformance.totalRevenue.toLocaleString()}</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-sm font-medium">Total Appointments</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{agencyPerformance.totalAppointments}</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-sm font-medium">Avg. Appt. Value</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">${agencyPerformance.averageAppointmentValue.toFixed(2)}</div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
             <Card>
               <CardHeader>
-                <CardTitle>Billing & Payment Reports</CardTitle>
+                <CardTitle>Monthly Revenue Trend</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">Detailed financial reports and payment history coming soon...</p>
+                {agencyPerformance?.monthlyRevenue && (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={agencyPerformance.monthlyRevenue} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis />
+                      <Tooltip />
+                      <Line type="monotone" dataKey="revenue" stroke="hsl(var(--primary))" activeDot={{ r: 8 }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                )}
               </CardContent>
             </Card>
+
+            <h2 className="text-2xl font-bold mb-4 mt-8">Doctor Performance Reports</h2>
             <Card>
               <CardHeader>
-                <CardTitle>Performance Analytics</CardTitle>
+                <CardTitle>Individual Doctor Performance</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">Insights into doctor performance, client acquisition, and engagement coming soon...</p>
+                {doctorPerformance.length > 0 ? (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Doctor</TableHead>
+                        <TableHead>Rating</TableHead>
+                        <TableHead>Appointments</TableHead>
+                        <TableHead>Satisfaction</TableHead>
+                        <TableHead>Revenue</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {doctorPerformance.map((docReport) => (
+                        <TableRow key={docReport.doctorId}>
+                          <TableCell className="font-medium">{docReport.doctorName}</TableCell>
+                          <TableCell>{docReport.averageRating.toFixed(1)} <StarIcon className="inline-block h-4 w-4 fill-yellow-500 text-yellow-500 ml-1" /></TableCell>
+                          <TableCell>{docReport.totalAppointments}</TableCell>
+                          <TableCell>{docReport.patientSatisfactionScore.toFixed(1)}/5</TableCell>
+                          <TableCell>${docReport.revenueGenerated.toLocaleString()}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                ) : (
+                  <p className="text-muted-foreground">No doctor performance data available for this agency.</p>
+                )}
+              </CardContent>
+            </Card>
+
+            <h2 className="text-2xl font-bold mb-4 mt-8">Promotion Performance Reports</h2>
+            <Card>
+              <CardHeader>
+                <CardTitle>Promotion Effectiveness</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {promotionReportsData.length > 0 ? (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Promotion</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Redemptions</TableHead>
+                        <TableHead>Revenue Generated</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {promotionReportsData.map((promoReport) => (
+                        <TableRow key={promoReport.promotionId}>
+                          <TableCell className="font-medium">{promoReport.promotionTitle}</TableCell>
+                          <TableCell>
+                            <Badge variant={promoReport.status === 'approved' ? 'default' : promoReport.status === 'pending' ? 'secondary' : 'destructive'}>
+                              {promoReport.status}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>{promoReport.redemptions}</TableCell>
+                          <TableCell>${promoReport.revenueGenerated.toLocaleString()}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                ) : (
+                  <p className="text-muted-foreground">No promotion reports available for this agency.</p>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
