@@ -36,8 +36,8 @@ const ProviderOnboardingForm: React.FC = () => {
 
   function onSubmit(values: z.infer<typeof agencySchema>) {
     try {
-      // Explicitly cast values to the expected type
-      const agencyData: Omit<Agency, 'id' | 'slug' | 'isActive' | 'theme' | 'logo' | 'headerImage'> = values as z.infer<typeof agencySchema>;
+      // Explicitly cast the entire resulting object to the target Omit type
+      const agencyData = values as Omit<Agency, 'id' | 'slug' | 'isActive' | 'theme' | 'logo' | 'headerImage'>;
       addAgency(agencyData);
       showSuccess('Application submitted for review!');
       setIsSubmitted(true);
@@ -92,7 +92,7 @@ const ProviderOnboardingForm: React.FC = () => {
           name="address"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Address</FormLabel>
+              <FormLabel>Address</Label>
               <FormControl>
                 <Input placeholder="123 Main St, Anytown, USA" {...field} />
               </FormControl>
@@ -119,7 +119,7 @@ const ProviderOnboardingForm: React.FC = () => {
             name="type"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Practice Type</FormLabel>
+                <FormLabel>Practice Type</Label>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>

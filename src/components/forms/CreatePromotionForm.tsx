@@ -42,11 +42,11 @@ const CreatePromotionForm: React.FC<CreatePromotionFormProps> = ({ agencyId, onS
 
   function onSubmit(values: z.infer<typeof promotionSchema>) {
     try {
-      // Explicitly cast values to the expected type
-      const promotionData: Omit<Promotion, 'id' | 'status'> = {
-        ...(values as z.infer<typeof promotionSchema>),
+      // Explicitly cast the entire resulting object to the target Omit type
+      const promotionData = {
+        ...values,
         targetAgencyId: agencyId,
-      };
+      } as Omit<Promotion, 'id' | 'status'>;
       addPromotion(promotionData);
       showSuccess('Promotion submitted for approval!');
       onSuccess();
@@ -76,7 +76,7 @@ const CreatePromotionForm: React.FC<CreatePromotionFormProps> = ({ agencyId, onS
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Description</Label>
               <FormControl>
                 <Textarea placeholder="Describe the promotion..." {...field} />
               </FormControl>
@@ -139,7 +139,7 @@ const CreatePromotionForm: React.FC<CreatePromotionFormProps> = ({ agencyId, onS
             name="validTo"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Valid To</FormLabel>
+                <FormLabel>Valid To</Label>
                 <FormControl>
                   <Input type="date" {...field} />
                 </FormControl>
