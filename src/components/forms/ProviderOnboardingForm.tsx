@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useForm } from '@hookform/react-hook-form';
+import { useForm } from 'react-hook-form'; // Corrected import
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,7 @@ const agencySchema = z.object({
   websiteUrl: z.string().url('Please enter a valid URL.'),
   address: z.string().min(10, 'Please enter a complete address.'),
   phone: z.string().min(10, 'Please enter a valid phone number.'),
-  contactEmail: z.string().email('Please enter a valid email address.'), // Added this
+  contactEmail: z.string().email('Please enter a valid email address.'),
   type: z.enum(['Clinic', 'Hospital', 'Health System']),
 });
 
@@ -31,7 +31,7 @@ const ProviderOnboardingForm: React.FC = () => {
       websiteUrl: '',
       address: '',
       phone: '',
-      contactEmail: '', // Added this
+      contactEmail: '',
       type: 'Clinic',
     },
   });
@@ -104,7 +104,7 @@ const ProviderOnboardingForm: React.FC = () => {
         />
         <FormField
           control={form.control}
-          name="contactEmail" // Added this field
+          name="contactEmail"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Contact Email</FormLabel>
@@ -126,9 +126,9 @@ const ProviderOnboardingForm: React.FC = () => {
                   <Input placeholder="(555) 123-4567" {...field} />
                 </FormControl>
                 <FormMessage />
-              </FormItem>
-            )}
-          />
+            </FormItem>
+          )}
+        />
           <FormField
             control={form.control}
             name="type"
