@@ -116,6 +116,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, currentUserId, cu
           className="w-10 h-10 rounded-full object-cover"
         />
         <h3 className="text-lg font-semibold">{otherParticipantName}</h3>
+        <img src="/medxiy_chat.jpeg" alt="Medixy Chat" className="h-6 w-6 ml-auto" />
       </div>
       <ScrollArea className="flex-grow p-4 space-y-4" ref={scrollAreaRef}>
         {messages.map((msg) => (

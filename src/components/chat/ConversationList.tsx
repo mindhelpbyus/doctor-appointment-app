@@ -17,6 +17,10 @@ const ConversationList: React.FC<ConversationListProps> = ({ conversations, curr
 
   return (
     <div className="flex flex-col h-full overflow-y-auto">
+      <div className="p-4 border-b flex items-center gap-2">
+        <img src="/medxiy_chat.jpeg" alt="Medixy Chat" className="h-6 w-6" />
+        <h2 className="text-xl font-semibold">Conversations</h2>
+      </div>
       {conversations.length === 0 ? (
         <p className="p-4 text-muted-foreground text-center">No conversations yet.</p>
       ) : (

@@ -121,7 +121,7 @@ const Header: React.FC = () => {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-8 lg:px-16">
         <Link to="/" className="flex flex-col items-start gap-0">
-          <span className="font-recoleta text-2xl font-bold text-foreground">Medixy</span>
+          <img src="/medixy.jpeg" alt="Medixy Logo" className="h-8 w-auto mb-1" />
           <span className="text-xs font-averta text-muted-foreground -mt-1">product of Bedrock Health Solution</span>
         </Link>
 
@@ -160,7 +160,7 @@ const Header: React.FC = () => {
           <SheetContent side="right" className="w-[280px] sm:w-[320px] flex flex-col p-4">
             <div className="flex items-center justify-between pb-4 border-b border-border">
               <Link to="/" className="flex flex-col items-start gap-0" onClick={() => setIsSheetOpen(false)}>
-                <span className="font-recoleta text-2xl font-bold text-foreground">Medixy</span>
+                <img src="/medixy.jpeg" alt="Medixy Logo" className="h-8 w-auto mb-1" />
                 <span className="text-xs font-averta text-muted-foreground -mt-1">product of Bedrock Health Solution</span>
               </Link>
               <Button variant="ghost" size="icon" onClick={() => setIsSheetOpen(false)}>

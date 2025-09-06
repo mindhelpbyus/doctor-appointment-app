@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
         {/* Brand Info */}
         <div className="space-y-4">
           <Link to="/" className="flex flex-col items-start gap-0">
-            <span className="font-recoleta text-3xl font-bold text-primary hover:text-primary/90 transition-colors">Medixy</span>
+            <img src="/medixy.jpeg" alt="Medixy Logo" className="h-10 w-auto mb-1" />
             <span className="text-xs font-averta text-muted-foreground -mt-1">product of Bedrock Health Solution</span>
           </Link>
           <p className="text-sm text-muted-foreground font-averta">
