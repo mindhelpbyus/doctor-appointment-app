@@ -6,7 +6,7 @@ import { Users, CalendarCheck, MessageCircle, DollarSign } from 'lucide-react';
 const StaffManagementFeaturePage: React.FC = () => {
   return (
     <div className="container mx-auto py-12 px-4">
-      <h1 className="text-5xl font-recoleta font-bold text-center text-foreground mb-8">Efficient Staff Management with Medixy</h1>
+      <h1 className="text-5xl font-recoleta font-bold text-center text-foreground mb-8">Efficient Staff Management with Docsy</h1>
       <p className="text-center text-lg text-muted-foreground font-averta max-w-3xl mx-auto mb-12">
         Empower your team with tools designed to enhance collaboration, streamline workflows, and boost overall productivity within your practice.
       </p>
@@ -45,7 +45,7 @@ const StaffManagementFeaturePage: React.FC = () => {
       <div className="text-center">
         <h2 className="text-3xl font-recoleta font-semibold text-foreground mb-6">Ready to Empower Your Team?</h2>
         <Button asChild size="lg" variant="custom-primary">
-          <Link to="/onboard-provider">Manage Your Staff with Medixy</Link>
+          <Link to="/onboard-provider">Manage Your Staff with Docsy</Link>
         </Button>
       </div>
     </div>

@@ -6,7 +6,7 @@ import { BarChart2, TrendingUp, Users, DollarSign } from 'lucide-react';
 const ReportingFeaturePage: React.FC = () => {
   return (
     <div className="container mx-auto py-12 px-4">
-      <h1 className="text-5xl font-recoleta font-bold text-center text-foreground mb-8">Data-Driven Reporting & Analytics with Medixy</h1>
+      <h1 className="text-5xl font-recoleta font-bold text-center text-foreground mb-8">Data-Driven Reporting & Analytics with Docsy</h1>
       <p className="text-center text-lg text-muted-foreground font-averta max-w-3xl mx-auto mb-12">
         Gain valuable insights into your practice's performance with comprehensive reports, enabling you to make smart, informed decisions backed by best-in-class analytics.
       </p>

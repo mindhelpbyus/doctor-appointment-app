@@ -6,9 +6,9 @@ import { CreditCard, ReceiptText, ShieldCheck, DollarSign } from 'lucide-react';
 const PaymentsFeaturePage: React.FC = () => {
   return (
     <div className="container mx-auto py-12 px-4">
-      <h1 className="text-5xl font-recoleta font-bold text-center text-foreground mb-8">Streamlined Payments & Billing with Medixy</h1>
+      <h1 className="text-5xl font-recoleta font-bold text-center text-foreground mb-8">Streamlined Payments & Billing with Docsy</h1>
       <p className="text-center text-lg text-muted-foreground font-averta max-w-3xl mx-auto mb-12">
-        Optimize your revenue cycle with Medixy's secure and integrated payment solutions, providing a seamless financial experience for both your practice and your patients.
+        Optimize your revenue cycle with Docsy's secure and integrated payment solutions, providing a seamless financial experience for both your practice and your patients.
       </p>
 
       <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
@@ -45,7 +45,7 @@ const PaymentsFeaturePage: React.FC = () => {
       <div className="text-center">
         <h2 className="text-3xl font-recoleta font-semibold text-foreground mb-6">Ready to Streamline Your Finances?</h2>
         <Button asChild size="lg" variant="custom-primary">
-          <Link to="/onboard-provider">Explore Medixy Payments</Link>
+          <Link to="/onboard-provider">Explore Docsy Payments</Link>
         </Button>
       </div>
     </div>

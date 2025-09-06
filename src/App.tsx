@@ -30,6 +30,7 @@ import {
   ReportingFeaturePage,
   StaffManagementFeaturePage,
 } from "./pages";
+import "./app/globals.css";
 
 const queryClient = new QueryClient();
 

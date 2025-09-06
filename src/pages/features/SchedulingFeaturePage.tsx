@@ -6,7 +6,7 @@ import { CalendarDays, Clock, Users, BellRing } from 'lucide-react';
 const SchedulingFeaturePage: React.FC = () => {
   return (
     <div className="container mx-auto py-12 px-4">
-      <h1 className="text-5xl font-recoleta font-bold text-center text-foreground mb-8">Effortless Scheduling with Medixy</h1>
+      <h1 className="text-5xl font-recoleta font-bold text-center text-foreground mb-8">Effortless Scheduling with Docsy</h1>
       <p className="text-center text-lg text-muted-foreground font-averta max-w-3xl mx-auto mb-12">
         Our advanced scheduling system simplifies appointment management for your entire practice, ensuring seamless operations and improved patient experience.
       </p>
@@ -45,7 +45,7 @@ const SchedulingFeaturePage: React.FC = () => {
       <div className="text-center">
         <h2 className="text-3xl font-recoleta font-semibold text-foreground mb-6">Ready to Simplify Your Schedule?</h2>
         <Button asChild size="lg" variant="custom-primary">
-          <Link to="/onboard-provider">Get Started with Medixy</Link>
+          <Link to="/onboard-provider">Get Started with Docsy</Link>
         </Button>
       </div>
     </div>

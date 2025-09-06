@@ -1,6 +1,6 @@
-# Welcome to your Medixy app
+# Welcome to your Docsy app
 
-Medixy is a product of Bedrock Health Solution, designed to connect patients with healthcare providers seamlessly.
+Docsy is a product of Bedrock Health Solution, designed to connect patients with healthcare providers seamlessly.
 
 ## Demo Accounts
 

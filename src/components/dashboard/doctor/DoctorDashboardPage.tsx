@@ -316,7 +316,7 @@ const DoctorDashboardPage: React.FC = () => {
           <TabsContent value="settings">
             <Card>
               <CardHeader>
-                <CardTitle>Account Settings</Card_Title>
+                <CardTitle>Account Settings</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">Settings panel coming soon...</p>

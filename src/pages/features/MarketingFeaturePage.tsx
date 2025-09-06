@@ -6,9 +6,9 @@ import { Megaphone, Mail, MessageSquare, Star } from 'lucide-react';
 const MarketingFeaturePage: React.FC = () => {
   return (
     <div className="container mx-auto py-12 px-4">
-      <h1 className="text-5xl font-recoleta font-bold text-center text-foreground mb-8">Smarter Marketing Tools for Your Practice with Medixy</h1>
+      <h1 className="text-5xl font-recoleta font-bold text-center text-foreground mb-8">Smarter Marketing Tools for Your Practice with Docsy</h1>
       <p className="text-center text-lg text-muted-foreground font-averta max-w-3xl mx-auto mb-12">
-        Attract and retain more patients with Medixy's built-in marketing automation, designed to turn new patients into regulars and foster loyalty.
+        Attract and retain more patients with Docsy's built-in marketing automation, designed to turn new patients into regulars and foster loyalty.
       </p>
 
       <div className="grid md:grid-cols-2 gap-12 items-center mb-16">

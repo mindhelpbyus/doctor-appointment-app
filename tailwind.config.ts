@@ -60,12 +60,14 @@ const config = {
         'health-blue': 'var(--health-blue)',
         'dark-health-blue': 'var(--dark-health-blue)',
         'health-green': 'var(--health-green)',
+        'misty-rose': 'var(--misty-rose)', // New accent color
+        'powder-blue': 'var(--powder-blue)', // New accent color
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-        "2xl": "1.5rem", // Custom large border radius for cards
+        "2xl": "1.5rem",
       },
       keyframes: {
         "accordion-down": {
@@ -82,12 +84,11 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        // Custom fonts
         averta: ['Averta', 'sans-serif'],
         recoleta: ['Recoleta', 'serif'],
       },
       boxShadow: {
-        'subtle': '0 4px 12px rgba(0, 0, 0, 0.08)', // Softer shadow for cards
+        'subtle': '0 4px 12px rgba(0, 0, 0, 0.08)',
         'medium': '0 8px 24px rgba(0, 0, 0, 0.12)',
       },
     },

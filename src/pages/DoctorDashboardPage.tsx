@@ -35,6 +35,13 @@ import { MessagingSection, DoctorAvailabilityCalendar, DoctorClientsTab } from '
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { IAvailability } from '@/models/Doctor';
 
+interface Specialty {
+  id: string;
+  name: string;
+  description: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+}
+
 const DoctorDashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const { conversationId } = useParams<{ conversationId?: string }>();
@@ -45,7 +52,7 @@ const DoctorDashboardPage: React.FC = () => {
   const [pastAppointments, setPastAppointments] = useState<Appointment[]>([]);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [specialtyName, setSpecialtyName] = useState<string>('');
-  const [specialties, setSpecialties] = useState<any[]>([]);
+  const [specialties, setSpecialties] = useState<Specialty[]>([]);
 
   const currentUserId = getLoggedInUser()?.id;
   const currentUserType = getLoggedInUser()?.type;
@@ -140,7 +147,7 @@ const DoctorDashboardPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link to="/" className="flex flex-col items-start">
-                <span className="text-2xl font-recoleta font-bold text-primary">Medixy</span>
+                <span className="text-2xl font-recoleta font-bold text-primary">Docsy</span>
                 <span className="text-xs text-muted-foreground font-averta -mt-1">
                   Product of Bedrock health solution.
                 </span>
