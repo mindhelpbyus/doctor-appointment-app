@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { SendIcon } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import MessageBubble from '@/components/chat/MessageBubble';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface MessagingSectionProps {
   currentDoctorId: string;
@@ -115,8 +116,7 @@ const MessagingSection: React.FC<MessagingSectionProps> = ({ currentDoctorId }) 
   return (
     <ChatLayout>
       <div className="w-full md:w-1/3 lg:w-1/4 border-r flex flex-col">
-        <div className="p-4 border-b flex items-center gap-2">
-          <img src="/medxiy_chat.jpeg" alt="Medixy Chat" className="h-8 w-8" /> {/* Increased size */}
+        <div className="p-4 border-b">
           <h2 className="text-xl font-semibold">Conversations</h2>
         </div>
         <ConversationList
@@ -130,13 +130,11 @@ const MessagingSection: React.FC<MessagingSectionProps> = ({ currentDoctorId }) 
         {activeConversation ? (
           <div className="flex flex-col h-full">
             <div className="border-b p-4 flex items-center gap-3">
-              <img
-                src={otherParticipantPhotoUrl}
-                alt={otherParticipantName}
-                className="w-10 h-10 rounded-full object-cover"
-              />
+              <Avatar className="h-10 w-10">
+                <AvatarImage src={otherParticipantPhotoUrl} />
+                <AvatarFallback>{otherParticipantName.charAt(0) || '?'}</AvatarFallback>
+              </Avatar>
               <h3 className="text-lg font-semibold">{otherParticipantName}</h3>
-              <img src="/medxiy_chat.jpeg" alt="Medixy Chat" className="h-8 w-8 ml-auto" /> {/* Increased size */}
             </div>
             <ScrollArea className="flex-grow p-4 space-y-4" ref={scrollAreaRef}>
               {messages.map((msg) => (

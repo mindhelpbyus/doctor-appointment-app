@@ -17,8 +17,11 @@ const AgencyDashboardHeader: React.FC<AgencyDashboardHeaderProps> = ({ userName,
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link to="/" className="flex items-center gap-2"> {/* Adjusted for logo only */}
-              <img src="/medixy.jpeg" alt="Medixy Logo" className="h-10 w-auto" /> {/* Increased height */}
+            <Link to="/" className="flex flex-col items-start">
+              <span className="text-2xl font-recoleta font-bold text-primary">Medixy</span>
+              <span className="text-xs text-muted-foreground font-averta -mt-1">
+                Connecting you to better health.
+              </span>
             </Link>
             <Badge className="bg-accent text-accent-foreground border-primary/20">
               <Settings className="w-4 h-4" />

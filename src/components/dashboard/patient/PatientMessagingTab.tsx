@@ -189,10 +189,7 @@ const PatientMessagingTab: React.FC<PatientMessagingTabProps> = ({ patientId, in
         {/* Conversations List */}
         <Card className="lg:col-span-1 flex flex-col">
           <CardHeader className="border-b p-4">
-            <div className="flex items-center gap-2">
-              <img src="/medxiy_chat.jpeg" alt="Medixy Chat" className="h-8 w-8" /> {/* Increased size */}
-              <CardTitle className="text-lg">Conversations</CardTitle>
-            </div>
+            <CardTitle className="text-lg">Conversations</CardTitle>
           </CardHeader>
           <CardContent className="p-0 flex-grow overflow-y-auto">
             <div className="space-y-1">

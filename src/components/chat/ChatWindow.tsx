@@ -9,6 +9,7 @@ import { Message, Conversation } from '@/data/chat';
 import MessageBubble from './MessageBubble';
 import { Doctor } from '@/data/doctors';
 import { Patient } from '@/data/patients';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface ChatWindowProps {
   conversation: Conversation;
@@ -110,13 +111,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, currentUserId, cu
   return (
     <div className="flex flex-col h-full">
       <div className="border-b p-4 flex items-center gap-3">
-        <img
-          src={otherParticipantPhotoUrl}
-          alt={otherParticipantName}
-          className="w-10 h-10 rounded-full object-cover"
-        />
+        <Avatar className="h-10 w-10">
+          <AvatarImage src={otherParticipantPhotoUrl} />
+          <AvatarFallback>{otherParticipantName.charAt(0) || '?'}</AvatarFallback>
+        </Avatar>
         <h3 className="text-lg font-semibold">{otherParticipantName}</h3>
-        <img src="/medxiy_chat.jpeg" alt="Medixy Chat" className="h-8 w-8 ml-auto" /> {/* Increased size */}
       </div>
       <ScrollArea className="flex-grow p-4 space-y-4" ref={scrollAreaRef}>
         {messages.map((msg) => (

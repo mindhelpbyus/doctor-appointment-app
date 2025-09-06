@@ -8,8 +8,8 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4 md:px-8 lg:px-16 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Brand Info */}
         <div className="space-y-4">
-          <Link to="/" className="flex items-center gap-2"> {/* Adjusted to flex items-center for logo only */}
-            <img src="/medixy.jpeg" alt="Medixy Logo" className="h-12 w-auto" /> {/* Increased height */}
+          <Link to="/">
+            <span className="text-3xl font-recoleta font-bold text-primary">Medixy</span>
           </Link>
           <p className="text-sm text-muted-foreground font-averta">
             Connecting you to better health.
