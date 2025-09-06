@@ -25,7 +25,7 @@ const ProviderLoginPage: React.FC = () => {
   };
 
   const handleDemoAgencyProviderLogin = () => {
-    const demoProvider = getAgencyUsers().find(u => u.id === 'user-demo');
+    const demoProvider = getAgencyUsers().find(u => u.id === 'user-demo'); // Agency Admin for Agency-1
     if (demoProvider) {
       setEmail(demoProvider.email);
       loginUser(demoProvider.id, 'agencyUser');
@@ -37,7 +37,7 @@ const ProviderLoginPage: React.FC = () => {
   };
 
   const handleDemoIndividualDoctorLogin = () => {
-    const demoDoctorId = 'doc-1'; // Dr. Evelyn Reed
+    const demoDoctorId = 'doc-1'; // Dr. Evelyn Reed (Individual Doctor)
     const demoDoctor = getDoctorById(demoDoctorId);
 
     if (demoDoctor) {
@@ -46,6 +46,19 @@ const ProviderLoginPage: React.FC = () => {
       navigate('/doctor-dashboard'); // Navigate to the new doctor dashboard
     } else {
       showError('Demo individual doctor profile not found.');
+    }
+  };
+
+  const handleDemoAgencyDoctorLogin = () => {
+    const demoDoctorId = 'doc-2'; // Dr. Emily White (Agency Doctor for Agency-1)
+    const demoDoctor = getDoctorById(demoDoctorId);
+
+    if (demoDoctor) {
+      loginUser(demoDoctor.id, 'doctor'); // Log in the agency doctor
+      showSuccess(`Logged in as Dr. ${demoDoctor.fullName} (Agency Doctor)!`);
+      navigate('/doctor-dashboard'); // Agency doctors also use the DoctorDashboardPage
+    } else {
+      showError('Demo agency doctor profile not found.');
     }
   };
 
@@ -74,8 +87,9 @@ const ProviderLoginPage: React.FC = () => {
           </div>
           <Button onClick={handleLogin} className="w-full">Login</Button>
           <div className="space-y-2 pt-2">
-            <Button variant="outline" className="w-full" onClick={handleDemoAgencyProviderLogin}>Login as Demo Agency Provider</Button>
+            <Button variant="outline" className="w-full" onClick={handleDemoAgencyProviderLogin}>Login as Demo Agency Admin</Button>
             <Button variant="secondary" className="w-full" onClick={handleDemoIndividualDoctorLogin}>Login as Demo Individual Doctor</Button>
+            <Button variant="ghost" className="w-full" onClick={handleDemoAgencyDoctorLogin}>Login as Demo Agency Doctor</Button>
           </div>
           <p className="text-center text-sm text-muted-foreground pt-2">
             Want to list your practice on HealthConnect?{' '}
