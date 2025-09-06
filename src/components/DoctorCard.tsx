@@ -8,11 +8,13 @@ interface DoctorCardProps {
 }
 
 const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
+  const imageUrl = doctor.photoUrl || (doctor.gender === 'male' ? '/images/avatars/men-32.jpg' : '/images/avatars/women-44.jpg');
+
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-sm mx-auto border border-gray-200">
       <div className="relative h-48 w-full">
         <Image
-          src={doctor.photoUrl}
+          src={imageUrl}
           alt={`Dr. ${doctor.fullName}`}
           layout="fill"
           objectFit="cover"
