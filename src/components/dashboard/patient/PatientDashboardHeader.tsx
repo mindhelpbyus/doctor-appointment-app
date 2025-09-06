@@ -35,8 +35,8 @@ const PatientDashboardHeader: React.FC<PatientDashboardHeaderProps> = ({ patient
             </Button>
           </div>
         </div>
-      </header>
-    </div>
+      </div>
+    </header>
   );
 };
 
