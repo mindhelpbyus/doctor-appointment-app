@@ -11,6 +11,7 @@ import { agencyPerformanceReport, doctorPerformanceReports, promotionReports, Ag
 import { IAvailability } from '@/models/Doctor';
 import { visitSummaries, VisitSummary } from '@/data/visitSummaries';
 import { storageManager } from '@/utils/dataStorage'; // Import storageManager
+import { reviews, Review } from '@/data/reviews';
 
 // --- Seeding Logic ---
 const seedEntity = <T>(key: string, data: T[]) => {
@@ -36,6 +37,7 @@ const seedAllData = () => {
   seedEntity('conversations', conversations);
   seedEntity('messages', messages);
   seedEntity('visitSummaries', visitSummaries);
+  seedEntity('reviews', reviews);
   // No need to seed reports as they are static mock data for now.
 };
 
@@ -67,6 +69,7 @@ export const getAgencyUsers = (): AgencyUser[] => getEntity<AgencyUser>('agencyU
 export const getConversations = (): Conversation[] => getEntity<Conversation>('conversations');
 export const getMessages = (): Message[] => getEntity<Message>('messages');
 export const getVisitSummaries = (): VisitSummary[] => getEntity<VisitSummary>('visitSummaries');
+export const getReviews = (): Review[] => getEntity<Review>('reviews');
 
 // New report getters
 export const getAgencyPerformanceReport = (): AgencyPerformanceReport => agencyPerformanceReport;
@@ -223,3 +226,4 @@ export const getOrCreateConversation = (patientId: string, doctorId: string, top
   return conversation;
 };
 export const getVisitSummaryByAppointmentId = (appointmentId: string): VisitSummary | undefined => getVisitSummaries().find(vs => vs.appointmentId === appointmentId);
+export const getReviewsByDoctorId = (doctorId: string): Review[] => getReviews().filter(r => r.doctorId === doctorId);
