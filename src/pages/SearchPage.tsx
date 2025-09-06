@@ -6,6 +6,13 @@ import { getDoctors, getSpecialties } from '@/services/localApi';
 import { Doctor } from '@/data/doctors';
 import { Specialty } from '@/data/specialties';
 import { Stethoscope } from 'lucide-react';
+import {
+  PopularSearches,
+  SpecialtiesOverview,
+  CommonConcerns,
+  OffersSection,
+  HowItWorks,
+} from '@/components/search';
 
 const SearchPage: React.FC = () => {
   const [allDoctors, setAllDoctors] = useState<Doctor[]>([]);
@@ -27,7 +34,7 @@ const SearchPage: React.FC = () => {
 
   const performSearch = (query: string) => {
     if (!query) {
-      setFilteredDoctors(allDoctors);
+      setFilteredDoctors([]); // Clear results if query is empty
       return;
     }
 
@@ -66,30 +73,40 @@ const SearchPage: React.FC = () => {
         defaultValue={initialQuery} 
       />
 
-      <section>
-        {filteredDoctors.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredDoctors.map(doctor => {
-              const specialty = getSpecialty(doctor.specialtyId);
-              return (
-                <DoctorCard key={doctor.id} doctor={{
-                  id: doctor.id,
-                  fullName: doctor.fullName,
-                  specialtyName: specialty?.name || 'N/A',
-                  specialtyIcon: specialty?.icon,
-                  clinicAddress: doctor.clinicAddress,
-                  rating: doctor.rating,
-                  photoUrl: doctor.photoUrl,
-                }} />
-              )
-            })}
-          </div>
-        ) : (
-          <div className="text-center py-10">
-            <p className="text-lg text-muted-foreground">No doctors found matching your search.</p>
-          </div>
-        )}
-      </section>
+      {initialQuery ? (
+        <section>
+          {filteredDoctors.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredDoctors.map(doctor => {
+                const specialty = getSpecialty(doctor.specialtyId);
+                return (
+                  <DoctorCard key={doctor.id} doctor={{
+                    id: doctor.id,
+                    fullName: doctor.fullName,
+                    specialtyName: specialty?.name || 'N/A',
+                    specialtyIcon: specialty?.icon,
+                    clinicAddress: doctor.clinicAddress,
+                    rating: doctor.rating,
+                    photoUrl: doctor.photoUrl,
+                  }} />
+                )
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-10">
+              <p className="text-lg text-muted-foreground">No doctors found matching your search.</p>
+            </div>
+          )}
+        </section>
+      ) : (
+        <div className="space-y-8">
+          <PopularSearches />
+          <SpecialtiesOverview />
+          <CommonConcerns />
+          <OffersSection />
+          <HowItWorks />
+        </div>
+      )}
     </div>
   );
 };
