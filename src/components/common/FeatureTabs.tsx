@@ -2,7 +2,7 @@ import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, Megaphone, BarChart3, Users, CreditCard, BotMessageSquare } from 'lucide-react';
+import { Calendar, Megaphone, BarChart3, Users, CreditCard } from 'lucide-react';
 
 const features = [
   {
@@ -11,6 +11,13 @@ const features = [
     description: 'Manage your entire calendar for staffing and booking. Classes and appointments are seamlessly updated in real time, on every device, keeping your entire team coordinated.',
     icon: Calendar,
     imageUrl: 'https://via.placeholder.com/500x350/BFDBFE/3B82F6?text=Scheduling',
+  },
+  {
+    value: 'payments',
+    title: 'Payments & Billing',
+    description: 'Streamline your revenue cycle with our all-in-one billing and payment processing. From invoicing to checkout, we provide a secure and seamless financial experience for you and your patients.',
+    icon: CreditCard,
+    imageUrl: 'https://via.placeholder.com/500x350/C4B5FD/6D28D9?text=Payments',
   },
   {
     value: 'marketing',
@@ -38,7 +45,7 @@ const features = [
 const FeatureTabs: React.FC = () => {
   return (
     <Tabs defaultValue="scheduling" className="w-full">
-      <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
+      <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
         {features.map((feature) => (
           <TabsTrigger key={feature.value} value={feature.value} className="flex items-center gap-2">
             <feature.icon className="h-4 w-4" />
