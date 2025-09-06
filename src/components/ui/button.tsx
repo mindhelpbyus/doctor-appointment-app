@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -18,19 +18,26 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        // New custom button variants
+        "custom-primary": "bg-foreground text-background hover:text-accent-foreground", // Charcoal background, white text, spearmint hover
+        "custom-secondary": "bg-background border border-foreground text-foreground hover:text-basil hover:border-basil", // White background, charcoal border/text, basil hover
+        "custom-tertiary": "bg-background border border-basil text-basil hover:text-dark-basil hover:border-dark-basil", // White background, basil border/text, dark-basil hover
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
+        lg: "h-11 px-8",
         icon: "h-10 w-10",
+        // Custom size for the new buttons
+        "custom-lg": "h-12 px-6 py-4 text-lg font-bold uppercase tracking-wider", // Matches 19px font, 1.75px letter spacing
+        "custom-sm": "h-9 px-4 py-2 text-sm font-bold uppercase tracking-wider",
       },
     },
     defaultVariants: {
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 export interface ButtonProps
@@ -49,7 +56,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  },
+  }
 );
 Button.displayName = "Button";
 

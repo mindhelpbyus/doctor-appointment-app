@@ -2,75 +2,121 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  For custom fonts 'Averta' and 'Recoleta' to render correctly,
+  please place their font files (e.g., .woff2, .ttf) in 'src/assets/fonts'
+  and ensure the paths below are correct.
+*/
+@font-face {
+  font-display: swap;
+  font-family: Averta;
+  font-style: normal;
+  font-weight: 400;
+  src: url('/src/assets/fonts/Averta-Regular.woff2') format('woff2'),
+       url('/src/assets/fonts/Averta-Regular.woff') format('woff');
+}
+@font-face {
+  font-display: swap;
+  font-family: Averta;
+  font-style: normal;
+  font-weight: 600;
+  src: url('/src/assets/fonts/Averta-Semibold.woff2') format('woff2'),
+       url('/src/assets/fonts/Averta-Semibold.woff') format('woff');
+}
+@font-face {
+  font-display: swap;
+  font-family: Averta;
+  font-style: normal;
+  font-weight: 700;
+  src: url('/src/assets/fonts/Averta-Bold.woff2') format('woff2'),
+       url('/src/assets/fonts/Averta-Bold.woff') format('woff');
+}
+@font-face {
+  font-display: swap;
+  font-family: Recoleta;
+  font-style: normal;
+  font-weight: 400;
+  src: url('/src/assets/fonts/Recoleta-Regular.woff2') format('woff2'),
+       url('/src/assets/fonts/Recoleta-Regular.woff') format('woff');
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%; /* White */
-    --foreground: 220 13% 20%; /* Darker Gray */
+    --foreground: 220 13% 18%; /* Charcoal (#2d2d2d) */
 
     --card: 0 0% 100%; /* White */
-    --card-foreground: 220 13% 20%; /* Darker Gray */
+    --card-foreground: 220 13% 18%; /* Charcoal */
 
     --popover: 0 0% 100%; /* White */
-    --popover-foreground: 220 13% 20%; /* Darker Gray */
+    --popover-foreground: 220 13% 18%; /* Charcoal */
 
-    --primary: 220 13% 40%; /* Medium Gray */
+    --primary: 220 13% 18%; /* Charcoal */
     --primary-foreground: 0 0% 100%; /* White */
 
-    --secondary: 220 13% 95%; /* Very Light Gray */
-    --secondary-foreground: 220 13% 20%; /* Darker Gray */
+    --secondary: 210 17% 96%; /* Ice (#f4f5f5) */
+    --secondary-foreground: 220 13% 18%; /* Charcoal */
 
-    --muted: 220 13% 95%; /* Very Light Gray */
-    --muted-foreground: 220 9% 46%; /* Medium-dark gray */
+    --muted: 210 17% 96%; /* Ice */
+    --muted-foreground: 218 4% 35%; /* Basalt (#57585a) */
 
-    --accent: 220 13% 60%; /* Slightly darker gray for accent */
-    --accent-foreground: 0 0% 100%; /* White */
+    --accent: 150 100% 83%; /* Spearmint (#aaffd8) */
+    --accent-foreground: 220 13% 18%; /* Charcoal */
 
-    --destructive: 0 84% 60%; /* Red */
+    --destructive: 328 63% 48%; /* Hibiscus (#c92c78) */
     --destructive-foreground: 0 0% 100%; /* White */
 
-    --border: 220 13% 85%; /* Light Gray border */
-    --input: 220 13% 95%; /* Very Light Gray input */
-    --ring: 220 13% 40%; /* Medium Gray ring */
+    --border: 210 10% 90%; /* Granite (#e4e5e5) */
+    --input: 210 10% 90%; /* Granite */
+    --ring: 220 13% 18%; /* Charcoal */
 
-    --radius: 0.5rem;
+    --radius: 0.1875rem; /* Approximately 3px */
 
     /* Custom CSS variables for agency theming */
     --agency-primary: var(--primary);
     --agency-secondary: var(--secondary);
+
+    /* New custom colors from provided CSS */
+    --color-basil: 165 100% 26%; /* #008363 */
+    --color-dark-basil: 165 100% 14%; /* #045944 */
   }
 
   .dark {
-    --background: 220 13% 10%; /* Dark Gray */
-    --foreground: 220 13% 90%; /* Light Gray */
+    --background: 220 13% 10%; /* Darker Gray */
+    --foreground: 0 0% 100%; /* White */
 
     --card: 220 13% 15%; /* Slightly lighter dark gray */
-    --card-foreground: 220 13% 90%; /* Light Gray */
+    --card-foreground: 0 0% 100%; /* White */
 
     --popover: 220 13% 15%; /* Slightly lighter dark gray */
-    --popover-foreground: 220 13% 90%; /* Light Gray */
+    --popover-foreground: 0 0% 100%; /* White */
 
-    --primary: 220 13% 70%; /* Light Gray */
-    --primary-foreground: 220 13% 10%; /* Dark Gray */
+    --primary: 0 0% 100%; /* White */
+    --primary-foreground: 220 13% 10%; /* Darker Gray */
 
     --secondary: 220 13% 20%; /* Darker Gray */
-    --secondary-foreground: 220 13% 90%; /* Light Gray */
+    --secondary-foreground: 0 0% 100%; /* White */
 
     --muted: 220 13% 20%; /* Darker Gray */
-    --muted-foreground: 220 13% 60%; /* Medium Gray */
+    --muted-foreground: 218 4% 65%; /* Lighter Basalt */
 
-    --accent: 220 13% 50%; /* Medium Gray */
-    --accent-foreground: 220 13% 90%; /* Light Gray */
+    --accent: 150 100% 83%; /* Spearmint */
+    --accent-foreground: 220 13% 10%; /* Darker Gray */
 
-    --destructive: 0 63% 31%; /* Dark Red */
+    --destructive: 328 63% 31%; /* Dark Red */
     --destructive-foreground: 210 40% 98%; /* Light Gray */
 
     --border: 220 13% 25%; /* Dark Gray border */
     --input: 220 13% 20%; /* Darker Gray input */
-    --ring: 220 13% 70%; /* Light Gray ring */
+    --ring: 0 0% 100%; /* White */
 
     /* Custom CSS variables for agency theming */
     --agency-primary: var(--primary);
     --agency-secondary: var(--secondary);
+
+    /* New custom colors from provided CSS */
+    --color-basil: 165 100% 26%; /* #008363 */
+    --color-dark-basil: 165 100% 14%; /* #045944 */
   }
 }
 
@@ -80,7 +126,20 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-averta; /* Apply new default font */
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-foreground; /* Ensure headings use foreground color and bold */
+  }
+
+  /* Base styles for links to match the provided CSS */
+  a {
+    @apply text-[--color-basil] font-bold transition-colors duration-200;
+  }
+
+  a:hover {
+    @apply underline text-[--color-dark-basil];
   }
 }

@@ -20,7 +20,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Inter", ...fontFamily.sans],
+        sans: ["Averta", ...fontFamily.sans], // Set Averta as default sans
+        averta: ["Averta", ...fontFamily.sans],
+        recoleta: ["Recoleta", ...fontFamily.serif],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -58,11 +60,16 @@ export default {
         },
         'agency-primary': 'var(--agency-primary)',
         'agency-secondary': 'var(--agency-secondary)',
+        // New custom colors
+        basil: "hsl(var(--color-basil))",
+        'dark-basil': "hsl(var(--color-dark-basil))",
       },
       borderRadius: {
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        md: "calc(var(--radius) - 1px)",
+        sm: "calc(var(--radius) - 2px)",
+        xl: "0.75rem", // 12px, for cards
+        "2xl": "1.25rem", // 20px, for larger cards/elements
       },
       keyframes: {
         "accordion-down": {

@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { MenuIcon, SearchIcon, MessageSquare, LogOut } from 'lucide-react'; // Import LogOut icon
+import { MenuIcon, SearchIcon, MessageSquare, LogOut } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import GlobalSearch from '@/components/common/GlobalSearch';
-import { getLoggedInUser, logoutUser } from '@/utils/auth'; // Import auth utilities
+import { getLoggedInUser, logoutUser } from '@/utils/auth';
 
 const Header: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -16,46 +16,46 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     setIsLoggedIn(!!getLoggedInUser());
-  }, [location.pathname]); // Re-check login status on route change
+  }, [location.pathname]);
 
   const handleLogout = () => {
     logoutUser();
     setIsLoggedIn(false);
-    navigate('/'); // Redirect to home after logout
+    navigate('/');
   };
 
   return (
     <>
       <GlobalSearch open={isSearchOpen} onOpenChange={setIsSearchOpen} />
-      <header className="bg-background text-foreground border-b p-4 shadow-sm sticky top-0 z-50">
+      <header className="bg-background text-foreground border-b border-border p-4 shadow-sm sticky top-0 z-50">
         <div className="container mx-auto flex justify-between items-center">
-          <Link to="/" className="text-2xl font-bold text-primary">
+          <Link to="/" className="text-2xl font-bold text-basil font-recoleta"> {/* Using new basil color and recoleta font */}
             HealthConnect
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-4 items-center font-medium">
-            <Button variant="ghost" onClick={() => setIsSearchOpen(true)} className="flex items-center gap-2">
+          <nav className="hidden md:flex space-x-4 items-center font-averta font-semibold">
+            <Button variant="ghost" onClick={() => setIsSearchOpen(true)} className="flex items-center gap-2 text-muted-foreground hover:text-basil">
               <SearchIcon className="h-5 w-5" /> Search
             </Button>
-            {isLoggedIn && ( // Show Messages and Logout if logged in
+            {isLoggedIn && (
               <>
-                <Link to="/messages" className="hover:text-primary flex items-center gap-2">
+                <Link to="/messages" className="text-muted-foreground hover:text-basil flex items-center gap-2">
                   <MessageSquare className="h-5 w-5" /> Messages
                 </Link>
-                <Button variant="ghost" onClick={handleLogout} className="flex items-center gap-2">
+                <Button variant="ghost" onClick={handleLogout} className="flex items-center gap-2 text-muted-foreground hover:text-basil">
                   <LogOut className="h-5 w-5" /> Logout
                 </Button>
               </>
             )}
-            {!isLoggedIn && ( // Show login/signup if not logged in
+            {!isLoggedIn && (
               <>
-                <Link to="/login" className="hover:text-primary">Patient Login</Link>
+                <Link to="/login" className="text-muted-foreground hover:text-basil">Patient Login</Link>
                 <Link to="/provider-login">
-                  <Button variant="outline">Provider Login</Button>
+                  <Button variant="custom-secondary" size="custom-sm">Provider Login</Button> {/* Using new custom-secondary button */}
                 </Link>
                 <Link to="/register">
-                  <Button>Sign Up</Button>
+                  <Button variant="custom-primary" size="custom-sm">Sign Up</Button> {/* Using new custom-primary button */}
                 </Link>
               </>
             )}
@@ -63,36 +63,36 @@ const Header: React.FC = () => {
 
           {/* Mobile Navigation */}
           <div className="md:hidden flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)}>
+            <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)} className="text-foreground">
               <SearchIcon className="h-6 w-6" />
             </Button>
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" className="text-foreground">
                   <MenuIcon className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[250px] sm:w-[300px]">
-                <nav className="flex flex-col space-y-4 p-4">
-                  <Link to="/" className="text-lg font-semibold hover:text-primary">Home</Link>
+              <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-background text-foreground">
+                <nav className="flex flex-col space-y-4 p-4 font-averta font-semibold">
+                  <Link to="/" className="text-lg text-foreground hover:text-basil">Home</Link>
                   {isLoggedIn && (
                     <>
-                      <Link to="/messages" className="text-lg font-semibold hover:text-primary flex items-center gap-2">
+                      <Link to="/messages" className="text-lg text-foreground hover:text-basil flex items-center gap-2">
                         <MessageSquare className="h-5 w-5 mr-2" /> Messages
                       </Link>
-                      <Button variant="ghost" onClick={handleLogout} className="w-full justify-start text-lg font-semibold flex items-center gap-2">
+                      <Button variant="ghost" onClick={handleLogout} className="w-full justify-start text-lg text-foreground hover:text-basil flex items-center gap-2">
                         <LogOut className="h-5 w-5 mr-2" /> Logout
                       </Button>
                     </>
                   )}
                   {!isLoggedIn && (
                     <>
-                      <Link to="/login" className="text-lg font-semibold hover:text-primary">Patient Login</Link>
+                      <Link to="/login" className="text-lg text-foreground hover:text-basil">Patient Login</Link>
                       <Link to="/provider-login">
-                        <Button variant="outline" className="w-full">Provider Login</Button>
+                        <Button variant="custom-secondary" className="w-full">Provider Login</Button>
                       </Link>
                       <Link to="/register">
-                        <Button className="w-full">Sign Up</Button>
+                        <Button variant="custom-primary" className="w-full">Sign Up</Button>
                       </Link>
                     </>
                   )}
