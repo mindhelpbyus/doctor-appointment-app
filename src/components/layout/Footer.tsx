@@ -8,8 +8,9 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4 md:px-8 lg:px-16 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Brand Info */}
         <div className="space-y-4">
-          <Link to="/" className="font-recoleta text-3xl font-bold text-primary hover:text-primary/90 transition-colors">
-            Medixy <span className="text-sm font-averta text-muted-foreground ml-2">product of Bedrock Health Solution</span>
+          <Link to="/" className="flex flex-col items-start gap-0">
+            <span className="font-recoleta text-3xl font-bold text-primary hover:text-primary/90 transition-colors">Medixy</span>
+            <span className="text-xs font-averta text-muted-foreground -mt-1">product of Bedrock Health Solution</span>
           </Link>
           <p className="text-sm text-muted-foreground font-averta">
             Connecting you to better health.

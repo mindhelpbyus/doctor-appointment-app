@@ -151,9 +151,10 @@ const DoctorDashboardPage: React.FC = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col items-start gap-0">
                 <Stethoscope className="w-8 h-8 text-primary" />
                 <span className="text-2xl font-bold text-primary">Medixy</span>
+                <span className="text-xs font-averta text-muted-foreground -mt-1">product of Bedrock Health Solution</span>
               </div>
               <Badge className="bg-accent text-accent-foreground border-primary/20">
                 <Stethoscope className="w-4 h-4" />
