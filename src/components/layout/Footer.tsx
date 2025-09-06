@@ -8,9 +8,8 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4 md:px-8 lg:px-16 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Brand Info */}
         <div className="space-y-4">
-          <Link to="/" className="flex flex-col items-start gap-0">
-            <img src="/medixy.jpeg" alt="Medixy Logo" className="h-10 w-auto mb-1" />
-            <span className="text-xs font-averta text-muted-foreground -mt-1">product of Bedrock Health Solution</span>
+          <Link to="/" className="flex items-center gap-2"> {/* Adjusted to flex items-center for logo only */}
+            <img src="/medixy.jpeg" alt="Medixy Logo" className="h-12 w-auto" /> {/* Increased height */}
           </Link>
           <p className="text-sm text-muted-foreground font-averta">
             Connecting you to better health.
@@ -64,7 +63,7 @@ const Footer: React.FC = () => {
       </div>
 
       <div className="container mx-auto px-4 md:px-8 lg:px-16 border-t border-gray-700 mt-8 pt-8 text-center text-sm text-muted-foreground font-averta">
-        &copy; {new Date().getFullYear()} Medixy, a product of Bedrock Health Solution. All rights reserved.
+        &copy; {new Date().getFullYear()} Medixy. All rights reserved.
       </div>
     </footer>
   );

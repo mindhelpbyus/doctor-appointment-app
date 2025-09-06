@@ -116,7 +116,7 @@ const MessagingSection: React.FC<MessagingSectionProps> = ({ currentDoctorId }) 
     <ChatLayout>
       <div className="w-full md:w-1/3 lg:w-1/4 border-r flex flex-col">
         <div className="p-4 border-b flex items-center gap-2">
-          <img src="/medxiy_chat.jpeg" alt="Medixy Chat" className="h-6 w-6" />
+          <img src="/medxiy_chat.jpeg" alt="Medixy Chat" className="h-8 w-8" /> {/* Increased size */}
           <h2 className="text-xl font-semibold">Conversations</h2>
         </div>
         <ConversationList
@@ -136,7 +136,7 @@ const MessagingSection: React.FC<MessagingSectionProps> = ({ currentDoctorId }) 
                 className="w-10 h-10 rounded-full object-cover"
               />
               <h3 className="text-lg font-semibold">{otherParticipantName}</h3>
-              <img src="/medxiy_chat.jpeg" alt="Medixy Chat" className="h-6 w-6 ml-auto" />
+              <img src="/medxiy_chat.jpeg" alt="Medixy Chat" className="h-8 w-8 ml-auto" /> {/* Increased size */}
             </div>
             <ScrollArea className="flex-grow p-4 space-y-4" ref={scrollAreaRef}>
               {messages.map((msg) => (

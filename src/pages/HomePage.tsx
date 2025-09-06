@@ -69,8 +69,7 @@ const HomePage = () => {
         {/* Features Section */}
         <section className="container mx-auto py-12 bg-light-grey rounded-2xl shadow-subtle"> {/* Added background, padding, shadow */}
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold font-recoleta text-primary mb-2">Run your practice with <img src="/medixy.jpeg" alt="Medixy Logo" className="inline-block h-10 w-auto align-middle -mt-2" /></h2> {/* Serif heading */}
-            <p className="text-muted-foreground text-xl mt-0 font-averta">product of Bedrock Health Solution</p> {/* Muted subheading */}
+            <h2 className="text-4xl font-bold font-recoleta text-primary mb-2">Run your practice with <img src="/medixy.jpeg" alt="Medixy Logo" className="inline-block h-12 w-auto align-middle -mt-2" /></h2> {/* Serif heading, increased logo height */}
             <p className="text-stone text-xl mt-4 font-averta">All the tools you need, all in one place.</p> {/* Muted subheading */}
           </div>
           <FeatureTabs />

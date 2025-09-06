@@ -56,10 +56,12 @@ const DoctorDashboardPage: React.FC = () => {
       return;
     }
 
+    console.log("Loading doctor data for ID:", currentUserId); // Log for debugging
     const fetchedDoctor = getDoctorById(currentUserId);
     setDoctor(fetchedDoctor);
 
     if (fetchedDoctor) {
+      console.log("Doctor found:", fetchedDoctor.fullName); // Log for debugging
       const allAppointments = getAppointments().filter(a => a.doctorId === fetchedDoctor.id);
       const now = new Date();
       setUpcomingAppointments(allAppointments.filter(a => new Date(a.datetime) >= now && a.status === 'booked'));
@@ -72,6 +74,8 @@ const DoctorDashboardPage: React.FC = () => {
 
       const fetchedConversations = getConversationsForUser(currentUserId);
       setConversations(fetchedConversations);
+    } else {
+      console.error("Doctor not found for ID:", currentUserId); // Log error if doctor not found
     }
   }, [currentUserId, currentUserType, navigate]);
 
@@ -88,13 +92,17 @@ const DoctorDashboardPage: React.FC = () => {
   const handleLogout = () => {
     logoutUser();
     navigate('/');
+    console.log("User logged out."); // Log logout action
   };
 
   const handleSaveAvailability = (updatedAvailability: IAvailability[]) => {
     if (doctor) {
       updateDoctorWeeklyAvailability(doctor.id, updatedAvailability);
+      console.log("Doctor availability updated for ID:", doctor.id); // Log availability update
       // Optionally, re-fetch doctor data to ensure state is fully updated
       setDoctor(prevDoctor => prevDoctor ? { ...prevDoctor, weeklyAvailability: updatedAvailability } : prevDoctor);
+    } else {
+      console.error("Attempted to save availability without a doctor object."); // Log error
     }
   };
 
@@ -151,9 +159,8 @@ const DoctorDashboardPage: React.FC = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link to="/" className="flex flex-col items-start gap-0">
-                <img src="/medixy.jpeg" alt="Medixy Logo" className="h-8 w-auto mb-1" />
-                <span className="text-xs font-averta text-muted-foreground -mt-1">product of Bedrock Health Solution</span>
+              <Link to="/" className="flex items-center gap-2"> {/* Adjusted for logo only */}
+                <img src="/medixy.jpeg" alt="Medixy Logo" className="h-10 w-auto" /> {/* Increased height */}
               </Link>
               <Badge className="bg-accent text-accent-foreground border-primary/20">
                 <Stethoscope className="w-4 h-4" />
