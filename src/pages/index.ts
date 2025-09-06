@@ -12,7 +12,8 @@ import ProviderLoginPage from './ProviderLoginPage';
 import AgencyDashboardPage from './AgencyDashboardPage';
 import PatientDashboardPage from './PatientDashboardPage';
 import ProviderOnboardingPage from './ProviderOnboardingPage';
-import MessagesPage from './MessagesPage'; // Import new MessagesPage
+import MessagesPage from './MessagesPage';
+import DoctorDashboardPage from './DoctorDashboardPage'; // Import new DoctorDashboardPage
 
 export {
   HomePage,
@@ -29,5 +30,6 @@ export {
   AgencyDashboardPage,
   PatientDashboardPage,
   ProviderOnboardingPage,
-  MessagesPage, // Export new MessagesPage
+  MessagesPage,
+  DoctorDashboardPage, // Export new DoctorDashboardPage
 };

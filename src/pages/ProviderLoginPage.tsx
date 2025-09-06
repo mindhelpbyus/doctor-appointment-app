@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { getAgencyUsers, getDoctorById } from '@/services/localApi';
 import { showError, showSuccess } from '@/utils/toast';
-import { loginUser } from '@/utils/auth'; // Import loginUser
+import { loginUser } from '@/utils/auth';
 
 const ProviderLoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +16,7 @@ const ProviderLoginPage: React.FC = () => {
     const user = getAgencyUsers().find(u => u.email === email);
 
     if (user) {
-      loginUser(user.id, 'agencyUser'); // Log in the agency user
+      loginUser(user.id, 'agencyUser');
       showSuccess('Login successful!');
       navigate(`/agency-dashboard/${user.agencyId}`);
     } else {
@@ -28,7 +28,7 @@ const ProviderLoginPage: React.FC = () => {
     const demoProvider = getAgencyUsers().find(u => u.id === 'user-demo');
     if (demoProvider) {
       setEmail(demoProvider.email);
-      loginUser(demoProvider.id, 'agencyUser'); // Log in the demo agency user
+      loginUser(demoProvider.id, 'agencyUser');
       showSuccess('Logged in as Demo Agency Provider!');
       navigate(`/agency-dashboard/${demoProvider.agencyId}`);
     } else {
@@ -43,7 +43,7 @@ const ProviderLoginPage: React.FC = () => {
     if (demoDoctor) {
       loginUser(demoDoctor.id, 'doctor'); // Log in the individual doctor
       showSuccess(`Logged in as Dr. ${demoDoctor.fullName}!`);
-      navigate('/messages'); // Navigate to messages page for the doctor
+      navigate('/doctor-dashboard'); // Navigate to the new doctor dashboard
     } else {
       showError('Demo individual doctor profile not found.');
     }
