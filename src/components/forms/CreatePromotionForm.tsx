@@ -42,9 +42,9 @@ const CreatePromotionForm: React.FC<CreatePromotionFormProps> = ({ agencyId, onS
 
   function onSubmit(values: z.infer<typeof promotionSchema>) {
     try {
-      // Cast values to the expected type, as zodResolver ensures validity
+      // Explicitly cast values to the expected type
       const promotionData: Omit<Promotion, 'id' | 'status'> = {
-        ...values,
+        ...(values as z.infer<typeof promotionSchema>),
         targetAgencyId: agencyId,
       };
       addPromotion(promotionData);

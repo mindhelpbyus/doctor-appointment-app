@@ -36,8 +36,8 @@ const ProviderOnboardingForm: React.FC = () => {
 
   function onSubmit(values: z.infer<typeof agencySchema>) {
     try {
-      // Cast values to the expected type, as zodResolver ensures validity
-      const agencyData: Omit<Agency, 'id' | 'slug' | 'isActive' | 'theme' | 'logo' | 'headerImage'> = values;
+      // Explicitly cast values to the expected type
+      const agencyData: Omit<Agency, 'id' | 'slug' | 'isActive' | 'theme' | 'logo' | 'headerImage'> = values as z.infer<typeof agencySchema>;
       addAgency(agencyData);
       showSuccess('Application submitted for review!');
       setIsSubmitted(true);
