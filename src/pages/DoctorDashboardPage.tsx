@@ -154,7 +154,7 @@ const DoctorDashboardPage: React.FC = () => {
               <Link to="/" className="flex flex-col items-start">
                 <span className="text-2xl font-recoleta font-bold text-primary">Medixy</span>
                 <span className="text-xs text-muted-foreground font-averta -mt-1">
-                  Connecting you to better health.
+                  Product of Bedrock health solution.
                 </span>
               </Link>
               <Badge className="bg-blue-100 text-blue-800 border-blue-200">

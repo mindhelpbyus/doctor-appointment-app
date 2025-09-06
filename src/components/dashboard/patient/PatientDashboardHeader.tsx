@@ -20,7 +20,7 @@ const PatientDashboardHeader: React.FC<PatientDashboardHeaderProps> = ({ patient
             <Link to="/" className="flex flex-col items-start">
               <span className="text-2xl font-recoleta font-bold text-primary">Medixy</span>
               <span className="text-xs text-muted-foreground font-averta -mt-1">
-                Connecting you to better health.
+                Product of Bedrock health solution.
               </span>
             </Link>
             <Badge className="bg-accent text-accent-foreground border-primary/20">

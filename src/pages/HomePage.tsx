@@ -72,7 +72,7 @@ const HomePage = () => {
             <h2 className="text-4xl font-bold font-recoleta text-primary mb-2">
               Run your practice with <span className="text-5xl">Medixy</span>
             </h2>
-            <p className="text-stone text-lg mt-2 font-averta">Connecting you to better health.</p>
+            <p className="text-stone text-lg mt-2 font-averta">Product of Bedrock health solution.</p>
             <p className="text-stone text-xl mt-4 font-averta">All the tools you need, all in one place.</p>
           </div>
           <FeatureTabs />

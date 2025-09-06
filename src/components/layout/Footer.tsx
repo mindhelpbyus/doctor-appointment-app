@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
             <span className="text-3xl font-recoleta font-bold text-primary">Medixy</span>
           </Link>
           <p className="text-sm text-muted-foreground font-averta">
-            Connecting you to better health.
+            Product of Bedrock health solution.
           </p>
           <div className="flex space-x-4">
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
