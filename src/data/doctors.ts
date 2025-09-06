@@ -1,4 +1,4 @@
-import { IAvailability } => '@/models/Doctor'; // Import the new interface
+import { IAvailability } from '@/models/Doctor'; // Import the new interface
 
 export interface Doctor {
   id: string;
