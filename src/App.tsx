@@ -22,8 +22,13 @@ import {
   MessagesPage,
   DoctorDashboardPage,
   AgenciesPage,
-  AboutUsPage, // Import AboutUsPage
-  ContactPage // Import ContactPage
+  AboutUsPage,
+  ContactPage,
+  SchedulingFeaturePage,
+  PaymentsFeaturePage,
+  MarketingFeaturePage,
+  ReportingFeaturePage,
+  StaffManagementFeaturePage,
 } from "./pages";
 
 const queryClient = new QueryClient();
@@ -51,8 +56,14 @@ const App = () => (
             <Route path="messages" element={<MessagesPage />} />
             <Route path="messages/:conversationId" element={<MessagesPage />} />
             <Route path="agencies" element={<AgenciesPage />} />
-            <Route path="about" element={<AboutUsPage />} /> {/* New route for AboutUsPage */}
-            <Route path="contact" element={<ContactPage />} /> {/* New route for ContactPage */}
+            <Route path="about" element={<AboutUsPage />} />
+            <Route path="contact" element={<ContactPage />} />
+            {/* New Feature Pages */}
+            <Route path="features/scheduling" element={<SchedulingFeaturePage />} />
+            <Route path="features/payments" element={<PaymentsFeaturePage />} />
+            <Route path="features/marketing" element={<MarketingFeaturePage />} />
+            <Route path="features/reporting" element={<ReportingFeaturePage />} />
+            <Route path="features/staff-management" element={<StaffManagementFeaturePage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Route>

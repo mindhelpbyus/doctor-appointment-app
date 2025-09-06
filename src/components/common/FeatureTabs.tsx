@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Megaphone, BarChart3, Users, CreditCard } from 'lucide-react';
+import { Link } from 'react-router-dom'; // Import Link
 
 const features = [
   {
@@ -11,6 +12,7 @@ const features = [
     description: 'Manage your entire calendar for staffing and booking. Classes and appointments are seamlessly updated in real time, on every device, keeping your entire team coordinated.',
     icon: Calendar,
     imageUrl: 'https://images.unsplash.com/photo-1587854692137-87ad9f93522e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // High-quality image
+    link: '/features/scheduling',
   },
   {
     value: 'payments',
@@ -18,6 +20,7 @@ const features = [
     description: 'Streamline your revenue cycle with our all-in-one billing and payment processing. From invoicing to checkout, we provide a secure and seamless financial experience for you and your patients.',
     icon: CreditCard,
     imageUrl: 'https://images.unsplash.com/photo-1579621970563-fa020b955579?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // High-quality image
+    link: '/features/payments',
   },
   {
     value: 'marketing',
@@ -25,6 +28,7 @@ const features = [
     description: 'Turn new patients into regulars. With automated email and text campaigns, you can easily collect contact info and convert newcomers into loyal patients with personalized messages.',
     icon: Megaphone,
     imageUrl: 'https://images.unsplash.com/photo-1557804506-669a67965da9?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // High-quality image
+    link: '/features/marketing',
   },
   {
     value: 'reporting',
@@ -32,6 +36,7 @@ const features = [
     description: 'See how your practice is performing with instant, detailed access to your most critical metrics. Make smart, informed decisions backed by our best-in-class analytics.',
     icon: BarChart3,
     imageUrl: 'https://images.unsplash.com/photo-1551288259-cd11ad942024?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // High-quality image
+    link: '/features/reporting',
   },
   {
     value: 'staff',
@@ -39,6 +44,7 @@ const features = [
     description: 'Keep your people moving with integrated staffing tools. From scheduling to performance reviews, automated substitutions to payroll, it\'s all on HealthConnect.',
     icon: Users,
     imageUrl: 'https://images.unsplash.com/photo-1504805572947-34fd45f1d088?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // High-quality image
+    link: '/features/staff-management',
   },
 ];
 
@@ -61,7 +67,9 @@ const FeatureTabs: React.FC = () => {
                 <div className="p-8 lg:p-12 space-y-6 order-2 md:order-1"> {/* Increased padding and spacing */}
                   <h3 className="text-3xl lg:text-4xl font-recoleta font-bold text-foreground">{feature.title}</h3> {/* Serif font, larger */}
                   <p className="text-muted-foreground text-lg lg:text-xl leading-relaxed font-averta">{feature.description}</p> {/* Larger, relaxed leading */}
-                  <Button variant="custom-primary" size="custom-sm" className="shadow-md hover:shadow-lg">Learn More</Button> {/* Button with shadow */}
+                  <Button asChild variant="custom-primary" size="custom-sm" className="shadow-md hover:shadow-lg">
+                    <Link to={feature.link}>Learn More</Link>
+                  </Button>
                 </div>
                 <div className="order-1 md:order-2">
                   <img

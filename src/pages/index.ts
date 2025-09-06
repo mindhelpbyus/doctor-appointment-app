@@ -15,8 +15,13 @@ import ProviderOnboardingPage from './ProviderOnboardingPage';
 import MessagesPage from './MessagesPage';
 import DoctorDashboardPage from './DoctorDashboardPage';
 import AgenciesPage from './AgenciesPage';
-import AboutUsPage from './AboutUsPage'; // Import new AboutUsPage
-import ContactPage from './ContactPage'; // Import new ContactPage
+import AboutUsPage from './AboutUsPage';
+import ContactPage from './ContactPage';
+import SchedulingFeaturePage from './features/SchedulingFeaturePage';
+import PaymentsFeaturePage from './features/PaymentsFeaturePage';
+import MarketingFeaturePage from './features/MarketingFeaturePage';
+import ReportingFeaturePage from './features/ReportingFeaturePage';
+import StaffManagementFeaturePage from './features/StaffManagementFeaturePage';
 
 export {
   HomePage,
@@ -36,6 +41,11 @@ export {
   MessagesPage,
   DoctorDashboardPage,
   AgenciesPage,
-  AboutUsPage, // Export new AboutUsPage
-  ContactPage, // Export new ContactPage
+  AboutUsPage,
+  ContactPage,
+  SchedulingFeaturePage,
+  PaymentsFeaturePage,
+  MarketingFeaturePage,
+  ReportingFeaturePage,
+  StaffManagementFeaturePage,
 };
