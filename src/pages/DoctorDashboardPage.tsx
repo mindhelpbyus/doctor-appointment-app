@@ -16,6 +16,7 @@ import {
   StarIcon,
   ClockIcon,
   MapPinIcon,
+  CalendarDays, // Import CalendarDays for the new tab icon
 } from 'lucide-react';
 import { getLoggedInUser, logoutUser } from '@/utils/auth';
 import {
@@ -23,19 +24,21 @@ import {
   getAppointments,
   getConversationsForUser,
   getPatientById,
-  getSpecialtyById,
   getSpecialties,
-  getMessagesForConversation, // Imported getMessagesForConversation
+  getMessagesForConversation,
+  updateDoctorWeeklyAvailability, // Import the new update function
 } from '@/services/localApi';
 import { Doctor } from '@/data/doctors';
 import { Appointment } from '@/data/appointments';
 import { Conversation } from '@/data/chat';
 import MessagingSection from '@/components/doctor/MessagingSection';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import DoctorAvailabilityCalendar from '@/components/doctor/DoctorAvailabilityCalendar'; // Import the new component
+import { IAvailability } from '@/models/Doctor'; // Import IAvailability
 
 const DoctorDashboardPage: React.FC = () => {
   const navigate = useNavigate();
-  const { conversationId } = useParams<{ conversationId?: string }>(); // For deep linking to a conversation
+  const { conversationId } = useParams<{ conversationId?: string }>();
 
   const [doctor, setDoctor] = useState<Doctor | undefined>(undefined);
   const [activeTab, setActiveTab] = useState('overview');
@@ -43,14 +46,14 @@ const DoctorDashboardPage: React.FC = () => {
   const [pastAppointments, setPastAppointments] = useState<Appointment[]>([]);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [specialtyName, setSpecialtyName] = useState<string>('');
-  const [specialties, setSpecialties] = useState<any[]>([]); // To get specialty names
+  const [specialties, setSpecialties] = useState<any[]>([]);
 
   const currentUserId = getLoggedInUser()?.id;
   const currentUserType = getLoggedInUser()?.type;
 
-  useEffect(() => {
+  const loadDoctorData = useCallback(() => {
     if (!currentUserId || currentUserType !== 'doctor') {
-      navigate('/provider-login'); // Redirect if not logged in as a doctor
+      navigate('/provider-login');
       return;
     }
 
@@ -74,8 +77,12 @@ const DoctorDashboardPage: React.FC = () => {
   }, [currentUserId, currentUserType, navigate]);
 
   useEffect(() => {
+    loadDoctorData();
+  }, [loadDoctorData]);
+
+  useEffect(() => {
     if (conversationId) {
-      setActiveTab('messages'); // Switch to messages tab if conversationId is in URL
+      setActiveTab('messages');
     }
   }, [conversationId]);
 
@@ -84,14 +91,20 @@ const DoctorDashboardPage: React.FC = () => {
     navigate('/');
   };
 
+  const handleSaveAvailability = (updatedAvailability: IAvailability[]) => {
+    if (doctor) {
+      updateDoctorWeeklyAvailability(doctor.id, updatedAvailability);
+      // Optionally, re-fetch doctor data to ensure state is fully updated
+      setDoctor(prevDoctor => prevDoctor ? { ...prevDoctor, weeklyAvailability: updatedAvailability } : prevDoctor);
+    }
+  };
+
   if (!doctor) {
     return <div className="text-center py-10">Loading doctor dashboard...</div>;
   }
 
-  // Dashboard Metrics
   const totalClients = new Set(conversations.map(conv => conv.participantIds.find(id => id !== doctor.id))).size;
   const unreadMessagesCount = conversations.reduce((sum, conv) => {
-    // Only count unread messages where the doctor is the receiver
     const messagesForConv = getMessagesForConversation(conv.id);
     const unreadForDoctor = messagesForConv.filter(msg => !msg.read && msg.receiverId === doctor.id);
     return sum + unreadForDoctor.length;
@@ -100,9 +113,11 @@ const DoctorDashboardPage: React.FC = () => {
   const sessionsThisWeek = upcomingAppointments.filter(appt => {
     const apptDate = new Date(appt.datetime);
     const today = new Date();
-    const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay())); // Sunday
+    const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+    startOfWeek.setHours(0, 0, 0, 0); // Set to beginning of the day
     const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6); // Saturday
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setHours(23, 59, 59, 999); // Set to end of the day
     return apptDate >= startOfWeek && apptDate <= endOfWeek;
   }).length;
 
@@ -112,6 +127,7 @@ const DoctorDashboardPage: React.FC = () => {
   const tabs = [
     { value: 'overview', label: 'Overview' },
     { value: 'messages', label: 'Messages' },
+    { value: 'availability', label: 'Availability' }, // New tab
     { value: 'clients', label: 'My Patients' },
     { value: 'schedule', label: 'Schedule' },
     { value: 'settings', label: 'Settings' },
@@ -125,7 +141,7 @@ const DoctorDashboardPage: React.FC = () => {
       case 4: return 'grid-cols-4';
       case 5: return 'grid-cols-5';
       case 6: return 'grid-cols-6';
-      default: return 'grid-cols-1'; // Fallback
+      default: return 'grid-cols-1';
     }
   };
 
@@ -267,6 +283,13 @@ const DoctorDashboardPage: React.FC = () => {
 
           <TabsContent value="messages">
             <MessagingSection currentDoctorId={doctor.id} />
+          </TabsContent>
+
+          <TabsContent value="availability">
+            <DoctorAvailabilityCalendar
+              initialAvailability={doctor.weeklyAvailability || []}
+              onSave={handleSaveAvailability}
+            />
           </TabsContent>
 
           <TabsContent value="clients">

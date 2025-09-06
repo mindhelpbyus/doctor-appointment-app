@@ -7,7 +7,8 @@ import { specialties, Specialty } from '@/data/specialties';
 import { admins, Admin } from '@/data/admins';
 import { agencyUsers, AgencyUser } from '@/data/agencyUsers';
 import { conversations, messages, Conversation, Message } from '@/data/chat';
-import { agencyPerformanceReport, doctorPerformanceReports, promotionReports, AgencyPerformanceReport, DoctorPerformanceReport, PromotionReport } from '@/data/reports'; // Import new report data and interfaces
+import { agencyPerformanceReport, doctorPerformanceReports, promotionReports, AgencyPerformanceReport, DoctorPerformanceReport, PromotionReport } from '@/data/reports';
+import { IAvailability } from '@/models/Doctor'; // Import IAvailability
 
 // --- Seeding Logic ---
 const seedEntity = (key: string, data: unknown[]) => {
@@ -89,6 +90,16 @@ export const updateDoctor = (doctor: Doctor): void => updateEntity<Doctor>('doct
 export const updatePromotion = (promotion: Promotion): void => updateEntity<Promotion>('promotions', promotion);
 export const updateConversation = (conversation: Conversation): void => updateEntity<Conversation>('conversations', conversation);
 export const updateMessage = (message: Message): void => updateEntity<Message>('messages', message);
+
+// New function to update doctor's weekly availability
+export const updateDoctorWeeklyAvailability = (doctorId: string, weeklyAvailability: IAvailability[]): void => {
+  const doctor = getDoctorById(doctorId);
+  if (doctor) {
+    updateDoctor({ ...doctor, weeklyAvailability });
+  } else {
+    console.error(`Doctor with ID ${doctorId} not found.`);
+  }
+};
 
 
 export const addAppointment = (appointment: Omit<Appointment, 'id'>): Appointment => {
