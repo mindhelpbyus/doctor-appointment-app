@@ -34,9 +34,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search..
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onKeyPress={handleKeyPress}
-        className="flex-grow"
+        className="flex-grow rounded-sm border-foreground focus:border-basil"
       />
-      <Button onClick={handleSearch}>
+      <Button onClick={handleSearch} variant="custom-primary" size="custom-sm">
         <SearchIcon className="h-5 w-5 mr-2" /> Search
       </Button>
     </div>

@@ -26,16 +26,16 @@ const HomePage = () => {
         {/* Hero Section */}
         <section className="relative -mx-4 -mt-8 md:-mx-16">
           <div
-            className="w-full h-[60vh] min-h-[500px] bg-foreground flex items-center justify-center text-center text-background p-4 rounded-lg overflow-hidden" // Using new foreground/background colors
+            className="w-full h-[60vh] min-h-[500px] bg-foreground flex items-center justify-center text-center text-background p-4 rounded-lg overflow-hidden"
           >
             <div className="w-full max-w-3xl">
-              <h1 className="text-5xl md:text-6xl font-recoleta font-extrabold mb-4 leading-tight"> {/* Using Recoleta font */}
+              <h1 className="text-5xl md:text-6xl font-recoleta font-extrabold mb-4 leading-tight">
                 Find and book your perfect provider.
               </h1>
-              <p className="text-xl mb-8 opacity-90 font-averta"> {/* Using Averta font */}
+              <p className="text-xl mb-8 opacity-90 font-averta">
                 Search for doctors, specialists, and clinics in your area.
               </p>
-              <Button size="custom-lg" variant="custom-primary" onClick={() => setIsSearchOpen(true)} className="bg-accent text-foreground hover:bg-accent/90"> {/* Using new custom-lg size and custom-primary variant */}
+              <Button size="custom-lg" variant="custom-primary" onClick={() => setIsSearchOpen(true)} className="bg-accent text-foreground hover:bg-accent/90">
                 <SearchIcon className="h-6 w-6 mr-3" /> Search Now
               </Button>
             </div>
@@ -45,7 +45,7 @@ const HomePage = () => {
         {/* Browse by Specialty Section */}
         {specialties.length > 0 && (
           <section>
-            <h2 className="text-3xl font-bold text-center mb-8 font-averta">Browse by Specialty</h2>
+            <h2 className="text-3xl font-bold text-center mb-8 font-averta text-foreground">Browse by Specialty</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {specialties.map(specialty => (
                 <SpecialtyCard key={specialty.id} specialty={specialty} />
@@ -57,7 +57,7 @@ const HomePage = () => {
         {/* Browse by Provider Section */}
         {agencies.length > 0 && (
           <section>
-            <h2 className="text-3xl font-bold text-center mb-8 font-averta">Browse by Provider</h2>
+            <h2 className="text-3xl font-bold text-center mb-8 font-averta text-foreground">Browse by Provider</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               {agencies.map(agency => (
                 <AgencyCard key={agency.id} agency={agency} />
@@ -69,7 +69,7 @@ const HomePage = () => {
         {/* Features Section */}
         <section className="container mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold font-averta">Run your practice with confidence</h2>
+            <h2 className="text-4xl font-bold font-averta text-foreground">Run your practice with confidence</h2>
             <p className="text-muted-foreground text-lg mt-2 font-averta">All the tools you need, all in one place.</p>
           </div>
           <FeatureTabs />

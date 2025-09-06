@@ -59,34 +59,34 @@ const AdminPage: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-4xl font-bold text-center">Admin Dashboard</h1>
+      <h1 className="text-4xl font-bold text-center font-averta text-foreground">Admin Dashboard</h1>
       <Tabs defaultValue="agencies">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="agencies">Manage Agencies</TabsTrigger>
-          <TabsTrigger value="doctors">Manage Doctors</TabsTrigger>
-          <TabsTrigger value="promotions">Manage Promotions</TabsTrigger>
+          <TabsTrigger value="agencies" className="font-averta text-foreground">Manage Agencies</TabsTrigger>
+          <TabsTrigger value="doctors" className="font-averta text-foreground">Manage Doctors</TabsTrigger>
+          <TabsTrigger value="promotions" className="font-averta text-foreground">Manage Promotions</TabsTrigger>
         </TabsList>
 
         {/* Agencies Tab */}
         <TabsContent value="agencies">
-          <Card>
+          <Card className="rounded-2xl shadow-lg">
             <CardHeader>
-              <CardTitle>Healthcare Agencies</CardTitle>
+              <CardTitle className="font-averta text-foreground">Healthcare Agencies</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Enable/Disable</TableHead>
+                    <TableHead className="font-averta text-muted-foreground">Name</TableHead>
+                    <TableHead className="font-averta text-muted-foreground">Status</TableHead>
+                    <TableHead className="text-right font-averta text-muted-foreground">Enable/Disable</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {agencies.map(agency => (
                     <TableRow key={agency.id}>
-                      <TableCell className="font-medium">{agency.name}</TableCell>
-                      <TableCell>{agency.isActive ? 'Active' : 'Inactive'}</TableCell>
+                      <TableCell className="font-medium font-averta text-foreground">{agency.name}</TableCell>
+                      <TableCell className="font-averta text-muted-foreground">{agency.isActive ? 'Active' : 'Inactive'}</TableCell>
                       <TableCell className="text-right">
                         <Switch
                           checked={agency.isActive}
@@ -103,36 +103,36 @@ const AdminPage: React.FC = () => {
 
         {/* Doctors Tab */}
         <TabsContent value="doctors">
-          <Card>
+          <Card className="rounded-2xl shadow-lg">
             <CardHeader>
-              <CardTitle>Doctors</CardTitle>
+              <CardTitle className="font-averta text-foreground">Doctors</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Current Agency</TableHead>
-                    <TableHead className="text-right">Assign Agency</TableHead>
+                    <TableHead className="font-averta text-muted-foreground">Name</TableHead>
+                    <TableHead className="font-averta text-muted-foreground">Current Agency</TableHead>
+                    <TableHead className="text-right font-averta text-muted-foreground">Assign Agency</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {doctors.map(doctor => (
                     <TableRow key={doctor.id}>
-                      <TableCell className="font-medium">{doctor.fullName}</TableCell>
-                      <TableCell>{agencies.find(a => a.id === doctor.agencyId)?.name || 'Independent'}</TableCell>
+                      <TableCell className="font-medium font-averta text-foreground">{doctor.fullName}</TableCell>
+                      <TableCell className="font-averta text-muted-foreground">{agencies.find(a => a.id === doctor.agencyId)?.name || 'Independent'}</TableCell>
                       <TableCell className="text-right">
                         <Select
                           value={doctor.agencyId || 'none'}
                           onValueChange={(value) => handleDoctorAgencyChange(doctor, value)}
                         >
-                          <SelectTrigger className="w-[220px]">
-                            <SelectValue placeholder="Select Agency" />
+                          <SelectTrigger className="w-[220px] rounded-sm border-foreground focus:border-basil">
+                            <SelectValue placeholder="Select Agency" className="font-averta text-foreground" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="none">Independent</SelectItem>
+                            <SelectItem value="none" className="font-averta text-foreground">Independent</SelectItem>
                             {agencies.map(agency => (
-                              <SelectItem key={agency.id} value={agency.id}>{agency.name}</SelectItem>
+                              <SelectItem key={agency.id} value={agency.id} className="font-averta text-foreground">{agency.name}</SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
@@ -147,30 +147,30 @@ const AdminPage: React.FC = () => {
 
         {/* Promotions Tab */}
         <TabsContent value="promotions">
-          <Card>
+          <Card className="rounded-2xl shadow-lg">
             <CardHeader>
-              <CardTitle>Promotions</CardTitle>
+              <CardTitle className="font-averta text-foreground">Promotions</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Title</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    <TableHead className="font-averta text-muted-foreground">Title</TableHead>
+                    <TableHead className="font-averta text-muted-foreground">Status</TableHead>
+                    <TableHead className="text-right font-averta text-muted-foreground">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {promotions.map(promo => (
                     <TableRow key={promo.id}>
-                      <TableCell className="font-medium">{promo.title}</TableCell>
-                      <TableCell>{promo.status}</TableCell>
+                      <TableCell className="font-medium font-averta text-foreground">{promo.title}</TableCell>
+                      <TableCell className="font-averta text-muted-foreground">{promo.status}</TableCell>
                       <TableCell className="text-right space-x-2">
                         {promo.status !== 'approved' && (
-                          <Button size="sm" onClick={() => handlePromotionStatusChange(promo, 'approved')}>Approve</Button>
+                          <Button size="custom-sm" variant="custom-primary" onClick={() => handlePromotionStatusChange(promo, 'approved')}>Approve</Button>
                         )}
                         {promo.status !== 'rejected' && (
-                          <Button size="sm" variant="destructive" onClick={() => handlePromotionStatusChange(promo, 'rejected')}>Reject</Button>
+                          <Button size="custom-sm" variant="destructive" onClick={() => handlePromotionStatusChange(promo, 'rejected')}>Reject</Button>
                         )}
                       </TableCell>
                     </TableRow>
