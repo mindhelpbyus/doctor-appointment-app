@@ -65,6 +65,9 @@ const config = {
         spritz: 'var(--spritz)',
         'matcha-latte': 'var(--matcha-latte)',
         'light-grey': 'var(--light-grey)',
+        // Added health-blue and dark-health-blue to Tailwind config
+        'health-blue': 'var(--health-blue)',
+        'dark-health-blue': 'var(--dark-health-blue)',
       },
       borderRadius: {
         lg: "var(--radius)",
