@@ -5,6 +5,7 @@ import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
 import AppointmentsPage from './AppointmentsPage';
 import AgencyPage from './AgencyPage';
+import DoctorProfilePage from './DoctorProfilePage'; // New import
 
 export {
   Index,
@@ -14,4 +15,5 @@ export {
   RegisterPage,
   AppointmentsPage,
   AgencyPage,
+  DoctorProfilePage, // New export
 };

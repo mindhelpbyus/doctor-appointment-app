@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./components/layout/MainLayout";
 // Corrected imports: Import named exports from the barrel file
-import { Index, NotFound, SearchPage, LoginPage, RegisterPage, AppointmentsPage, AgencyPage } from "./pages";
+import { Index, NotFound, SearchPage, LoginPage, RegisterPage, AppointmentsPage, AgencyPage, DoctorProfilePage } from "./pages";
 
 const queryClient = new QueryClient();
 
@@ -22,7 +22,8 @@ const App = () => (
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
             <Route path="appointments" element={<AppointmentsPage />} />
-            <Route path="a/:agencySlug/*" element={<AgencyPage />} /> {/* Agency landing page with nested routes */}
+            <Route path="a/:agencySlug/*" element={<AgencyPage />} />
+            <Route path="doctor/:doctorId" element={<DoctorProfilePage />} /> {/* New route for doctor profiles */}
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Route>
