@@ -23,6 +23,17 @@ const ProviderLoginPage: React.FC = () => {
     }
   };
 
+  const handleDemoLogin = () => {
+    const demoProvider = getAgencyUsers().find(u => u.id === 'user-demo');
+    if (demoProvider) {
+      setEmail(demoProvider.email); // Pre-fill email for visual feedback
+      showSuccess('Logged in as Demo Provider!');
+      navigate(`/agency-dashboard/${demoProvider.agencyId}`);
+    } else {
+      showError('Demo provider account not found.');
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-160px)]">
       <Card className="w-full max-w-md">
@@ -47,6 +58,7 @@ const ProviderLoginPage: React.FC = () => {
             <Input id="password" type="password" required defaultValue="password" />
           </div>
           <Button onClick={handleLogin} className="w-full">Login</Button>
+          <Button variant="outline" className="w-full" onClick={handleDemoLogin}>Login as Demo Provider</Button>
           <p className="text-center text-sm text-muted-foreground pt-2">
             Want to list your practice on HealthConnect?{' '}
             <Link to="/onboard-provider" className="text-primary hover:underline">Register here</Link>
