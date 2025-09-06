@@ -152,7 +152,7 @@ const DoctorDashboardPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link to="/" className="flex flex-col items-start">
-                <span className="text-2xl font-recoleta font-bold text-primary">Medixy™</span>
+                <span className="text-2xl font-recoleta font-bold text-primary">Medixy</span>
                 <span className="text-xs text-muted-foreground font-averta -mt-1">
                   Connecting you to better health.
                 </span>
