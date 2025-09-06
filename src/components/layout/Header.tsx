@@ -131,9 +131,9 @@ const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background shadow-sm">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-8 lg:px-16">
+      <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-8 lg:px-16">
         <Link to="/" className="flex items-center gap-2"> {/* Adjusted to flex items-center for logo only */}
-          <img src="/medixy.jpeg" alt="Medixy Logo" className="h-12 w-auto" /> {/* Increased height */}
+          <img src="/medixy.jpeg" alt="Medixy Logo" className="h-14 w-auto" /> {/* Increased height */}
         </Link>
 
         {/* Desktop Navigation */}
@@ -171,7 +171,7 @@ const Header: React.FC = () => {
           <SheetContent side="right" className="w-[280px] sm:w-[320px] flex flex-col p-4">
             <div className="flex items-center justify-between pb-4 border-b border-border">
               <Link to="/" className="flex items-center gap-2" onClick={() => setIsSheetOpen(false)}> {/* Adjusted for logo only */}
-                <img src="/medixy.jpeg" alt="Medixy Logo" className="h-10 w-auto" /> {/* Increased height */}
+                <img src="/medixy.jpeg" alt="Medixy Logo" className="h-12 w-auto" /> {/* Increased height */}
               </Link>
               <Button variant="ghost" size="icon" onClick={() => setIsSheetOpen(false)}>
                 <XIcon className="h-6 w-6 text-foreground" />
