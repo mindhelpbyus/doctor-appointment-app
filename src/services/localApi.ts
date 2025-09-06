@@ -6,10 +6,10 @@ import { promotions, Promotion } from '@/data/promotions';
 import { specialties, Specialty } from '@/data/specialties';
 import { admins, Admin } from '@/data/admins';
 import { agencyUsers, AgencyUser } from '@/data/agencyUsers';
-import { conversations, messages, Conversation, Message } from '@/data/chat';
+import { conversations, messages, Conversation, Message, ConversationTopic } from '@/data/chat'; // Import ConversationTopic
 import { agencyPerformanceReport, doctorPerformanceReports, promotionReports, AgencyPerformanceReport, DoctorPerformanceReport, PromotionReport } from '@/data/reports';
 import { IAvailability } from '@/models/Doctor';
-import { visitSummaries, VisitSummary } from '@/data/visitSummaries'; // Import VisitSummary
+import { visitSummaries, VisitSummary } from '@/data/visitSummaries';
 
 // --- Seeding Logic ---
 const seedEntity = (key: string, data: unknown[]) => {
@@ -28,7 +28,7 @@ const seedAllData = () => {
   seedEntity('agencyUsers', agencyUsers);
   seedEntity('conversations', conversations);
   seedEntity('messages', messages);
-  seedEntity('visitSummaries', visitSummaries); // Seed visit summaries
+  seedEntity('visitSummaries', visitSummaries);
   // No need to seed reports as they are static mock data for now.
 };
 
@@ -59,7 +59,7 @@ export const getAdmins = (): Admin[] => getEntity<Admin>('admins');
 export const getAgencyUsers = (): AgencyUser[] => getEntity<AgencyUser>('agencyUsers');
 export const getConversations = (): Conversation[] => getEntity<Conversation>('conversations');
 export const getMessages = (): Message[] => getEntity<Message>('messages');
-export const getVisitSummaries = (): VisitSummary[] => getEntity<VisitSummary>('visitSummaries'); // New getter
+export const getVisitSummaries = (): VisitSummary[] => getEntity<VisitSummary>('visitSummaries');
 
 // New report getters
 export const getAgencyPerformanceReport = (): AgencyPerformanceReport => agencyPerformanceReport;
@@ -93,7 +93,7 @@ export const updateDoctor = (doctor: Doctor): void => updateEntity<Doctor>('doct
 export const updatePromotion = (promotion: Promotion): void => updateEntity<Promotion>('promotions', promotion);
 export const updateConversation = (conversation: Conversation): void => updateEntity<Conversation>('conversations', conversation);
 export const updateMessage = (message: Message): void => updateEntity<Message>('messages', message);
-export const updateVisitSummary = (visitSummary: VisitSummary): void => updateEntity<VisitSummary>('visitSummaries', visitSummary); // New updater
+export const updateVisitSummary = (visitSummary: VisitSummary): void => updateEntity<VisitSummary>('visitSummaries', visitSummary);
 
 // New function to update doctor's weekly availability
 export const updateDoctorWeeklyAvailability = (doctorId: string, weeklyAvailability: IAvailability[]): void => {
@@ -158,14 +158,18 @@ export const addMessage = (message: Omit<Message, 'id'>): Message => {
       ...conversation,
       lastMessageContent: message.content,
       lastMessageTimestamp: message.timestamp,
-      unreadCount: conversation.unreadCount + 1,
+      // Only increment unread count if the message is not from the current user
+      // This logic is handled in the UI components (ChatWindow, MessagingSection)
+      // by marking messages as read when loaded. For simplicity in localApi,
+      // we'll let the UI manage the unreadCount increment for the *other* participant.
+      // Here, we just ensure the last message is updated.
     };
     updateConversation(updatedConversation);
   }
   return newMessage;
 };
 
-export const createConversation = (patientId: string, doctorId: string): Conversation => {
+export const createConversation = (patientId: string, doctorId: string, topic?: ConversationTopic): Conversation => {
   const items = getEntity<Conversation>('conversations');
   const newConversation: Conversation = {
     id: `conv-${Date.now()}`,
@@ -173,6 +177,7 @@ export const createConversation = (patientId: string, doctorId: string): Convers
     lastMessageContent: 'New conversation started.',
     lastMessageTimestamp: new Date().toISOString(),
     unreadCount: 0,
+    topic: topic, // Assign the new topic
   };
   const newItems = [...items, newConversation];
   localStorage.setItem('conversations', JSON.stringify(newItems));
@@ -200,12 +205,12 @@ export const getMessagesForConversation = (conversationId: string): Message[] =>
   return getMessages().filter(msg => msg.conversationId === conversationId).sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
 };
 export const getConversationById = (id: string): Conversation | undefined => getConversations().find(c => c.id === id);
-export const getOrCreateConversation = (patientId: string, doctorId: string): Conversation => {
+export const getOrCreateConversation = (patientId: string, doctorId: string, topic?: ConversationTopic): Conversation => {
   let conversation = getConversations().find(
     c => (c.participantIds.includes(patientId) && c.participantIds.includes(doctorId))
   );
   if (!conversation) {
-    conversation = createConversation(patientId, doctorId);
+    conversation = createConversation(patientId, doctorId, topic);
   }
   return conversation;
 };

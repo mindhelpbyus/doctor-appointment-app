@@ -8,12 +8,15 @@ export interface Message {
   read: boolean;
 }
 
+export type ConversationTopic = 'medication' | 'medical_query' | 'general' | 'appointment_booking';
+
 export interface Conversation {
   id: string;
   participantIds: string[]; // [patientId, doctorId]
   lastMessageContent: string;
   lastMessageTimestamp: string; // ISO 8601 string
   unreadCount: number;
+  topic?: ConversationTopic; // New optional field for conversation topic
 }
 
 // Initial mock data for conversations
@@ -24,6 +27,7 @@ export const conversations: Conversation[] = [
     lastMessageContent: 'Looking forward to my appointment!',
     lastMessageTimestamp: '2024-11-05T10:30:00Z',
     unreadCount: 0,
+    topic: 'appointment_booking',
   },
   {
     id: 'conv-2',
@@ -31,6 +35,7 @@ export const conversations: Conversation[] = [
     lastMessageContent: 'Thanks for the follow-up.',
     lastMessageTimestamp: '2024-11-04T15:00:00Z',
     unreadCount: 1,
+    topic: 'medical_query',
   },
   {
     id: 'conv-3',
@@ -38,6 +43,7 @@ export const conversations: Conversation[] = [
     lastMessageContent: 'Is the clinic open on holidays?',
     lastMessageTimestamp: '2024-11-03T09:15:00Z',
     unreadCount: 0,
+    topic: 'general',
   },
 ];
 
