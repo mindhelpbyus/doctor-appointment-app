@@ -18,7 +18,8 @@ import {
   ProviderLoginPage,
   AgencyDashboardPage,
   PatientDashboardPage,
-  ProviderOnboardingPage
+  ProviderOnboardingPage,
+  MessagesPage // Import MessagesPage
 } from "./pages";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,8 @@ const App = () => (
             <Route path="doctor/:doctorId" element={<DoctorProfilePage />} />
             <Route path="book/:doctorId" element={<BookingPage />} />
             <Route path="admin" element={<AdminPage />} />
+            <Route path="messages" element={<MessagesPage />} /> {/* New route for messages */}
+            <Route path="messages/:conversationId" element={<MessagesPage />} /> {/* New route for specific conversation */}
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Route>

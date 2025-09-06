@@ -6,6 +6,7 @@ import { promotions, Promotion } from '@/data/promotions';
 import { specialties, Specialty } from '@/data/specialties';
 import { admins, Admin } from '@/data/admins';
 import { agencyUsers, AgencyUser } from '@/data/agencyUsers';
+import { conversations, messages, Conversation, Message } from '@/data/chat'; // Import new chat data
 
 // --- Seeding Logic ---
 const seedEntity = (key: string, data: unknown[]) => {
@@ -22,6 +23,8 @@ const seedAllData = () => {
   seedEntity('promotions', promotions);
   seedEntity('admins', admins);
   seedEntity('agencyUsers', agencyUsers);
+  seedEntity('conversations', conversations); // Seed chat conversations
+  seedEntity('messages', messages); // Seed chat messages
 };
 
 // Initialize data on first load
@@ -46,14 +49,19 @@ export const getAppointments = (): Appointment[] => getEntity<Appointment>('appo
 export const getDoctors = (): Doctor[] => getEntity<Doctor>('doctors');
 export const getPatients = (): Patient[] => getEntity<Patient>('patients');
 export const getPromotions = (): Promotion[] => getEntity<Promotion>('promotions');
-export const getSpecialties = (): Specialty[] => specialties;
+export const getSpecialties = (): Specialty[] => specialties; // Specialties are static, no need for localStorage
 export const getAdmins = (): Admin[] => getEntity<Admin>('admins');
 export const getAgencyUsers = (): AgencyUser[] => getEntity<AgencyUser>('agencyUsers');
+export const getConversations = (): Conversation[] => getEntity<Conversation>('conversations');
+export const getMessages = (): Message[] => getEntity<Message>('messages');
 
 // --- Specific Updaters ---
 export const updateAgency = (agency: Agency): void => updateEntity<Agency>('agencies', agency);
 export const updateDoctor = (doctor: Doctor): void => updateEntity<Doctor>('doctors', doctor);
 export const updatePromotion = (promotion: Promotion): void => updateEntity<Promotion>('promotions', promotion);
+export const updateConversation = (conversation: Conversation): void => updateEntity<Conversation>('conversations', conversation);
+export const updateMessage = (message: Message): void => updateEntity<Message>('messages', message);
+
 
 export const addAppointment = (appointment: Omit<Appointment, 'id'>): Appointment => {
   const items = getEntity<Appointment>('appointments');
@@ -95,6 +103,41 @@ export const addAgency = (agencyData: Omit<Agency, 'id' | 'slug' | 'isActive' | 
   localStorage.setItem('agencies', JSON.stringify(newItems));
 };
 
+export const addMessage = (message: Omit<Message, 'id'>): Message => {
+  const items = getEntity<Message>('messages');
+  const newMessage = { ...message, id: `msg-${Date.now()}` };
+  const newItems = [...items, newMessage];
+  localStorage.setItem('messages', JSON.stringify(newItems));
+
+  // Update the corresponding conversation's last message and timestamp
+  const conversation = getConversationById(message.conversationId);
+  if (conversation) {
+    const updatedConversation = {
+      ...conversation,
+      lastMessageContent: message.content,
+      lastMessageTimestamp: message.timestamp,
+      // Increment unread count for the *other* participant
+      unreadCount: conversation.participantIds[0] === message.senderId ? conversation.unreadCount + 1 : conversation.unreadCount + 1, // Simplified for now
+    };
+    updateConversation(updatedConversation);
+  }
+  return newMessage;
+};
+
+export const createConversation = (patientId: string, doctorId: string): Conversation => {
+  const items = getEntity<Conversation>('conversations');
+  const newConversation: Conversation = {
+    id: `conv-${Date.now()}`,
+    participantIds: [patientId, doctorId],
+    lastMessageContent: 'New conversation started.',
+    lastMessageTimestamp: new Date().toISOString(),
+    unreadCount: 0,
+  };
+  const newItems = [...items, newConversation];
+  localStorage.setItem('conversations', JSON.stringify(newItems));
+  return newConversation;
+};
+
 
 // --- Complex Getters ---
 export const getDoctorById = (id: string): Doctor | undefined => getDoctors().find(d => d.id === id);
@@ -107,4 +150,20 @@ export const getPromotionsByAgencyId = (agencyId: string): Promotion[] => getPro
 export const getAppointmentsForDoctors = (doctorIds: string[]): Appointment[] => {
   const doctorIdSet = new Set(doctorIds);
   return getAppointments().filter(a => doctorIdSet.has(a.doctorId) && a.status === 'booked');
+};
+export const getConversationsForUser = (userId: string): Conversation[] => {
+  return getConversations().filter(conv => conv.participantIds.includes(userId));
+};
+export const getMessagesForConversation = (conversationId: string): Message[] => {
+  return getMessages().filter(msg => msg.conversationId === conversationId).sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+};
+export const getConversationById = (id: string): Conversation | undefined => getConversations().find(c => c.id === id);
+export const getOrCreateConversation = (patientId: string, doctorId: string): Conversation => {
+  let conversation = getConversations().find(
+    c => (c.participantIds.includes(patientId) && c.participantIds.includes(doctorId))
+  );
+  if (!conversation) {
+    conversation = createConversation(patientId, doctorId);
+  }
+  return conversation;
 };

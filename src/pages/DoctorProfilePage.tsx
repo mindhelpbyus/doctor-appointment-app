@@ -1,17 +1,23 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { StarIcon, MapPinIcon, CalendarDaysIcon, PhoneIcon, MailIcon } from 'lucide-react';
-import { getDoctorById, getSpecialtyById } from '@/services/localApi';
+import { StarIcon, MapPinIcon, CalendarDaysIcon, PhoneIcon, MailIcon, MessageSquare } from 'lucide-react'; // Import MessageSquare icon
+import { getDoctorById, getSpecialtyById, getOrCreateConversation } from '@/services/localApi'; // Import getOrCreateConversation
 import { Doctor } from '@/data/doctors';
 
 const DoctorProfilePage: React.FC = () => {
   const { doctorId } = useParams<{ doctorId: string }>();
+  const navigate = useNavigate(); // Initialize useNavigate
   const [doctor, setDoctor] = useState<Doctor | undefined>(undefined);
   const [specialtyName, setSpecialtyName] = useState<string>('');
+
+  // --- Mock Patient ID ---
+  // In a real app, this would come from an auth context.
+  const currentPatientId = 'pat-1'; 
+  // --- End Mock Patient ID ---
 
   useEffect(() => {
     if (doctorId) {
@@ -23,6 +29,13 @@ const DoctorProfilePage: React.FC = () => {
       }
     }
   }, [doctorId]);
+
+  const handleMessageDoctor = () => {
+    if (doctor && currentPatientId) {
+      const conversation = getOrCreateConversation(currentPatientId, doctor.id);
+      navigate(`/messages/${conversation.id}`);
+    }
+  };
 
   if (!doctor) {
     return (
@@ -74,13 +87,16 @@ const DoctorProfilePage: React.FC = () => {
             </div>
           </section>
 
-          <section>
-            <h2 className="text-2xl font-semibold mb-3">Book an Appointment</h2>
+          <section className="flex gap-4">
+            <h2 className="text-2xl font-semibold mb-3 sr-only">Actions</h2> {/* Hidden for accessibility */}
             <Link to={`/book/${doctor.id}`}>
               <Button size="lg" className="flex items-center gap-2">
                 <CalendarDaysIcon className="h-5 w-5" /> Schedule Now
               </Button>
             </Link>
+            <Button size="lg" variant="outline" className="flex items-center gap-2" onClick={handleMessageDoctor}>
+              <MessageSquare className="h-5 w-5" /> Message Doctor
+            </Button>
           </section>
         </CardContent>
       </Card>

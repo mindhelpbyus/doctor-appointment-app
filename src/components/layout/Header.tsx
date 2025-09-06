@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { MenuIcon, SearchIcon } from 'lucide-react';
+import { MenuIcon, SearchIcon, MessageSquare } from 'lucide-react'; // Import MessageSquare icon
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import GlobalSearch from '@/components/common/GlobalSearch';
 
@@ -22,6 +22,9 @@ const Header: React.FC = () => {
             <Button variant="ghost" onClick={() => setIsSearchOpen(true)} className="flex items-center gap-2">
               <SearchIcon className="h-5 w-5" /> Search
             </Button>
+            <Link to="/messages" className="hover:text-primary flex items-center gap-2"> {/* New Messages link */}
+              <MessageSquare className="h-5 w-5" /> Messages
+            </Link>
             <Link to="/login" className="hover:text-primary">Patient Login</Link>
             <Link to="/provider-login">
               <Button variant="outline">Provider Login</Button>
@@ -45,6 +48,9 @@ const Header: React.FC = () => {
               <SheetContent side="right" className="w-[250px] sm:w-[300px]">
                 <nav className="flex flex-col space-y-4 p-4">
                   <Link to="/" className="text-lg font-semibold hover:text-primary">Home</Link>
+                  <Link to="/messages" className="text-lg font-semibold hover:text-primary flex items-center gap-2"> {/* New Messages link */}
+                    <MessageSquare className="h-5 w-5 mr-2" /> Messages
+                  </Link>
                   <Link to="/login" className="text-lg font-semibold hover:text-primary">Patient Login</Link>
                   <Link to="/provider-login">
                     <Button variant="outline" className="w-full">Provider Login</Button>
