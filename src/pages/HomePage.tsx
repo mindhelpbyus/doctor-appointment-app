@@ -1,27 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 import FeatureTabs from '@/components/common/FeatureTabs';
 import { getAgencies, getSpecialties } from '@/services/localApi';
 import { Agency } from '@/data/agencies';
 import { Specialty } from '@/data/specialties';
 import SpecialtyCard from '@/components/common/SpecialtyCard';
 import AgencyCard from '@/components/common/AgencyCard';
-import GlobalSearch from '@/components/common/GlobalSearch';
-import { SearchIcon } from 'lucide-react';
+import SearchBar from '@/components/common/SearchBar';
 
 const HomePage = () => {
   const [agencies, setAgencies] = useState<Agency[]>([]);
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setAgencies(getAgencies().filter(a => a.isActive));
     setSpecialties(getSpecialties());
   }, []);
 
+  const handleSearch = (query: string) => {
+    if (query.trim()) {
+      navigate(`/search?q=${encodeURIComponent(query.trim())}`);
+    } else {
+      navigate('/search');
+    }
+  };
+
   return (
     <>
-      <GlobalSearch open={isSearchOpen} onOpenChange={setIsSearchOpen} />
       <div className="space-y-20"> {/* Increased overall spacing */}
         {/* Hero Section */}
         <section className="relative -mx-4 -mt-8 md:-mx-8 lg:-mx-16"> {/* Adjusted negative margins for full width */}
@@ -35,9 +41,7 @@ const HomePage = () => {
               <p className="text-xl md:text-2xl mb-10 opacity-90 font-averta text-stone"> {/* Larger subheading, subtle color */}
                 Search for doctors, specialists, and clinics in your area with ease and confidence on Medixy.
               </p>
-              <Button size="custom-lg" variant="custom-primary" onClick={() => setIsSearchOpen(true)} className="shadow-lg hover:shadow-xl transition-all duration-300"> {/* Prominent button with shadow */}
-                <SearchIcon className="h-6 w-6 mr-3" /> Search Now
-              </Button>
+              <SearchBar onSearch={handleSearch} />
             </div>
           </div>
         </section>
