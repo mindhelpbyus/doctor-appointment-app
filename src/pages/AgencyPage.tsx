@@ -48,7 +48,11 @@ const AgencyPage: React.FC = () => {
           <h2 className="text-3xl font-bold mb-6 text-center">Current Promotions</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {promotions.map(promo => (
-              <PromoBanner key={promo.id} promotion={{...promo, imageUrl: 'https://via.placeholder.com/400x150/008000/FFFFFF?text=Promo!'}} />
+              <PromoBanner 
+                key={promo.id} 
+                promotion={{...promo, imageUrl: 'https://via.placeholder.com/400x150/008000/FFFFFF?text=Promo!'}}
+                className="bg-agency-primary text-white hover:opacity-90"
+              />
             ))}
           </div>
         </section>

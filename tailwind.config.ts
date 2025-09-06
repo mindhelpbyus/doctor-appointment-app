@@ -62,6 +62,8 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        'agency-primary': 'var(--agency-primary)',
+        'agency-secondary': 'var(--agency-secondary)',
       },
       borderRadius: {
         lg: "var(--radius)",

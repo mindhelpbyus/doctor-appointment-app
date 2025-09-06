@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface Promotion {
   id: string;
@@ -12,9 +13,10 @@ interface Promotion {
 
 interface PromoBannerProps {
   promotion: Promotion;
+  className?: string;
 }
 
-const PromoBanner: React.FC<PromoBannerProps> = ({ promotion }) => {
+const PromoBanner: React.FC<PromoBannerProps> = ({ promotion, className }) => {
   return (
     <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
       {promotion.imageUrl && (
@@ -26,7 +28,7 @@ const PromoBanner: React.FC<PromoBannerProps> = ({ promotion }) => {
       </CardHeader>
       <CardContent>
         {promotion.link && (
-          <Button asChild className="w-full">
+          <Button asChild className={cn("w-full", className)}>
             <a href={promotion.link} target="_blank" rel="noopener noreferrer">Learn More</a>
           </Button>
         )}

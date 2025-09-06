@@ -76,7 +76,7 @@ const DoctorProfilePage: React.FC = () => {
 
           <section>
             <h2 className="text-2xl font-semibold mb-3">Book an Appointment</h2>
-            <Link to="/appointments"> {/* This would ideally link to a booking form */}
+            <Link to={`/book/${doctor.id}`}>
               <Button size="lg" className="flex items-center gap-2">
                 <CalendarDaysIcon className="h-5 w-5" /> Schedule Now
               </Button>
