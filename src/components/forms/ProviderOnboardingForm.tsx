@@ -137,7 +137,7 @@ const ProviderOnboardingForm: React.FC = () => {
                 <FormLabel>Practice Type</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger className="focus:border-primary">
                       <SelectValue placeholder="Select a type" />
                     </SelectTrigger>
                   </FormControl>

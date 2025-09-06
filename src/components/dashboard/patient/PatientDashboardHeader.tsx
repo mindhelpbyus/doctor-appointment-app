@@ -21,7 +21,7 @@ const PatientDashboardHeader: React.FC<PatientDashboardHeaderProps> = ({ patient
               <Heart className="w-8 h-8 text-primary" />
               <span className="text-2xl font-bold text-primary">HealthConnect</span>
             </Link>
-            <Badge className="bg-gray-100 text-gray-800 border-gray-200">
+            <Badge className="bg-accent text-accent-foreground border-primary/20">
               <Heart className="w-4 h-4" />
               <span className="ml-1 capitalize">Patient</span>
             </Badge>
@@ -35,8 +35,8 @@ const PatientDashboardHeader: React.FC<PatientDashboardHeaderProps> = ({ patient
             </Button>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </div>
   );
 };
 

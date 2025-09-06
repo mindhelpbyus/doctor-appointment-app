@@ -62,9 +62,9 @@ const AdminPage: React.FC = () => {
       <h1 className="text-4xl font-recoleta font-bold text-center text-foreground">Admin Dashboard</h1> {/* Serif font, larger */}
       <Tabs defaultValue="agencies">
         <TabsList className="grid w-full grid-cols-3 bg-light-grey p-2 rounded-xl shadow-inner"> {/* Refined TabsList styling */}
-          <TabsTrigger value="agencies" className="font-averta text-foreground data-[state=active]:bg-background data-[state=active]:shadow-subtle data-[state=active]:text-basil data-[state=active]:font-semibold rounded-lg transition-all duration-200 text-stone hover:text-charcoal">Manage Agencies</TabsTrigger>
-          <TabsTrigger value="doctors" className="font-averta text-foreground data-[state=active]:bg-background data-[state=active]:shadow-subtle data-[state=active]:text-basil data-[state=active]:font-semibold rounded-lg transition-all duration-200 text-stone hover:text-charcoal">Manage Doctors</TabsTrigger>
-          <TabsTrigger value="promotions" className="font-averta text-foreground data-[state=active]:bg-background data-[state=active]:shadow-subtle data-[state=active]:text-basil data-[state=active]:font-semibold rounded-lg transition-all duration-200 text-stone hover:text-charcoal">Manage Promotions</TabsTrigger>
+          <TabsTrigger value="agencies" className="font-averta text-foreground data-[state=active]:bg-background data-[state=active]:shadow-subtle data-[state=active]:text-primary data-[state=active]:font-semibold rounded-lg transition-all duration-200 text-stone hover:text-charcoal">Manage Agencies</TabsTrigger>
+          <TabsTrigger value="doctors" className="font-averta text-foreground data-[state=active]:bg-background data-[state=active]:shadow-subtle data-[state=active]:text-primary data-[state=active]:font-semibold rounded-lg transition-all duration-200 text-stone hover:text-charcoal">Manage Doctors</TabsTrigger>
+          <TabsTrigger value="promotions" className="font-averta text-foreground data-[state=active]:bg-background data-[state=active]:shadow-subtle data-[state=active]:text-primary data-[state=active]:font-semibold rounded-lg transition-all duration-200 text-stone hover:text-charcoal">Manage Promotions</TabsTrigger>
         </TabsList>
 
         {/* Agencies Tab */}
@@ -84,14 +84,14 @@ const AdminPage: React.FC = () => {
                 </TableHeader>
                 <TableBody>
                   {agencies.map(agency => (
-                    <TableRow key={agency.id} className="border-b border-granite hover:bg-spritz transition-colors"> {/* Subtle row border and hover */}
+                    <TableRow key={agency.id} className="border-b border-granite hover:bg-light-grey transition-colors"> {/* Subtle row border and hover */}
                       <TableCell className="font-medium font-averta text-foreground">{agency.name}</TableCell>
                       <TableCell className="font-averta text-muted-foreground">{agency.isActive ? 'Active' : 'Inactive'}</TableCell>
                       <TableCell className="text-right">
                         <Switch
                           checked={agency.isActive}
                           onCheckedChange={(checked) => handleAgencyStatusChange(agency, checked)}
-                          className="data-[state=checked]:bg-basil data-[state=unchecked]:bg-stone" // Custom switch colors
+                          className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted-foreground" // Custom switch colors
                         />
                       </TableCell>
                     </TableRow>
@@ -119,7 +119,7 @@ const AdminPage: React.FC = () => {
                 </TableHeader>
                 <TableBody>
                   {doctors.map(doctor => (
-                    <TableRow key={doctor.id} className="border-b border-granite hover:bg-spritz transition-colors"> {/* Subtle row border and hover */}
+                    <TableRow key={doctor.id} className="border-b border-granite hover:bg-light-grey transition-colors"> {/* Subtle row border and hover */}
                       <TableCell className="font-medium font-averta text-foreground">{doctor.fullName}</TableCell>
                       <TableCell className="font-averta text-muted-foreground">{agencies.find(a => a.id === doctor.agencyId)?.name || 'Independent'}</TableCell>
                       <TableCell className="text-right">
@@ -127,7 +127,7 @@ const AdminPage: React.FC = () => {
                           value={doctor.agencyId || 'none'}
                           onValueChange={(value) => handleDoctorAgencyChange(doctor, value)}
                         >
-                          <SelectTrigger className="w-[220px] rounded-md border-granite focus:border-basil text-foreground font-averta"> {/* Refined select styling */}
+                          <SelectTrigger className="w-[220px] rounded-md border-granite focus:border-primary text-foreground font-averta"> {/* Refined select styling */}
                             <SelectValue placeholder="Select Agency" />
                           </SelectTrigger>
                           <SelectContent className="rounded-md shadow-subtle"> {/* Refined select content styling */}
@@ -163,7 +163,7 @@ const AdminPage: React.FC = () => {
                 </TableHeader>
                 <TableBody>
                   {promotions.map(promo => (
-                    <TableRow key={promo.id} className="border-b border-granite hover:bg-spritz transition-colors"> {/* Subtle row border and hover */}
+                    <TableRow key={promo.id} className="border-b border-granite hover:bg-light-grey transition-colors"> {/* Subtle row border and hover */}
                       <TableCell className="font-medium font-averta text-foreground">{promo.title}</TableCell>
                       <TableCell className="font-averta text-muted-foreground">{promo.status}</TableCell>
                       <TableCell className="text-right space-x-2">

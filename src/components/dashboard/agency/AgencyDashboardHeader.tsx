@@ -21,7 +21,7 @@ const AgencyDashboardHeader: React.FC<AgencyDashboardHeaderProps> = ({ userName,
               <Heart className="w-8 h-8 text-primary" />
               <span className="text-2xl font-bold text-primary">HealthConnect</span>
             </Link>
-            <Badge className="bg-purple-100 text-purple-800 border-purple-200">
+            <Badge className="bg-accent text-accent-foreground border-primary/20">
               <Settings className="w-4 h-4" />
               <span className="ml-1 capitalize">Agency Admin</span>
             </Badge>

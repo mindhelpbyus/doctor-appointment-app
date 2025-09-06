@@ -32,7 +32,7 @@ const HomePage = () => {
               <h1 className="text-5xl md:text-7xl font-recoleta font-extrabold mb-6 leading-tight text-accent"> {/* Larger, more prominent heading */}
                 Find and book your perfect provider.
               </h1>
-              <p className="text-xl md:text-2xl mb-10 opacity-90 font-averta text-light-grey"> {/* Larger subheading, subtle color */}
+              <p className="text-xl md:text-2xl mb-10 opacity-90 font-averta text-stone"> {/* Larger subheading, subtle color */}
                 Search for doctors, specialists, and clinics in your area with ease and confidence.
               </p>
               <Button size="custom-lg" variant="custom-primary" onClick={() => setIsSearchOpen(true)} className="shadow-lg hover:shadow-xl transition-all duration-300"> {/* Prominent button with shadow */}
@@ -67,7 +67,7 @@ const HomePage = () => {
         )}
 
         {/* Features Section */}
-        <section className="container mx-auto py-12 bg-spritz rounded-2xl shadow-subtle"> {/* Added background, padding, shadow */}
+        <section className="container mx-auto py-12 bg-light-grey rounded-2xl shadow-subtle"> {/* Added background, padding, shadow */}
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold font-recoleta text-charcoal">Run your practice with confidence</h2> {/* Serif heading */}
             <p className="text-stone text-xl mt-4 font-averta">All the tools you need, all in one place.</p> {/* Muted subheading */}

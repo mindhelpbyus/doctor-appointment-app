@@ -27,7 +27,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search f
   };
 
   return (
-    <div className="flex w-full max-w-3xl mx-auto space-x-3 p-1 bg-background rounded-full shadow-medium border border-granite focus-within:border-basil transition-all duration-300"> {/* Enhanced container styling */}
+    <div className="flex w-full max-w-3xl mx-auto space-x-3 p-1 bg-background rounded-full shadow-medium border border-granite focus-within:border-primary transition-all duration-300"> {/* Enhanced container styling */}
       <Input
         type="text"
         placeholder={placeholder}

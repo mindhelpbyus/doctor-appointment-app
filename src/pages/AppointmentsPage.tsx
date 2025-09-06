@@ -40,7 +40,7 @@ const AppointmentsPage: React.FC = () => {
             <Card key={appointment.id} className="rounded-2xl shadow-subtle border-none bg-background hover:shadow-medium transition-all duration-300"> {/* Enhanced card styling */}
               <CardHeader className="pb-4"> {/* Increased bottom padding */}
                 <CardTitle className="flex items-center gap-3 font-recoleta text-2xl text-foreground leading-snug"> {/* Serif font, larger, tighter leading */}
-                  {appointment.type === 'video' ? <VideoIcon className="h-6 w-6 text-basil" /> : <CalendarIcon className="h-6 w-6 text-basil" />} {/* Larger icons */}
+                  {appointment.type === 'video' ? <VideoIcon className="h-6 w-6 text-primary" /> : <CalendarIcon className="h-6 w-6 text-primary" />} {/* Larger icons */}
                   Dr. {appointment.doctorName.split(' ')[1]} - {appointment.doctorSpecialty}
                 </CardTitle>
               </CardHeader>
@@ -57,7 +57,7 @@ const AppointmentsPage: React.FC = () => {
           ))
         ) : (
           <p className="text-center text-xl col-span-full font-averta text-muted-foreground py-10"> {/* Larger text, increased padding */}
-            No upcoming appointments. <Link to="/search" className="text-basil hover:text-dark-basil font-semibold">Book one now!</Link>
+            No upcoming appointments. <Link to="/search" className="text-primary hover:text-dark-health-blue font-semibold">Book one now!</Link>
           </p>
         )}
       </section>

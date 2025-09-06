@@ -66,13 +66,13 @@ const DoctorProfilePage: React.FC = () => {
           <img
             src={doctor.photoUrl || 'https://via.placeholder.com/200/008363/FFFFFF?text=Dr'}
             alt={doctor.fullName}
-            className="w-40 h-40 rounded-full object-cover border-4 border-basil shadow-lg flex-shrink-0" // Larger image, thicker border, shadow
+            className="w-40 h-40 rounded-full object-cover border-4 border-primary shadow-lg flex-shrink-0" // Larger image, thicker border, shadow
           />
           <div className="text-center md:text-left flex-grow">
             <CardTitle className="text-4xl lg:text-5xl font-recoleta font-extrabold mb-2 text-foreground leading-tight">{doctor.fullName}</CardTitle> {/* Larger, serif font, tighter leading */}
             <CardDescription className="text-xl lg:text-2xl text-muted-foreground mb-3 font-averta">{specialtyName}</CardDescription> {/* Larger description */}
             <div className="flex items-center justify-center md:justify-start text-lg text-stone mb-1 font-averta"> {/* Stone color */}
-              <MapPinIcon className="h-5 w-5 mr-2 text-basil" /> {doctor.clinicAddress}
+              <MapPinIcon className="h-5 w-5 mr-2 text-primary" /> {doctor.clinicAddress}
             </div>
             <div className="flex items-center justify-center md:justify-start text-lg text-yellow-500 font-averta">
               <StarIcon className="h-5 w-5 mr-2 fill-yellow-500" /> {doctor.rating.toFixed(1)} Rating
@@ -89,10 +89,10 @@ const DoctorProfilePage: React.FC = () => {
             <h2 className="text-2xl font-recoleta font-semibold mb-4 text-foreground">Contact Information</h2> {/* Serif font for heading */}
             <div className="space-y-3"> {/* Increased spacing */}
               <p className="flex items-center text-muted-foreground text-lg font-averta">
-                <PhoneIcon className="h-5 w-5 mr-3 text-basil" /> Phone: {doctor.phone}
+                <PhoneIcon className="h-5 w-5 mr-3 text-primary" /> Phone: {doctor.phone}
               </p>
               <p className="flex items-center text-muted-foreground text-lg font-averta">
-                <MailIcon className="h-5 w-5 mr-3 text-basil" /> Email: {doctor.email}
+                <MailIcon className="h-5 w-5 mr-3 text-primary" /> Email: {doctor.email}
               </p>
             </div>
           </section>

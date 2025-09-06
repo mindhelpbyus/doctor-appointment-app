@@ -18,7 +18,7 @@ interface AgencyCardProps {
 const AgencyCard: React.FC<AgencyCardProps> = ({ agency }) => {
   return (
     <Link to={`/a/${agency.slug}`} className="block hover:no-underline">
-      <Card className="h-full flex flex-col items-center justify-center p-6 text-center rounded-2xl shadow-subtle hover:shadow-medium hover:border-basil hover:scale-[1.02] transition-all duration-300 bg-background border-none"> {/* Enhanced card styling */}
+      <Card className="h-full flex flex-col items-center justify-center p-6 text-center rounded-2xl shadow-subtle hover:shadow-medium hover:border-primary hover:scale-[1.02] transition-all duration-300 bg-background border-none"> {/* Enhanced card styling */}
         <img
           src={agency.logo}
           alt={`${agency.name} Logo`}

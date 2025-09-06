@@ -53,18 +53,18 @@ const LoginPage: React.FC = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="rounded-md border-granite focus:border-basil text-foreground placeholder:text-stone font-averta px-4 py-2" // Refined input styling
+              className="rounded-md border-granite focus:border-primary text-foreground placeholder:text-stone font-averta px-4 py-2" // Refined input styling
             />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password" className="font-averta text-foreground text-sm font-semibold">Password</Label> {/* Semibold label */}
-            <Input id="password" type="password" required defaultValue="password" className="rounded-md border-granite focus:border-basil text-foreground placeholder:text-stone font-averta px-4 py-2" /> {/* Refined input styling */}
+            <Input id="password" type="password" required defaultValue="password" className="rounded-md border-granite focus:border-primary text-foreground placeholder:text-stone font-averta px-4 py-2" /> {/* Refined input styling */}
           </div>
           <Button type="submit" className="w-full shadow-md hover:shadow-lg" onClick={handleLogin} variant="custom-primary" size="custom-sm">Login</Button> {/* Button with shadow */}
           <Button variant="custom-secondary" className="w-full shadow-md hover:shadow-lg" onClick={handleDemoLogin} size="custom-sm">Login as Demo Patient</Button> {/* Button with shadow */}
           <p className="text-center text-sm text-muted-foreground font-averta pt-2"> {/* Added top padding */}
             Don't have an account?{' '}
-            <Link to="/register" className="text-basil hover:text-dark-basil font-semibold">Register</Link> {/* Semibold link */}
+            <Link to="/register" className="text-primary hover:text-dark-health-blue font-semibold">Register</Link> {/* Semibold link */}
           </p>
         </CardContent>
       </Card>
