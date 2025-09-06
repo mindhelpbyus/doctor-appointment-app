@@ -14,7 +14,8 @@ import { getDoctors, getSpecialties, getAgencies } from '@/services/localApi';
 import { Doctor } from '@/data/doctors';
 import { Specialty } from '@/data/specialties';
 import { Agency } from '@/data/agencies';
-import { showSuccess } from '@/utils/toast';
+import { useGeolocation } from '@/hooks/useGeolocation';
+import { showSuccess, showError } from '@/utils/toast';
 
 interface SearchBarProps {
   onSearch: (query: string, location: string) => void;
@@ -30,14 +31,22 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search d
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const navigate = useNavigate();
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const { location: geoData, loading: geoLoading, error: geoError, fetchLocation } = useGeolocation();
 
   useEffect(() => {
     setQuery(defaultQuery);
-  }, [defaultQuery]);
+    setLocation(defaultLocation);
+  }, [defaultQuery, defaultLocation]);
 
   useEffect(() => {
-    setLocation(defaultLocation);
-  }, [defaultLocation]);
+    if (geoData) {
+      setLocation(geoData.city);
+      showSuccess(`Location set to ${geoData.city}`);
+    }
+    if (geoError) {
+      showError(geoError);
+    }
+  }, [geoData, geoError]);
 
   useEffect(() => {
     if (query.length > 1) {
@@ -78,17 +87,27 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search d
     navigate(path);
   };
 
-  const handleUseMyLocation = () => {
-    // In a real app, this would use navigator.geolocation.
-    // For this demo, we'll simulate finding a nearby city from our data.
-    const mockLocation = "Central City";
-    setLocation(mockLocation);
-    showSuccess(`Location set to ${mockLocation}`);
-  };
-
   return (
     <div className="relative w-full max-w-3xl mx-auto" ref={searchContainerRef}>
       <div className="flex w-full items-center space-x-2 p-1.5 bg-background rounded-full shadow-medium border border-granite focus-within:border-primary transition-all duration-300">
+        {/* Location Input */}
+        <div className="flex-grow relative flex items-center">
+          <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-stone" />
+          <Input
+            type="text"
+            placeholder="City or Zip Code"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+            className="w-full border-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent text-foreground placeholder:text-stone pl-12 pr-10 py-3 text-lg font-averta"
+          />
+          <Button variant="ghost" size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full" onClick={fetchLocation} disabled={geoLoading}>
+            <Crosshair className="h-5 w-5 text-stone hover:text-primary" />
+          </Button>
+        </div>
+
+        <div className="w-px h-6 bg-granite self-center"></div>
+
         {/* Query Input */}
         <div className="flex-grow relative flex items-center">
           <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-stone" />
@@ -101,24 +120,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search d
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             className="w-full border-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent text-foreground placeholder:text-stone pl-12 pr-4 py-3 text-lg font-averta"
           />
-        </div>
-        
-        <div className="w-px h-6 bg-granite self-center"></div>
-
-        {/* Location Input */}
-        <div className="flex-grow relative flex items-center">
-          <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-stone" />
-          <Input
-            type="text"
-            placeholder="City or Zip Code"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-            className="w-full border-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent text-foreground placeholder:text-stone pl-12 pr-10 py-3 text-lg font-averta"
-          />
-          <Button variant="ghost" size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full" onClick={handleUseMyLocation}>
-            <Crosshair className="h-5 w-5 text-stone hover:text-primary" />
-          </Button>
         </div>
 
         <Button onClick={handleSearch} variant="custom-primary" size="custom-sm" className="rounded-full px-6 py-3 text-lg shadow-md hover:shadow-lg transition-all duration-300">
