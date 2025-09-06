@@ -1,9 +1,13 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { useGeolocation } from '@/hooks/useGeolocation';
 import { paymentMethodsByCountry, insuranceProvidersByCountry } from '@/data/paymentMethods';
 import { Skeleton } from '@/components/ui/skeleton';
+
+const LogoBox = ({ name }: { name: string }) => (
+  <div className="h-16 flex items-center justify-center px-6 bg-gray-100 rounded-lg shadow-sm">
+    <span className="font-bold text-lg text-gray-500 tracking-wide">{name}</span>
+  </div>
+);
 
 const LocationBasedFeatures: React.FC = () => {
   const { location, loading } = useGeolocation();
@@ -11,43 +15,42 @@ const LocationBasedFeatures: React.FC = () => {
   const countryCode = location?.country || 'default';
   const countryName = location?.countryName || 'your region';
 
-  const paymentMethods = paymentMethodsByCountry[countryCode] || paymentMethodsByCountry.default;
-  const insuranceProviders = insuranceProvidersByCountry[countryCode] || insuranceProvidersByCountry.default;
+  // We'll show a curated list of top partners instead of the full list
+  const paymentPartners = (paymentMethodsByCountry[countryCode] || paymentMethodsByCountry.default).slice(0, 4);
+  const insurancePartners = (insuranceProvidersByCountry[countryCode] || insuranceProvidersByCountry.default).slice(0, 4);
 
   return (
     <section className="py-12 bg-light-grey rounded-2xl">
       <div className="container mx-auto text-center">
         {loading ? (
-          <Skeleton className="h-8 w-3/4 mx-auto mb-4" />
+          <Skeleton className="h-10 w-3/4 mx-auto mb-4" />
         ) : (
           <h2 className="text-4xl font-bold font-recoleta text-foreground mb-4">
-            Care and Payments, Localized for {countryName}
+            Our Network of Trusted Partners
           </h2>
         )}
-        <p className="text-lg text-muted-foreground mb-8 font-averta">
-          We partner with top insurance and payment providers to make your care more accessible.
+        <p className="text-lg text-muted-foreground mb-10 font-averta max-w-2xl mx-auto">
+          We partner with leading insurance and payment providers to make your healthcare journey seamless in {countryName}.
         </p>
-        <div className="flex justify-center items-center max-w-2xl mx-auto mb-8">
-          <Input placeholder="Enter your insurance provider" className="rounded-r-none" />
-          <Button className="rounded-l-none">Search</Button>
-        </div>
         
-        <div className="mb-8">
-            <h3 className="text-muted-foreground font-semibold text-lg mb-4">Top Insurance Providers in {countryName}</h3>
-            <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-4">
-            {insuranceProviders.map(provider => (
-                <span key={provider} className="text-muted-foreground font-semibold text-lg">{provider}</span>
-            ))}
+        <div className="space-y-8">
+          <div>
+            <h3 className="text-muted-foreground font-semibold text-xl mb-6">Top Insurance Providers</h3>
+            <div className="flex flex-wrap justify-center items-center gap-6">
+              {insurancePartners.map(provider => (
+                <LogoBox key={provider} name={provider} />
+              ))}
             </div>
-        </div>
+          </div>
 
-        <div>
-            <h3 className="text-muted-foreground font-semibold text-lg mb-4">Accepted Payment Methods</h3>
-            <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-4">
-            {paymentMethods.map(method => (
-                <span key={method.name} className="text-muted-foreground font-semibold text-lg">{method.name}</span>
-            ))}
+          <div>
+            <h3 className="text-muted-foreground font-semibold text-xl mb-6">Accepted Payment Methods</h3>
+            <div className="flex flex-wrap justify-center items-center gap-6">
+              {paymentPartners.map(method => (
+                <LogoBox key={method.name} name={method.name} />
+              ))}
             </div>
+          </div>
         </div>
       </div>
     </section>
