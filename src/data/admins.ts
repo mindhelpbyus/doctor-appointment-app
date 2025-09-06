@@ -6,4 +6,6 @@ export interface Admin {
 
 export const admins: Admin[] = [
   { id: 'admin-1', email: 'admin@healthconnect.com', role: 'superadmin' },
+  // Demo Admin
+  { id: 'admin-demo', email: 'admin@demo.com', role: 'superadmin' },
 ];
