@@ -29,7 +29,7 @@ import {
   PatientSettingsTab,
   PatientJournalTab,
   PatientMoodTrackerTab,
-} from '@/components/patient-dashboard';
+} from '@/components/dashboard/patient';
 
 const PatientDashboardPage: React.FC = () => {
   const navigate = useNavigate();

@@ -33,7 +33,7 @@ import {
   AgencyPromotionsTab,
   AgencyReportsTab,
   AgencySettingsTab,
-} from '@/components/agency-dashboard';
+} from '@/components/dashboard/agency';
 
 const AgencyDashboardPage: React.FC = () => {
   const { agencyId } = useParams<{ agencyId: string }>();

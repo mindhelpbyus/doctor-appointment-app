@@ -31,7 +31,7 @@ import {
 import { Doctor } from '@/data/doctors';
 import { Appointment } from '@/data/appointments';
 import { Conversation } from '@/data/chat';
-import { MessagingSection, DoctorAvailabilityCalendar, DoctorClientsTab } from '@/components/doctor'; // Import new DoctorClientsTab
+import { MessagingSection, DoctorAvailabilityCalendar, DoctorClientsTab } from '@/components/dashboard/doctor'; // Import new DoctorClientsTab
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { IAvailability } from '@/models/Doctor';
 

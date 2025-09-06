@@ -26,17 +26,16 @@ const HomePage = () => {
         {/* Hero Section */}
         <section className="relative -mx-4 -mt-8 md:-mx-16">
           <div 
-            className="w-full h-[60vh] min-h-[500px] bg-cover bg-center flex items-center justify-center text-center text-white p-4 rounded-lg overflow-hidden"
-            style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://via.placeholder.com/1600x900/BFDBFE/3B82F6?text=HealthConnect')` }}
+            className="w-full h-[60vh] min-h-[500px] bg-gradient-to-r from-primary to-accent flex items-center justify-center text-center text-primary-foreground p-4 rounded-lg overflow-hidden"
           >
             <div className="w-full max-w-3xl">
               <h1 className="text-5xl md:text-6xl font-extrabold mb-4 leading-tight">
                 Find and book your perfect provider.
               </h1>
-              <p className="text-xl mb-8">
+              <p className="text-xl mb-8 opacity-90">
                 Search for doctors, specialists, and clinics in your area.
               </p>
-              <Button size="lg" onClick={() => setIsSearchOpen(true)} className="text-lg">
+              <Button size="lg" onClick={() => setIsSearchOpen(true)} className="text-lg bg-primary-foreground text-primary hover:bg-primary-foreground/90">
                 <SearchIcon className="h-6 w-6 mr-3" /> Search Now
               </Button>
             </div>

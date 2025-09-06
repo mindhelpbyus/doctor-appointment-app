@@ -19,7 +19,7 @@ interface DoctorCardProps {
 
 const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
   return (
-    <Card className="flex flex-col items-center text-center p-4 shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <Card className="flex flex-col items-center text-center p-4 border transition-all duration-300 hover:shadow-lg hover:border-primary">
       <img
         src={doctor.photoUrl || 'https://via.placeholder.com/150'}
         alt={doctor.fullName}
