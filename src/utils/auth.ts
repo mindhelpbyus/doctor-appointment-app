@@ -13,6 +13,7 @@ const USER_SESSION_KEY = 'currentUserSession';
 export const loginUser = (id: string, type: UserSessionData['type']): void => {
   const session: UserSessionData = { id, type };
   localStorage.setItem(USER_SESSION_KEY, JSON.stringify(session));
+  window.dispatchEvent(new Event('authChange'));
 };
 
 // Helper to derive name parts from email
@@ -74,4 +75,5 @@ export const getLoggedInUser = (): User | undefined => {
 
 export const logoutUser = (): void => {
   localStorage.removeItem(USER_SESSION_KEY);
+  window.dispatchEvent(new Event('authChange'));
 };

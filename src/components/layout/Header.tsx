@@ -14,13 +14,25 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loggedInUser = getLoggedInUser();
-    setUser(loggedInUser);
+    const handleAuthChange = () => {
+      const loggedInUser = getLoggedInUser();
+      setUser(loggedInUser);
+    };
+
+    // Initial check
+    handleAuthChange();
+
+    // Listen for changes
+    window.addEventListener('authChange', handleAuthChange);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('authChange', handleAuthChange);
+    };
   }, []);
 
   const handleLogout = () => {
     logoutUser();
-    setUser(null);
     showSuccess('Logged out successfully!');
     navigate('/');
     setIsSheetOpen(false);
