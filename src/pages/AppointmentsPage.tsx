@@ -1,29 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CalendarIcon, VideoIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { getAppointments, getDoctorById, getSpecialtyById } from '@/services/localApi';
+import { Appointment } from '@/data/appointments';
+
+interface EnrichedAppointment extends Appointment {
+  doctorName: string;
+  doctorSpecialty: string;
+}
 
 const AppointmentsPage: React.FC = () => {
-  // Placeholder for upcoming appointments
-  const upcomingAppointments = [
-    {
-      id: 'app1',
-      doctor: 'Dr. Alice Smith',
-      specialty: 'Pediatrics',
-      date: '2024-10-26',
-      time: '10:00 AM',
-      type: 'Video Consult',
-    },
-    {
-      id: 'app2',
-      doctor: 'Dr. Bob Johnson',
-      specialty: 'Cardiology',
-      date: '2024-11-01',
-      time: '02:30 PM',
-      type: 'In-person',
-    },
-  ];
+  const [upcomingAppointments, setUpcomingAppointments] = useState<EnrichedAppointment[]>([]);
+
+  useEffect(() => {
+    const allAppointments = getAppointments();
+    const upcoming = allAppointments
+      .filter(a => a.status === 'booked')
+      .map(appointment => {
+        const doctor = getDoctorById(appointment.doctorId);
+        const specialty = doctor ? getSpecialtyById(doctor.specialtyId) : undefined;
+        return {
+          ...appointment,
+          doctorName: doctor?.fullName || 'Unknown Doctor',
+          doctorSpecialty: specialty?.name || 'Unknown Specialty',
+        };
+      });
+    setUpcomingAppointments(upcoming);
+  }, []);
 
   return (
     <div className="space-y-8">
@@ -35,17 +40,17 @@ const AppointmentsPage: React.FC = () => {
             <Card key={appointment.id}>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  {appointment.type === 'Video Consult' ? <VideoIcon className="h-5 w-5" /> : <CalendarIcon className="h-5 w-5" />}
-                  {appointment.doctor} - {appointment.specialty}
+                  {appointment.type === 'video' ? <VideoIcon className="h-5 w-5" /> : <CalendarIcon className="h-5 w-5" />}
+                  {appointment.doctorName} - {appointment.doctorSpecialty}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <p className="text-lg font-medium">{new Date(appointment.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at {appointment.time}</p>
-                <p className="text-muted-foreground">Type: {appointment.type}</p>
+                <p className="text-lg font-medium">{new Date(appointment.datetime).toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'short' })}</p>
+                <p className="text-muted-foreground">Type: {appointment.type === 'video' ? 'Video Consult' : 'In-person'}</p>
                 <div className="flex gap-2 mt-4">
                   <Button variant="outline">Reschedule</Button>
                   <Button variant="destructive">Cancel</Button>
-                  {appointment.type === 'Video Consult' && <Button>Join Video</Button>}
+                  {appointment.type === 'video' && <Button>Join Video</Button>}
                 </div>
               </CardContent>
             </Card>

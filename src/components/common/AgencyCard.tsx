@@ -1,13 +1,13 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
-import { BuildingIcon, MapPinIcon } from 'lucide-react';
+import { MapPinIcon } from 'lucide-react';
 
 interface Agency {
   id: string;
   name: string;
   slug: string;
-  logoUrl: string;
+  logo: string;
   address: string;
 }
 
@@ -21,7 +21,7 @@ const AgencyCard: React.FC<AgencyCardProps> = ({ agency }) => {
       <Card className="h-full flex flex-col text-center shadow-lg hover:shadow-xl hover:border-primary transition-all duration-300">
         <CardHeader className="flex-shrink-0">
           <img
-            src={agency.logoUrl}
+            src={agency.logo}
             alt={`${agency.name} Logo`}
             className="w-20 h-20 rounded-md object-cover mx-auto border bg-white p-1"
           />

@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import DoctorCard from '@/components/common/DoctorCard';
 import PromoBanner from '@/components/common/PromoBanner';
-import { getAgencyBySlug, getDoctorsByAgencyId, getPromotionsByAgencyId } from '@/services/localApi';
+import { getAgencyBySlug, getDoctorsByAgencyId, getPromotionsByAgencyId, getSpecialties } from '@/services/localApi';
+import { Specialty } from '@/data/specialties';
 
 const AgencyPage: React.FC = () => {
   const { agencySlug } = useParams<{ agencySlug: string }>();
@@ -11,6 +12,11 @@ const AgencyPage: React.FC = () => {
   const agency = agencySlug ? getAgencyBySlug(agencySlug) : undefined;
   const doctors = agency ? getDoctorsByAgencyId(agency.id) : [];
   const promotions = agency ? getPromotionsByAgencyId(agency.id) : [];
+  const specialties = getSpecialties();
+
+  const getSpecialtyName = (specialtyId: string) => {
+    return specialties.find(s => s.id === specialtyId)?.name || 'N/A';
+  };
 
   if (!agency) {
     return (
@@ -30,9 +36,9 @@ const AgencyPage: React.FC = () => {
     <div className="space-y-10" style={agencyStyle}>
       <header 
         className="text-center py-8 rounded-lg shadow-lg bg-cover bg-center text-white"
-        style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${agency.headerImageUrl})` }}
+        style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${agency.headerImage})` }}
       >
-        {agency.logoUrl && <img src={agency.logoUrl} alt={`${agency.name} Logo`} className="mx-auto mb-4 h-20 w-auto bg-white p-2 rounded-md" />}
+        {agency.logo && <img src={agency.logo} alt={`${agency.name} Logo`} className="mx-auto mb-4 h-20 w-auto bg-white p-2 rounded-md" />}
         <h1 className="text-5xl font-extrabold">{agency.name}</h1>
         <p className="text-xl mt-2">{agency.address}</p>
       </header>
@@ -53,7 +59,14 @@ const AgencyPage: React.FC = () => {
         {doctors.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {doctors.map(doctor => (
-              <DoctorCard key={doctor.id} doctor={{...doctor, location: agency.name}} />
+              <DoctorCard key={doctor.id} doctor={{
+                id: doctor.id,
+                fullName: doctor.fullName,
+                specialtyName: getSpecialtyName(doctor.specialtyId),
+                clinicAddress: agency.name, // Use agency name as location for card
+                rating: doctor.rating,
+                photoUrl: doctor.photoUrl,
+              }} />
             ))}
           </div>
         ) : (

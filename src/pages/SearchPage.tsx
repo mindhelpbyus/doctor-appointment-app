@@ -1,30 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from '@/components/common/SearchBar';
 import DoctorCard from '@/components/common/DoctorCard';
-import { getDoctors } from '@/services/localApi';
-
-// Define the Doctor type based on its structure
-type Doctor = {
-  id: string;
-  name: string;
-  specialty: string;
-  location: string;
-  rating: number;
-  imageUrl?: string;
-  bio: string;
-  phone: string;
-  email: string;
-};
+import { getDoctors, getSpecialties } from '@/services/localApi';
+import { Doctor } from '@/data/doctors';
+import { Specialty } from '@/data/specialties';
 
 const SearchPage: React.FC = () => {
   const [allDoctors, setAllDoctors] = useState<Doctor[]>([]);
+  const [specialties, setSpecialties] = useState<Specialty[]>([]);
   const [filteredDoctors, setFilteredDoctors] = useState<Doctor[]>([]);
 
   useEffect(() => {
-    const doctors = getDoctors();
-    setAllDoctors(doctors);
-    setFilteredDoctors(doctors);
+    const doctorsData = getDoctors();
+    const specialtiesData = getSpecialties();
+    setAllDoctors(doctorsData);
+    setFilteredDoctors(doctorsData);
+    setSpecialties(specialtiesData);
   }, []);
+
+  const getSpecialtyName = (specialtyId: string) => {
+    return specialties.find(s => s.id === specialtyId)?.name || '';
+  };
 
   const handleSearch = (query: string) => {
     if (!query) {
@@ -33,11 +29,14 @@ const SearchPage: React.FC = () => {
     }
 
     const lowercasedQuery = query.toLowerCase();
-    const results = allDoctors.filter(doctor =>
-      doctor.name.toLowerCase().includes(lowercasedQuery) ||
-      doctor.specialty.toLowerCase().includes(lowercasedQuery) ||
-      doctor.location.toLowerCase().includes(lowercasedQuery)
-    );
+    const results = allDoctors.filter(doctor => {
+      const specialtyName = getSpecialtyName(doctor.specialtyId).toLowerCase();
+      return (
+        doctor.fullName.toLowerCase().includes(lowercasedQuery) ||
+        specialtyName.includes(lowercasedQuery) ||
+        doctor.clinicAddress.toLowerCase().includes(lowercasedQuery)
+      );
+    });
     setFilteredDoctors(results);
   };
 
@@ -50,7 +49,14 @@ const SearchPage: React.FC = () => {
         {filteredDoctors.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredDoctors.map(doctor => (
-              <DoctorCard key={doctor.id} doctor={doctor} />
+              <DoctorCard key={doctor.id} doctor={{
+                id: doctor.id,
+                fullName: doctor.fullName,
+                specialtyName: getSpecialtyName(doctor.specialtyId),
+                clinicAddress: doctor.clinicAddress,
+                rating: doctor.rating,
+                photoUrl: doctor.photoUrl,
+              }} />
             ))}
           </div>
         ) : (

@@ -42,6 +42,10 @@ export const getDoctorById = (id: string): Doctor | undefined => {
   return getDoctors().find(doctor => doctor.id === id);
 };
 
+export const getSpecialtyById = (id: string): Specialty | undefined => {
+  return getSpecialties().find(s => s.id === id);
+};
+
 export const getAgencyBySlug = (slug: string): Agency | undefined => {
   return getAgencies().find(agency => agency.slug === slug);
 };

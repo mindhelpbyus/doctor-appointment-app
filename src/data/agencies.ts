@@ -2,8 +2,8 @@ export interface Agency {
   id: string;
   name: string;
   slug: string;
-  logoUrl: string;
-  headerImageUrl: string;
+  logo: string;
+  headerImage: string;
   websiteUrl: string;
   address: string;
   phone: string;
@@ -18,8 +18,8 @@ export const agencies: Agency[] = [
     id: 'agency-1',
     name: 'Wellness Grove Clinic',
     slug: 'wellness-grove',
-    logoUrl: 'https://via.placeholder.com/150/22C55E/FFFFFF?text=WGC',
-    headerImageUrl: 'https://via.placeholder.com/1200x300/A7F3D0/22C55E?text=Wellness+Grove+Clinic',
+    logo: 'https://via.placeholder.com/150/22C55E/FFFFFF?text=WGC',
+    headerImage: 'https://via.placeholder.com/1200x300/A7F3D0/22C55E?text=Wellness+Grove+Clinic',
     websiteUrl: 'https://wellnessgrove.example.com',
     address: '123 Health St, Greensville, USA',
     phone: '555-100-1000',
@@ -32,8 +32,8 @@ export const agencies: Agency[] = [
     id: 'agency-2',
     name: 'City General Hospital',
     slug: 'city-general',
-    logoUrl: 'https://via.placeholder.com/150/3B82F6/FFFFFF?text=CGH',
-    headerImageUrl: 'https://via.placeholder.com/1200x300/BFDBFE/3B82F6?text=City+General+Hospital',
+    logo: 'https://via.placeholder.com/150/3B82F6/FFFFFF?text=CGH',
+    headerImage: 'https://via.placeholder.com/1200x300/BFDBFE/3B82F6?text=City+General+Hospital',
     websiteUrl: 'https://citygeneral.example.com',
     address: '456 Metro Ave, Central City, USA',
     phone: '555-200-2000',
@@ -46,8 +46,8 @@ export const agencies: Agency[] = [
     id: 'agency-3',
     name: 'Apex Health System',
     slug: 'apex-health',
-    logoUrl: 'https://via.placeholder.com/150/1F2937/FFFFFF?text=AHS',
-    headerImageUrl: 'https://via.placeholder.com/1200x300/D1D5DB/1F2937?text=Apex+Health+System',
+    logo: 'https://via.placeholder.com/150/1F2937/FFFFFF?text=AHS',
+    headerImage: 'https://via.placeholder.com/1200x300/D1D5DB/1F2937?text=Apex+Health+System',
     websiteUrl: 'https://apexhealth.example.com',
     address: '789 Summit Rd, Hightower, USA',
     phone: '555-300-3000',

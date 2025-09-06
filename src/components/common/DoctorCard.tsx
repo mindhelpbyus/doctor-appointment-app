@@ -4,34 +4,34 @@ import { Button } from '@/components/ui/button';
 import { StarIcon, MapPinIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-interface Doctor {
+interface DoctorInfo {
   id: string;
-  name: string;
-  specialty: string;
-  location: string;
+  fullName: string;
+  specialtyName: string;
+  clinicAddress: string;
   rating: number;
-  imageUrl?: string;
+  photoUrl?: string;
 }
 
 interface DoctorCardProps {
-  doctor: Doctor;
+  doctor: DoctorInfo;
 }
 
 const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
   return (
     <Card className="flex flex-col items-center text-center p-4 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <img
-        src={doctor.imageUrl || 'https://via.placeholder.com/150'}
-        alt={doctor.name}
+        src={doctor.photoUrl || 'https://via.placeholder.com/150'}
+        alt={doctor.fullName}
         className="w-24 h-24 rounded-full object-cover mb-4 border-2 border-primary"
       />
       <CardHeader className="p-0 pb-2">
-        <CardTitle className="text-xl font-semibold">{doctor.name}</CardTitle>
-        <CardDescription className="text-muted-foreground">{doctor.specialty}</CardDescription>
+        <CardTitle className="text-xl font-semibold">{doctor.fullName}</CardTitle>
+        <CardDescription className="text-muted-foreground">{doctor.specialtyName}</CardDescription>
       </CardHeader>
       <CardContent className="flex-grow flex flex-col justify-between items-center p-0 space-y-2">
         <div className="flex items-center text-sm text-gray-600">
-          <MapPinIcon className="h-4 w-4 mr-1 text-primary" /> {doctor.location}
+          <MapPinIcon className="h-4 w-4 mr-1 text-primary" /> {doctor.clinicAddress.split(',')[0]}
         </div>
         <div className="flex items-center text-sm text-yellow-500">
           <StarIcon className="h-4 w-4 mr-1 fill-yellow-500" /> {doctor.rating.toFixed(1)}

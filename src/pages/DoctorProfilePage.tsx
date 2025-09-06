@@ -5,28 +5,22 @@ import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { StarIcon, MapPinIcon, CalendarDaysIcon, PhoneIcon, MailIcon } from 'lucide-react';
-import { getDoctorById } from '@/services/localApi';
-
-type Doctor = {
-  id: string;
-  name: string;
-  specialty: string;
-  location: string;
-  rating: number;
-  imageUrl?: string;
-  bio: string;
-  phone: string;
-  email: string;
-};
+import { getDoctorById, getSpecialtyById } from '@/services/localApi';
+import { Doctor } from '@/data/doctors';
 
 const DoctorProfilePage: React.FC = () => {
   const { doctorId } = useParams<{ doctorId: string }>();
   const [doctor, setDoctor] = useState<Doctor | undefined>(undefined);
+  const [specialtyName, setSpecialtyName] = useState<string>('');
 
   useEffect(() => {
     if (doctorId) {
       const foundDoctor = getDoctorById(doctorId);
       setDoctor(foundDoctor);
+      if (foundDoctor) {
+        const specialty = getSpecialtyById(foundDoctor.specialtyId);
+        setSpecialtyName(specialty?.name || 'N/A');
+      }
     }
   }, [doctorId]);
 
@@ -47,15 +41,15 @@ const DoctorProfilePage: React.FC = () => {
       <Card className="shadow-lg">
         <CardHeader className="flex flex-col md:flex-row items-center gap-6 p-6">
           <img
-            src={doctor.imageUrl || 'https://via.placeholder.com/200'}
-            alt={doctor.name}
+            src={doctor.photoUrl || 'https://via.placeholder.com/200'}
+            alt={doctor.fullName}
             className="w-32 h-32 rounded-full object-cover border-4 border-primary shadow-md"
           />
           <div className="text-center md:text-left">
-            <CardTitle className="text-4xl font-bold mb-2">{doctor.name}</CardTitle>
-            <CardDescription className="text-xl text-muted-foreground mb-2">{doctor.specialty}</CardDescription>
+            <CardTitle className="text-4xl font-bold mb-2">{doctor.fullName}</CardTitle>
+            <CardDescription className="text-xl text-muted-foreground mb-2">{specialtyName}</CardDescription>
             <div className="flex items-center justify-center md:justify-start text-lg text-gray-600 mb-1">
-              <MapPinIcon className="h-5 w-5 mr-2 text-primary" /> {doctor.location}
+              <MapPinIcon className="h-5 w-5 mr-2 text-primary" /> {doctor.clinicAddress}
             </div>
             <div className="flex items-center justify-center md:justify-start text-lg text-yellow-500">
               <StarIcon className="h-5 w-5 mr-2 fill-yellow-500" /> {doctor.rating.toFixed(1)} Rating
@@ -64,8 +58,8 @@ const DoctorProfilePage: React.FC = () => {
         </CardHeader>
         <CardContent className="p-6 space-y-6">
           <section>
-            <h2 className="text-2xl font-semibold mb-3">About Dr. {doctor.name.split(' ')[1]}</h2>
-            <p className="text-gray-700 leading-relaxed">{doctor.bio}</p>
+            <h2 className="text-2xl font-semibold mb-3">About Dr. {doctor.fullName.split(' ')[1]}</h2>
+            <p className="text-gray-700 leading-relaxed">{doctor.biography}</p>
           </section>
 
           <section>
