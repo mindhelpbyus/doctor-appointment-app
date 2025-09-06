@@ -15,30 +15,27 @@
     --border: 210 10% 90%; /* Light Grey Border */
     --input: 210 10% 90%;
 
-    /* Sophisticated Health Palette */
-    --primary: 210 60% 40%; /* Professional Muted Blue */
+    /* Sophisticated Doctor Dark Blue Palette */
+    --primary: 210 70% 25%; /* Deep, Professional Muted Blue */
     --primary-foreground: 0 0% 100%; /* White */
     --secondary: 210 20% 95%; /* Very Light Grey */
     --secondary-foreground: 210 20% 20%; /* Soft Deep Grey */
-    --accent: 140 40% 70%; /* Soft Sage Green for subtle highlights */
+    --accent: 210 40% 85%; /* Very Light, Desaturated Blue for subtle highlights */
     --accent-foreground: 210 20% 20%; /* Soft Deep Grey */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --ring: 210 60% 40%; /* Same as primary blue */
+    --ring: 210 70% 25%; /* Same as primary blue */
     --radius: 0.5rem;
 
     /* Custom Colors (aligned with new theme) */
-    --health-blue: 210 60% 40%; /* Primary blue */
-    --dark-health-blue: 210 60% 30%; /* Darker blue for hover/active */
-    --health-green: 140 40% 70%; /* Soft sage green */
+    --health-blue: 210 70% 25%; /* Primary blue */
+    --dark-health-blue: 210 70% 15%; /* Darker blue for hover/active */
+    --health-green: 140 40% 70%; /* Soft sage green for subtle wellness accent */
     --charcoal: 210 20% 20%; /* Dark text/background, same as foreground */
     --stone: 210 10% 40%; /* Muted text, same as muted-foreground */
     --granite: 210 10% 90%; /* Light border/background */
     --light-grey: 210 10% 95%; /* General light background */
-    --hibiscus: 330 70% 60%; /* Soft pink/red accent (kept for contrast) */
-    --peach: 30 100% 95%; /* Light peach background (kept for contrast) */
-    --sky: 200 100% 95%; /* Very light blue background (kept for contrast) */
   }
 
   .dark {
@@ -54,11 +51,11 @@
     --input: 217.2 32.6% 17.5%;
 
     /* Dark Mode Palette */
-    --primary: 210 60% 40%; /* Primary blue (can be same or slightly adjusted for dark mode) */
+    --primary: 210 70% 25%; /* Primary blue (can be same or slightly adjusted for dark mode) */
     --primary-foreground: 222.2 47.4% 11.2%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-    --accent: 140 40% 70%; /* Soft Sage Green */
+    --accent: 210 40% 85%; /* Soft Sage Green */
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 62.8% 30.6%;
@@ -66,16 +63,13 @@
     --ring: 217.2 32.6% 17.5%;
 
     /* Custom Colors for Dark Mode */
-    --health-blue: 210 60% 40%;
-    --dark-health-blue: 210 60% 30%;
+    --health-blue: 210 70% 25%;
+    --dark-health-blue: 210 70% 15%;
     --health-green: 140 40% 70%;
     --charcoal: 210 40% 98%; /* Light text/background */
     --stone: 215 20.2% 65.1%; /* Muted text */
     --granite: 217.2 32.6% 17.5%; /* Dark border/background */
     --light-grey: 217.2 32.6% 17.5%; /* General dark background */
-    --hibiscus: 330 70% 60%;
-    --peach: 30 100% 95%;
-    --sky: 200 100% 95%;
   }
 }
 
@@ -137,15 +131,15 @@
   }
 
   .btn-custom-primary {
-    @apply bg-charcoal text-background hover:bg-health-blue hover:text-white;
+    @apply bg-primary text-primary-foreground hover:bg-dark-health-blue hover:text-white;
   }
 
   .btn-custom-secondary {
-    @apply border border-charcoal bg-background text-charcoal hover:bg-light-grey hover:border-health-blue hover:text-health-blue;
+    @apply border border-primary bg-background text-primary hover:bg-light-grey hover:border-primary hover:text-primary;
   }
 
   .btn-custom-tertiary {
-    @apply border border-health-blue bg-background text-health-blue hover:bg-light-grey hover:border-dark-health-blue hover:text-dark-health-blue;
+    @apply border border-primary bg-background text-primary hover:bg-light-grey hover:border-dark-health-blue hover:text-dark-health-blue;
   }
 
   .btn-custom-lg {

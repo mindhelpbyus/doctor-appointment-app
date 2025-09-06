@@ -52,22 +52,14 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Custom colors inspired by the provided CSS and enterprise aesthetic
-        basil: 'var(--basil)',
-        'dark-basil': 'var(--dark-basil)',
+        // Custom colors aligned with the new wellness theme
         charcoal: 'var(--charcoal)',
         stone: 'var(--stone)',
         granite: 'var(--granite)',
-        hibiscus: 'var(--hibiscus)',
-        peach: 'var(--peach)',
-        sky: 'var(--sky)',
-        spearmint: 'var(--spearmint)',
-        spritz: 'var(--spritz)',
-        'matcha-latte': 'var(--matcha-latte)',
         'light-grey': 'var(--light-grey)',
-        // Added health-blue and dark-health-blue to Tailwind config
         'health-blue': 'var(--health-blue)',
         'dark-health-blue': 'var(--dark-health-blue)',
+        'health-green': 'var(--health-green)',
       },
       borderRadius: {
         lg: "var(--radius)",
