@@ -160,7 +160,7 @@ const DoctorDashboardPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link to="/" className="flex items-center gap-2"> {/* Adjusted for logo only */}
-                <img src="/medixy.jpeg" alt="Medixy Logo" className="h-10 w-auto" /> {/* Increased height */}
+                <img src="/docsy.jpeg" alt="Docsy Logo" className="h-10 w-auto" /> {/* Increased height */}
               </Link>
               <Badge className="bg-accent text-accent-foreground border-primary/20">
                 <Stethoscope className="w-4 h-4" />
@@ -316,7 +316,7 @@ const DoctorDashboardPage: React.FC = () => {
           <TabsContent value="settings">
             <Card>
               <CardHeader>
-                <CardTitle>Account Settings</CardTitle>
+                <CardTitle>Account Settings</Card_Title>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">Settings panel coming soon...</p>
