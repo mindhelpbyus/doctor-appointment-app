@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search as SearchIcon, User, Stethoscope, Building, MapPin, Crosshair } from 'lucide-react';
+import { Search as SearchIcon, User, Stethoscope, Building, MapPin, Crosshair, Loader2 } from 'lucide-react';
 import {
   Command,
   CommandEmpty,
@@ -102,7 +102,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search d
             className="w-full border-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent text-foreground placeholder:text-stone pl-12 pr-10 py-3 text-lg font-averta"
           />
           <Button variant="ghost" size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full" onClick={fetchLocation} disabled={geoLoading}>
-            <Crosshair className="h-5 w-5 text-stone hover:text-primary" />
+            {geoLoading ? (
+              <Loader2 className="h-5 w-5 animate-spin text-primary" />
+            ) : (
+              <Crosshair className="h-5 w-5 text-stone hover:text-primary" />
+            )}
           </Button>
         </div>
 
