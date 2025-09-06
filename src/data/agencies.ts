@@ -29,8 +29,8 @@ export const agencies: Agency[] = [
     contactEmail: 'info@wellnessgrove.com', // Added
     type: 'Clinic',
     theme: {
-      primaryColor: 'hsl(142 71% 45%)', // green-500
-      secondaryColor: 'hsl(142 76% 90%)', // green-100
+      primaryColor: 'hsl(220 13% 40%)', // Medium Gray
+      secondaryColor: 'hsl(220 13% 95%)', // Very Light Gray
     },
     isActive: true,
   },
@@ -46,8 +46,8 @@ export const agencies: Agency[] = [
     contactEmail: 'contact@citygeneral.com', // Added
     type: 'Hospital',
     theme: {
-      primaryColor: 'hsl(217 91% 60%)', // blue-600
-      secondaryColor: 'hsl(219 91% 90%)', // blue-100
+      primaryColor: 'hsl(220 13% 40%)', // Medium Gray
+      secondaryColor: 'hsl(220 13% 95%)', // Very Light Gray
     },
     isActive: true,
   },
@@ -56,15 +56,15 @@ export const agencies: Agency[] = [
     name: 'Apex Health System',
     slug: 'apex-health',
     logo: 'https://images.unsplash.com/photo-1585435557343-3b092031a831?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwxfHxoZWFsdGglMjBzYXRlbGxpdGVfcmVwb3J0fGVufDB8MHx8fDE3MTk5NDU2MDB8MA&ixlib=rb-4.0.3&q=80&w=150',
-    headerImage: 'https://images.unsplash.com/photo-1585435557343-3b092031a831?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHxoZWFsdGglMjBzYXRlbGxpdGV8ZW58MHwwfHx8MTcxOTk0NTYwMHww&ixlib=rb-4.0.3&q=80&w=1200',
+    headerImage: 'https://images.unsplash.com/photo-1585435557343-3b092031a831?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHxoZWFsdGglMjBzYXRlbGxpdGV8ZW5wYWdlfDB8MHx8fDE3MTk5NDU2MDB8MA&ixlib=rb-4.0.3&q=80&w=1200',
     websiteUrl: 'https://apexhealth.example.com',
     address: '789 Summit Rd, Hightower, USA',
     phone: '555-300-3000',
     contactEmail: 'support@apexhealth.com', // Added
     type: 'Health System',
     theme: {
-      primaryColor: 'hsl(215 28% 17%)', // gray-800
-      secondaryColor: 'hsl(220 13% 91%)', // gray-200
+      primaryColor: 'hsl(220 13% 40%)', // Medium Gray
+      secondaryColor: 'hsl(220 13% 95%)', // Very Light Gray
     },
     isActive: true,
   },
@@ -81,8 +81,8 @@ export const agencies: Agency[] = [
     contactEmail: 'hello@brightfuture.com',
     type: 'Clinic',
     theme: {
-      primaryColor: 'hsl(330 70% 60%)', // pink
-      secondaryColor: 'hsl(330 70% 90%)', // light pink
+      primaryColor: 'hsl(220 13% 40%)', // Medium Gray
+      secondaryColor: 'hsl(220 13% 95%)', // Very Light Gray
     },
     isActive: true,
   },

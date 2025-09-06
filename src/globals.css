@@ -4,33 +4,33 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71% 4%; /* Dark Charcoal */
+    --background: 0 0% 100%; /* White */
+    --foreground: 220 13% 20%; /* Darker Gray */
 
-    --card: 0 0% 100%;
-    --card-foreground: 224 71% 4%;
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 220 13% 20%; /* Darker Gray */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71% 4%;
+    --popover: 0 0% 100%; /* White */
+    --popover-foreground: 220 13% 20%; /* Darker Gray */
 
-    --primary: 221 44% 45%; /* Slate Blue */
-    --primary-foreground: 0 0% 100%;
+    --primary: 220 13% 40%; /* Medium Gray */
+    --primary-foreground: 0 0% 100%; /* White */
 
-    --secondary: 220 13% 91%; /* Light Gray */
-    --secondary-foreground: 224 71% 4%;
+    --secondary: 220 13% 95%; /* Very Light Gray */
+    --secondary-foreground: 220 13% 20%; /* Darker Gray */
 
-    --muted: 220 13% 91%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 220 13% 95%; /* Very Light Gray */
+    --muted-foreground: 220 9% 46%; /* Medium-dark gray */
 
-    --accent: 170 45% 50%; /* Teal */
-    --accent-foreground: 224 71% 4%;
+    --accent: 220 13% 60%; /* Slightly darker gray for accent */
+    --accent-foreground: 0 0% 100%; /* White */
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%; /* Red */
+    --destructive-foreground: 0 0% 100%; /* White */
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 221 44% 45%;
+    --border: 220 13% 85%; /* Light Gray border */
+    --input: 220 13% 95%; /* Very Light Gray input */
+    --ring: 220 13% 40%; /* Medium Gray ring */
 
     --radius: 0.5rem;
 
@@ -40,33 +40,33 @@
   }
 
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 210 40% 98%;
+    --background: 220 13% 10%; /* Dark Gray */
+    --foreground: 220 13% 90%; /* Light Gray */
 
-    --card: 224 71% 4%;
-    --card-foreground: 210 40% 98%;
+    --card: 220 13% 15%; /* Slightly lighter dark gray */
+    --card-foreground: 220 13% 90%; /* Light Gray */
 
-    --popover: 224 71% 4%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 13% 15%; /* Slightly lighter dark gray */
+    --popover-foreground: 220 13% 90%; /* Light Gray */
 
-    --primary: 221 44% 55%; /* Lighter Slate Blue for dark mode */
-    --primary-foreground: 224 71% 4%;
+    --primary: 220 13% 70%; /* Light Gray */
+    --primary-foreground: 220 13% 10%; /* Dark Gray */
 
-    --secondary: 215 28% 17%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 220 13% 20%; /* Darker Gray */
+    --secondary-foreground: 220 13% 90%; /* Light Gray */
 
-    --muted: 215 28% 17%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 220 13% 20%; /* Darker Gray */
+    --muted-foreground: 220 13% 60%; /* Medium Gray */
 
-    --accent: 170 45% 60%; /* Lighter Teal for dark mode */
-    --accent-foreground: 210 40% 98%;
+    --accent: 220 13% 50%; /* Medium Gray */
+    --accent-foreground: 220 13% 90%; /* Light Gray */
 
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 63% 31%; /* Dark Red */
+    --destructive-foreground: 210 40% 98%; /* Light Gray */
 
-    --border: 215 28% 17%;
-    --input: 215 28% 17%;
-    --ring: 221 44% 55%;
+    --border: 220 13% 25%; /* Dark Gray border */
+    --input: 220 13% 20%; /* Darker Gray input */
+    --ring: 220 13% 70%; /* Light Gray ring */
 
     /* Custom CSS variables for agency theming */
     --agency-primary: var(--primary);
