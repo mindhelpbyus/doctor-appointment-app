@@ -30,7 +30,7 @@ import {
   getPromotionsByAgencyId,
   getSpecialties,
   addPromotion,
-  getAgencyUserById, // Import getAgencyUserById
+  getAgencyUserById,
 } from '@/services/localApi';
 import { Agency } from '@/data/agencies';
 import { Doctor } from '@/data/doctors';
@@ -44,6 +44,7 @@ import { Calendar as CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Calendar as UiCalendar } from '@/components/ui/calendar';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { showSuccess, showError } from '@/utils/toast';
 
 const AgencyDashboardPage: React.FC = () => {
@@ -53,25 +54,26 @@ const AgencyDashboardPage: React.FC = () => {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [promotions, setPromotions] = useState<Promotion[]>([]);
   const [activeTab, setActiveTab] = useState('overview');
-  const [specialties, setSpecialties] = useState<any[]>([]); // To get specialty names
+  const [specialties, setSpecialties] = useState<any[]>([]);
 
   // State for new promotion form
   const [newPromotionTitle, setNewPromotionTitle] = useState('');
   const [newPromotionDescription, setNewPromotionDescription] = useState('');
-  const [newPromotionDiscount, setNewPromotionDiscount] = useState('');
-  const [newPromotionStartDate, setNewPromotionStartDate] = useState<Date | undefined>(undefined);
-  const [newPromotionEndDate, setNewPromotionEndDate] = useState<Date | undefined>(undefined);
+  const [newPromotionDiscountType, setNewPromotionDiscountType] = useState<'percent' | 'flat'>('percent');
+  const [newPromotionDiscountValue, setNewPromotionDiscountValue] = useState<number>(0);
+  const [newPromotionValidFrom, setNewPromotionValidFrom] = useState<Date | undefined>(undefined);
+  const [newPromotionValidTo, setNewPromotionValidTo] = useState<Date | undefined>(undefined);
 
   const currentUserId = getLoggedInUser()?.id;
   const currentUserType = getLoggedInUser()?.type;
 
   useEffect(() => {
     if (!currentUserId || currentUserType !== 'agencyUser' || !agencyId) {
-      navigate('/provider-login'); // Redirect if not logged in as an agency user or agencyId is missing
+      navigate('/provider-login');
       return;
     }
 
-    const loggedInAgencyUser = getAgencyUserById(currentUserId); // Fetch the full agency user object
+    const loggedInAgencyUser = getAgencyUserById(currentUserId);
     if (!loggedInAgencyUser || loggedInAgencyUser.agencyId !== agencyId) {
       showError('Access Denied: You do not have permission to view this agency dashboard.');
       navigate('/provider-login');
@@ -110,21 +112,22 @@ const AgencyDashboardPage: React.FC = () => {
   const totalPromotions = promotions.length;
 
   const handleAddPromotion = () => {
-    if (!newPromotionTitle || !newPromotionDescription || !newPromotionDiscount || !newPromotionStartDate || !newPromotionEndDate) {
-      showError('Please fill in all promotion fields.');
+    if (!newPromotionTitle || !newPromotionDescription || newPromotionDiscountValue <= 0 || !newPromotionValidFrom || !newPromotionValidTo) {
+      showError('Please fill in all promotion fields correctly.');
       return;
     }
-    if (new Date(newPromotionStartDate) > new Date(newPromotionEndDate)) {
+    if (newPromotionValidFrom > newPromotionValidTo) {
       showError('Start date cannot be after end date.');
       return;
     }
 
-    const newPromo = {
+    const newPromo: Omit<Promotion, 'id' | 'status'> = {
       title: newPromotionTitle,
       description: newPromotionDescription,
-      discount: newPromotionDiscount,
-      startDate: newPromotionStartDate.toISOString(),
-      endDate: newPromotionEndDate.toISOString(),
+      discountType: newPromotionDiscountType,
+      discountValue: newPromotionDiscountValue,
+      validFrom: newPromotionValidFrom.toISOString(),
+      validTo: newPromotionValidTo.toISOString(),
       targetAgencyId: agencyId!,
     };
 
@@ -133,9 +136,10 @@ const AgencyDashboardPage: React.FC = () => {
     // Clear form
     setNewPromotionTitle('');
     setNewPromotionDescription('');
-    setNewPromotionDiscount('');
-    setNewPromotionStartDate(undefined);
-    setNewPromotionEndDate(undefined);
+    setNewPromotionDiscountType('percent');
+    setNewPromotionDiscountValue(0);
+    setNewPromotionValidFrom(undefined);
+    setNewPromotionValidTo(undefined);
     // Refresh promotions list
     setPromotions(getPromotionsByAgencyId(agencyId!));
   };
@@ -322,60 +326,80 @@ const AgencyDashboardPage: React.FC = () => {
                     <Input id="promo-title" value={newPromotionTitle} onChange={(e) => setNewPromotionTitle(e.target.value)} placeholder="e.g., 10% Off First Session" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="promo-discount">Discount/Offer</Label>
-                    <Input id="promo-discount" value={newPromotionDiscount} onChange={(e) => setNewPromotionDiscount(e.target.value)} placeholder="e.g., 10% off, Free Consultation" />
+                    <Label htmlFor="promo-description">Description</Label>
+                    <Textarea id="promo-description" value={newPromotionDescription} onChange={(e) => setNewPromotionDescription(e.target.value)} placeholder="Brief description of the promotion" />
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="promo-description">Description</Label>
-                  <Textarea id="promo-description" value={newPromotionDescription} onChange={(e) => setNewPromotionDescription(e.target.value)} placeholder="Brief description of the promotion" />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="promo-start-date">Start Date</Label>
+                    <Label htmlFor="promo-discount-type">Discount Type</Label>
+                    <Select value={newPromotionDiscountType} onValueChange={(value: 'percent' | 'flat') => setNewPromotionDiscountType(value)}>
+                      <SelectTrigger id="promo-discount-type">
+                        <SelectValue placeholder="Select type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="percent">Percentage (%)</SelectItem>
+                        <SelectItem value="flat">Flat Rate ($)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="promo-discount-value">Discount Value</Label>
+                    <Input
+                      id="promo-discount-value"
+                      type="number"
+                      value={newPromotionDiscountValue}
+                      onChange={(e) => setNewPromotionDiscountValue(parseFloat(e.target.value) || 0)}
+                      placeholder="e.g., 10 or 50"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="promo-valid-from">Valid From</Label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
                           variant={"outline"}
                           className={cn(
                             "w-full justify-start text-left font-normal",
-                            !newPromotionStartDate && "text-muted-foreground"
+                            !newPromotionValidFrom && "text-muted-foreground"
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {newPromotionStartDate ? format(newPromotionStartDate, "PPP") : <span>Pick a date</span>}
+                          {newPromotionValidFrom ? format(newPromotionValidFrom, "PPP") : <span>Pick a date</span>}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
                         <UiCalendar
                           mode="single"
-                          selected={newPromotionStartDate}
-                          onSelect={setNewPromotionStartDate}
+                          selected={newPromotionValidFrom}
+                          onSelect={setNewPromotionValidFrom}
                           initialFocus
                         />
                       </PopoverContent>
                     </Popover>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="promo-end-date">End Date</Label>
+                    <Label htmlFor="promo-valid-to">Valid To</Label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
                           variant={"outline"}
                           className={cn(
                             "w-full justify-start text-left font-normal",
-                            !newPromotionEndDate && "text-muted-foreground"
+                            !newPromotionValidTo && "text-muted-foreground"
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {newPromotionEndDate ? format(newPromotionEndDate, "PPP") : <span>Pick a date</span>}
+                          {newPromotionValidTo ? format(newPromotionValidTo, "PPP") : <span>Pick a date</span>}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
                         <UiCalendar
                           mode="single"
-                          selected={newPromotionEndDate}
-                          onSelect={setNewPromotionEndDate}
+                          selected={newPromotionValidTo}
+                          onSelect={setNewPromotionValidTo}
                           initialFocus
                         />
                       </PopoverContent>
@@ -408,10 +432,12 @@ const AgencyDashboardPage: React.FC = () => {
                       {promotions.map((promo) => (
                         <TableRow key={promo.id}>
                           <TableCell className="font-medium">{promo.title}</TableCell>
-                          <TableCell>{promo.discount}</TableCell>
-                          <TableCell>{format(new Date(promo.startDate), 'MMM d')} - {format(new Date(promo.endDate), 'MMM d, yyyy')}</TableCell>
                           <TableCell>
-                            <Badge variant={promo.status === 'active' ? 'default' : promo.status === 'pending' ? 'secondary' : 'destructive'}>
+                            {promo.discountType === 'percent' ? `${promo.discountValue}% off` : `$${promo.discountValue} off`}
+                          </TableCell>
+                          <TableCell>{format(new Date(promo.validFrom), 'MMM d')} - {format(new Date(promo.validTo), 'MMM d, yyyy')}</TableCell>
+                          <TableCell>
+                            <Badge variant={promo.status === 'approved' ? 'default' : promo.status === 'pending' ? 'secondary' : 'destructive'}>
                               {promo.status}
                             </Badge>
                           </TableCell>
