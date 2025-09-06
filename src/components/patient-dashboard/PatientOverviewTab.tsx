@@ -1,13 +1,14 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, BookOpen, TrendingUp, MessageSquare } from 'lucide-react';
 import { Appointment } from '@/data/appointments';
 import { Doctor } from '@/data/doctors';
 import { Conversation } from '@/data/chat';
-import { getDoctorById, getPatientById } from '@/services/localApi'; // Assuming getPatientById is available
+import { getDoctorById, getPatientById } from '@/services/localApi';
+import { storageManager } from '@/utils/dataStorage';
 
 interface PatientOverviewTabProps {
   patientId: string;
@@ -22,23 +23,31 @@ const PatientOverviewTab: React.FC<PatientOverviewTabProps> = ({
   pastAppointments,
   conversations,
 }) => {
+  const [journalEntriesCount, setJournalEntriesCount] = useState(0);
+  const [moodAverage, setMoodAverage] = useState(0);
+
+  useEffect(() => {
+    if (patientId) {
+      const entries = storageManager.getUserJournalEntries(patientId);
+      setJournalEntriesCount(entries.length);
+
+      if (entries.length > 0) {
+        const totalMood = entries.reduce((sum, entry) => sum + entry.mood, 0);
+        setMoodAverage(totalMood / entries.length);
+      } else {
+        setMoodAverage(0);
+      }
+    }
+  }, [patientId]);
+
   const totalSessions = upcomingAppointments.length + pastAppointments.length;
   const unreadMessagesCount = conversations.reduce((sum, conv) => {
-    // Only count unread messages where the patient is the receiver
-    // This would ideally come from a more granular message count per user in the conversation object
-    // For now, we'll use the conversation's unreadCount if the patient is a participant.
     const otherParticipantId = conv.participantIds.find(id => id !== patientId);
     if (otherParticipantId) {
-      // In a real app, you'd check if the *patient* is the receiver of the unread messages.
-      // For this mock, we'll assume conv.unreadCount reflects unread for the current user.
       return sum + conv.unreadCount;
     }
     return sum;
   }, 0);
-
-  // Mock data for Journal Entries and Mood Average as they don't exist in current data
-  const journalEntries = 7; // Placeholder
-  const moodAverage = 6.7; // Placeholder
 
   const getDoctorName = (doctorId: string) => getDoctorById(doctorId)?.fullName || 'Unknown Doctor';
   const getPatientName = (patientId: string) => getPatientById(patientId)?.name || 'Unknown Patient';
@@ -63,8 +72,8 @@ const PatientOverviewTab: React.FC<PatientOverviewTabProps> = ({
             <BookOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{journalEntries}</div>
-            <p className="text-xs text-muted-foreground">+3 this week (mock)</p>
+            <div className="text-2xl font-bold">{journalEntriesCount}</div>
+            <p className="text-xs text-muted-foreground">Total entries</p>
           </CardContent>
         </Card>
 
@@ -75,7 +84,7 @@ const PatientOverviewTab: React.FC<PatientOverviewTabProps> = ({
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{moodAverage.toFixed(1)}</div>
-            <p className="text-xs text-muted-foreground">Improving trend (mock)</p>
+            <p className="text-xs text-muted-foreground">Based on all entries</p>
           </CardContent>
         </Card>
 

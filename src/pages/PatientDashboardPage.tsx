@@ -25,6 +25,8 @@ import {
   PatientDoctorsTab,
   PatientMessagingTab,
   PatientSettingsTab,
+  PatientJournalTab,
+  PatientMoodTrackerTab,
 } from '@/components/patient-dashboard';
 
 const PatientDashboardPage: React.FC = () => {
@@ -94,6 +96,8 @@ const PatientDashboardPage: React.FC = () => {
     { value: 'overview', label: 'Overview' },
     { value: 'appointments', label: 'Appointments' },
     { value: 'doctors', label: 'Find Doctors' },
+    { value: 'journal', label: 'Journal' },
+    { value: 'mood-tracker', label: 'Mood Tracker' },
     { value: 'messages', label: 'Messages' },
     { value: 'settings', label: 'Settings' },
   ];
@@ -106,6 +110,8 @@ const PatientDashboardPage: React.FC = () => {
       case 4: return 'grid-cols-4';
       case 5: return 'grid-cols-5';
       case 6: return 'grid-cols-6';
+      case 7: return 'grid-cols-7';
+      case 8: return 'grid-cols-8';
       default: return 'grid-cols-1'; // Fallback
     }
   };
@@ -148,6 +154,14 @@ const PatientDashboardPage: React.FC = () => {
               recentlyViewedDoctors={recentlyViewedDoctors}
               specialties={specialties}
             />
+          </TabsContent>
+
+          <TabsContent value="journal">
+            <PatientJournalTab patientId={patient.id} />
+          </TabsContent>
+
+          <TabsContent value="mood-tracker">
+            <PatientMoodTrackerTab patientId={patient.id} />
           </TabsContent>
 
           <TabsContent value="messages">
