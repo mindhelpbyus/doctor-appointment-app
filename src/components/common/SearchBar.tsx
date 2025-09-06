@@ -123,7 +123,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search d
               {suggestions.specialties.length > 0 && (
                 <CommandGroup heading="Specialties">
                   {suggestions.specialties.map((specialty) => (
-                    <CommandItem key={specialty.id} onSelect={() => { setQuery(specialty.name); handleSearch(); }} value={specialty.name}>
+                    <CommandItem
+                      key={specialty.id}
+                      onSelect={() => {
+                        setQuery(specialty.name);
+                        onSearch(specialty.name);
+                        setIsPopoverOpen(false);
+                      }}
+                      value={specialty.name}
+                    >
                       <Stethoscope className="mr-2 h-4 w-4" />
                       <span>{specialty.name}</span>
                     </CommandItem>
