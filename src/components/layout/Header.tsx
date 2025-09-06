@@ -18,18 +18,16 @@ const Header: React.FC = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-6 items-center font-medium">
-            <Link to="/search" className="hover:text-primary">Features</Link>
-            <Link to="/search" className="hover:text-primary">Pricing</Link>
-            <Link to="/search" className="hover:text-primary">Resources</Link>
+          <nav className="hidden md:flex space-x-4 items-center font-medium">
             <Button variant="ghost" onClick={() => setIsSearchOpen(true)} className="flex items-center gap-2">
-              <SearchIcon className="h-5 w-5" />
+              <SearchIcon className="h-5 w-5" /> Search
             </Button>
+            <Link to="/login" className="hover:text-primary">Patient Login</Link>
             <Link to="/provider-login">
-              <Button variant="outline">Staff Sign In</Button>
+              <Button variant="outline">Provider Login</Button>
             </Link>
             <Link to="/register">
-              <Button>Get a Demo</Button>
+              <Button>Sign Up</Button>
             </Link>
           </nav>
 
@@ -47,14 +45,12 @@ const Header: React.FC = () => {
               <SheetContent side="right" className="w-[250px] sm:w-[300px]">
                 <nav className="flex flex-col space-y-4 p-4">
                   <Link to="/" className="text-lg font-semibold hover:text-primary">Home</Link>
-                  <Link to="/search" className="text-lg font-semibold hover:text-primary">Features</Link>
-                  <Link to="/search" className="text-lg font-semibold hover:text-primary">Pricing</Link>
-                  <Link to="/search" className="text-lg font-semibold hover:text-primary">Resources</Link>
+                  <Link to="/login" className="text-lg font-semibold hover:text-primary">Patient Login</Link>
                   <Link to="/provider-login">
-                    <Button variant="outline" className="w-full">Staff Sign In</Button>
+                    <Button variant="outline" className="w-full">Provider Login</Button>
                   </Link>
                   <Link to="/register">
-                    <Button className="w-full">Get a Demo</Button>
+                    <Button className="w-full">Sign Up</Button>
                   </Link>
                 </nav>
               </SheetContent>
