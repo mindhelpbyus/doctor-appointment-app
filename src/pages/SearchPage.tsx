@@ -1,24 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SearchBar from '@/components/common/SearchBar';
 import DoctorCard from '@/components/common/DoctorCard';
+import { mockDoctors } from '@/data/mockData';
 
 const SearchPage: React.FC = () => {
-  // Placeholder data for demonstration
-  const doctors = [
-    { id: '1', name: 'Dr. Alice Smith', specialty: 'Pediatrics', location: 'New York, NY', rating: 4.8, imageUrl: 'https://via.placeholder.com/150/0000FF/FFFFFF?text=AS' },
-    { id: '2', name: 'Dr. Bob Johnson', specialty: 'Cardiology', location: 'Los Angeles, CA', rating: 4.5, imageUrl: 'https://via.placeholder.com/150/FF0000/FFFFFF?text=BJ' },
-    { id: '3', name: 'Dr. Carol White', specialty: 'Dermatology', location: 'Chicago, IL', rating: 4.9, imageUrl: 'https://via.placeholder.com/150/008000/FFFFFF?text=CW' },
-  ];
+  const [filteredDoctors, setFilteredDoctors] = useState(mockDoctors);
+
+  const handleSearch = (query: string) => {
+    if (!query) {
+      setFilteredDoctors(mockDoctors);
+      return;
+    }
+
+    const lowercasedQuery = query.toLowerCase();
+    const results = mockDoctors.filter(doctor =>
+      doctor.name.toLowerCase().includes(lowercasedQuery) ||
+      doctor.specialty.toLowerCase().includes(lowercasedQuery) ||
+      doctor.location.toLowerCase().includes(lowercasedQuery)
+    );
+    setFilteredDoctors(results);
+  };
 
   return (
     <div className="space-y-8">
       <h1 className="text-4xl font-bold text-center">Find Your Doctor</h1>
-      <SearchBar onSearch={(query) => console.log('Searching for:', query)} />
+      <SearchBar onSearch={handleSearch} />
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {doctors.map(doctor => (
-          <DoctorCard key={doctor.id} doctor={doctor} />
-        ))}
+      <section>
+        {filteredDoctors.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredDoctors.map(doctor => (
+              <DoctorCard key={doctor.id} doctor={doctor} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-10">
+            <p className="text-lg text-muted-foreground">No doctors found matching your search.</p>
+          </div>
+        )}
       </section>
     </div>
   );
