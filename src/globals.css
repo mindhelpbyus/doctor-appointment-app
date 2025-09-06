@@ -14,29 +14,29 @@
     --card-foreground: 210 20% 20%;
     --border: 210 10% 90%; /* Light Grey Border */
     --input: 210 10% 90%;
-    --primary: 140 60% 40%; /* Calming Green */
+
+    /* New Elegant Blue Palette */
+    --primary: 200 70% 60%; /* Calming Medium Blue */
     --primary-foreground: 0 0% 100%; /* White */
     --secondary: 210 20% 95%; /* Very Light Grey */
     --secondary-foreground: 210 20% 20%; /* Soft Deep Grey */
-    --accent: 150 100% 74%; /* Spearmint - Bright Fresh Green */
+    --accent: 200 80% 70%; /* Brighter Light Blue */
     --accent-foreground: 210 20% 20%; /* Soft Deep Grey */
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --ring: 140 60% 40%; /* Calming Green */
+    --ring: 200 70% 60%; /* Calming Medium Blue */
     --radius: 0.5rem;
 
-    /* Custom Colors */
-    --basil: 140 60% 40%; /* Primary green, same as primary */
-    --dark-basil: 140 60% 30%; /* Darker green for hover/active */
-    --charcoal: 210 20% 20%; /* Dark text/background, same as foreground */
-    --stone: 210 10% 40%; /* Muted text, same as muted-foreground */
+    /* Custom Colors (adjusted for blue theme) */
+    --ocean-blue: 200 70% 60%; /* Primary blue */
+    --dark-ocean-blue: 200 70% 50%; /* Darker blue for hover/active */
+    --charcoal: 210 20% 20%; /* Dark text/background */
+    --stone: 210 10% 40%; /* Muted text */
     --granite: 210 10% 90%; /* Light border/background */
-    --hibiscus: 330 70% 60%; /* Soft pink/red accent */
-    --peach: 30 100% 95%; /* Light peach background */
-    --sky: 200 100% 95%; /* Light blue background */
-    --spearmint: 150 100% 74%; /* Light green accent, same as accent */
-    --spritz: 150 100% 95%; /* Very light green background */
-    --matcha-latte: 80 60% 95%; /* Light green/yellow background */
+    --hibiscus: 330 70% 60%; /* Soft pink/red accent (kept for contrast) */
+    --peach: 30 100% 95%; /* Light peach background (kept for contrast) */
+    --sky: 200 100% 95%; /* Very light blue background */
     --light-grey: 210 10% 95%; /* General light background */
   }
 
@@ -51,28 +51,28 @@
     --card-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --primary: 210 40% 98%;
+
+    /* Dark Mode Blue Palette */
+    --primary: 200 70% 60%; /* Primary blue (can be same or slightly adjusted for dark mode) */
     --primary-foreground: 222.2 47.4% 11.2%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-    --accent: 150 100% 74%; /* Spearmint */
+    --accent: 200 80% 70%; /* Brighter Light Blue */
     --accent-foreground: 222.2 47.4% 11.2%;
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --ring: 217.2 32.6% 17.5%;
 
-    /* Custom Colors for Dark Mode */
-    --basil: 140 60% 40%; /* Lighter green for dark mode */
-    --dark-basil: 140 60% 30%; /* Slightly darker green for hover */
+    /* Custom Colors for Dark Mode (adjusted for blue theme) */
+    --ocean-blue: 200 70% 60%;
+    --dark-ocean-blue: 200 70% 50%;
     --charcoal: 210 40% 98%; /* Light text/background */
     --stone: 215 20.2% 65.1%; /* Muted text */
     --granite: 217.2 32.6% 17.5%; /* Dark border/background */
-    --hibiscus: 330 70% 60%; /* Accent color (can remain same or adjust) */
-    --peach: 30 100% 95%; /* Light background (can remain same or adjust) */
-    --sky: 200 100% 95%; /* Light background (can remain same or adjust) */
-    --spearmint: 150 100% 74%; /* Light green accent (can remain same or adjust) */
-    --spritz: 150 100% 95%; /* Very light green background (can remain same or adjust) */
-    --matcha-latte: 80 60% 95%; /* Light green background (can remain same or adjust) */
+    --hibiscus: 330 70% 60%;
+    --peach: 30 100% 95%;
+    --sky: 200 100% 95%;
     --light-grey: 217.2 32.6% 17.5%; /* General dark background */
   }
 }
@@ -135,15 +135,15 @@
   }
 
   .btn-custom-primary {
-    @apply bg-charcoal text-background hover:bg-basil hover:text-white;
+    @apply bg-charcoal text-background hover:bg-ocean-blue hover:text-white;
   }
 
   .btn-custom-secondary {
-    @apply border border-charcoal bg-background text-charcoal hover:bg-spritz hover:border-basil hover:text-basil;
+    @apply border border-charcoal bg-background text-charcoal hover:bg-sky hover:border-ocean-blue hover:text-ocean-blue;
   }
 
   .btn-custom-tertiary {
-    @apply border border-basil bg-background text-basil hover:bg-spritz hover:border-dark-basil hover:text-dark-basil;
+    @apply border border-ocean-blue bg-background text-ocean-blue hover:bg-sky hover:border-dark-ocean-blue hover:text-dark-ocean-blue;
   }
 
   .btn-custom-lg {
