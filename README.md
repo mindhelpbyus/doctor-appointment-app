@@ -1,4 +1,6 @@
-# Welcome to your Dyad app
+# Welcome to your Medixy app
+
+Medixy is a product of Bedrock Health Solution, designed to connect patients with healthcare providers seamlessly.
 
 ## Demo Accounts
 

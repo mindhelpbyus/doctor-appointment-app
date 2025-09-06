@@ -19,7 +19,7 @@ const AgencyDashboardHeader: React.FC<AgencyDashboardHeaderProps> = ({ userName,
           <div className="flex items-center gap-4">
             <Link to="/" className="flex items-center gap-2">
               <Heart className="w-8 h-8 text-primary" />
-              <span className="text-2xl font-bold text-primary">HealthConnect</span>
+              <span className="text-2xl font-bold text-primary">Medixy</span>
             </Link>
             <Badge className="bg-accent text-accent-foreground border-primary/20">
               <Settings className="w-4 h-4" />

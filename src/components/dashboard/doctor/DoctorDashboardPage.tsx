@@ -153,7 +153,7 @@ const DoctorDashboardPage: React.FC = () => {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <Stethoscope className="w-8 h-8 text-primary" />
-                <span className="text-2xl font-bold text-primary">HealthConnect</span>
+                <span className="text-2xl font-bold text-primary">Medixy</span>
               </div>
               <Badge className="bg-accent text-accent-foreground border-primary/20">
                 <Stethoscope className="w-4 h-4" />

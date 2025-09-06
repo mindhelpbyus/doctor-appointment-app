@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
         {/* Brand Info */}
         <div className="space-y-4">
           <Link to="/" className="font-recoleta text-3xl font-bold text-accent hover:text-accent/90 transition-colors">
-            HealthConnect
+            Medixy <span className="text-sm font-averta text-muted-foreground ml-2">product of Bedrock Health Solution</span>
           </Link>
           <p className="text-sm text-muted-foreground font-averta">
             Connecting you to better health.
@@ -36,7 +36,7 @@ const Footer: React.FC = () => {
           <ul className="space-y-2">
             <li><Link to="/search" className="text-muted-foreground hover:text-accent transition-colors font-averta">Find a Provider</Link></li>
             <li><Link to="/agencies" className="text-muted-foreground hover:text-accent transition-colors font-averta">Our Agencies</Link></li>
-            <li><Link to="/about" className="text-muted-foreground hover:text-accent transition-colors font-averta">About HealthConnect</Link></li>
+            <li><Link to="/about" className="text-muted-foreground hover:text-accent transition-colors font-averta">About Medixy</Link></li>
             <li><Link to="/contact" className="text-muted-foreground hover:text-accent transition-colors font-averta">Contact Support</Link></li>
           </ul>
         </div>
@@ -63,7 +63,7 @@ const Footer: React.FC = () => {
       </div>
 
       <div className="container mx-auto px-4 md:px-8 lg:px-16 border-t border-gray-700 mt-8 pt-8 text-center text-sm text-muted-foreground font-averta">
-        &copy; {new Date().getFullYear()} HealthConnect. All rights reserved.
+        &copy; {new Date().getFullYear()} Medixy, a product of Bedrock Health Solution. All rights reserved.
       </div>
     </footer>
   );
