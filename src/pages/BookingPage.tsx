@@ -5,10 +5,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CalendarDaysIcon, ClockIcon } from 'lucide-react';
-import { getDoctorById, addAppointment } from '@/services/localApi';
+import { getDoctorById, addAppointment, getPatientById } from '@/services/localApi';
 import { Doctor } from '@/data/doctors';
 import { Appointment } from '@/data/appointments';
 import { showSuccess, showError } from '@/utils/toast';
+import { sendAppointmentReminder } from '@/utils/notifications'; // Import the new utility
 
 const BookingPage: React.FC = () => {
   const { doctorId } = useParams<{ doctorId: string }>();
@@ -39,9 +40,18 @@ const BookingPage: React.FC = () => {
         type: doctor.videoConsultation ? 'video' : 'in-person',
         status: 'booked',
       };
-      addAppointment(newAppointment);
-      showSuccess(`Appointment with ${doctor.fullName} booked successfully!`);
-      navigate('/appointments');
+      const addedAppointment = addAppointment(newAppointment); // Assuming addAppointment returns the new appointment with ID
+      
+      const patient = getPatientById(patientId); // Get patient details for reminder
+
+      if (addedAppointment && patient) {
+        showSuccess(`Appointment with ${doctor.fullName} booked successfully!`);
+        sendAppointmentReminder(addedAppointment, doctor, patient); // Send reminder
+        navigate('/appointments');
+      } else {
+        showError('Failed to retrieve patient or appointment details for reminder.');
+      }
+
     } catch (error) {
       showError('Failed to book appointment.');
     }

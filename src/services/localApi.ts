@@ -55,11 +55,12 @@ export const updateAgency = (agency: Agency): void => updateEntity<Agency>('agen
 export const updateDoctor = (doctor: Doctor): void => updateEntity<Doctor>('doctors', doctor);
 export const updatePromotion = (promotion: Promotion): void => updateEntity<Promotion>('promotions', promotion);
 
-export const addAppointment = (appointment: Omit<Appointment, 'id'>): void => {
+export const addAppointment = (appointment: Omit<Appointment, 'id'>): Appointment => {
   const items = getEntity<Appointment>('appointments');
   const newAppointment = { ...appointment, id: `appt-${Date.now()}` };
   const newItems = [...items, newAppointment];
   localStorage.setItem('appointments', JSON.stringify(newItems));
+  return newAppointment; // Return the newly added appointment
 };
 
 export const addPromotion = (promotion: Omit<Promotion, 'id' | 'status'>): void => {
