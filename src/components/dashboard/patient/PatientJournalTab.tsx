@@ -7,7 +7,7 @@ import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { PlusCircle, X } from 'lucide-react';
 import { JournalEntry } from '@/data/journal';
-import * as storageManager from '@/services/localApi';
+import { getJournalEntries, addJournalEntry } from '@/services/localApi'; // Corrected import
 import { showError, showSuccess } from '@/utils/toast';
 
 interface PatientJournalTabProps {
@@ -28,7 +28,7 @@ const PatientJournalTab: React.FC<PatientJournalTabProps> = ({ patientId }) => {
   const [currentTag, setCurrentTag] = useState('');
 
   useEffect(() => {
-    setEntries(storageManager.getJournalEntries(patientId));
+    setEntries(getJournalEntries(patientId)); // Corrected function call
   }, [patientId]);
 
   const handleAddTag = () => {
@@ -58,9 +58,9 @@ const PatientJournalTab: React.FC<PatientJournalTabProps> = ({ patientId }) => {
       mood: newEntry.mood,
       tags: newEntry.tags,
     };
-    storageManager.addJournalEntry(newEntryData);
+    addJournalEntry(newEntryData, patientId); // Corrected function call and added patientId
     showSuccess('Journal entry added!');
-    setEntries(storageManager.getJournalEntries(patientId));
+    setEntries(getJournalEntries(patientId)); // Corrected function call
     setNewEntry({ title: '', content: '', mood: 3, tags: [] });
     setIsAdding(false);
   };

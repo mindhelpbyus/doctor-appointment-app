@@ -10,6 +10,7 @@ import { conversations, messages, Conversation, Message, ConversationTopic } fro
 import { agencyPerformanceReport, doctorPerformanceReports, promotionReports, AgencyPerformanceReport, DoctorPerformanceReport, PromotionReport } from '@/data/reports';
 import { IAvailability } from '@/models/Doctor';
 import { visitSummaries, VisitSummary } from '@/data/visitSummaries';
+import { storageManager } from '@/utils/dataStorage'; // Import storageManager
 
 // --- Seeding Logic ---
 const seedEntity = <T>(key: string, data: T[]) => {
@@ -186,6 +187,10 @@ export const createConversation = (patientId: string, doctorId: string, topic?: 
   localStorage.setItem('conversations', JSON.stringify(newItems));
   return newConversation;
 };
+
+// --- Journal Entry Functions (delegating to storageManager) ---
+export const getJournalEntries = storageManager.getUserJournalEntries;
+export const addJournalEntry = storageManager.addJournalEntry;
 
 
 // --- Complex Getters ---
