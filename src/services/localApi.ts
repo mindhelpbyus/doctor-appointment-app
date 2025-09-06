@@ -1,29 +1,55 @@
-import { mockDoctors } from '@/data/mockData';
+import { agencies, Agency } from '@/data/agencies';
+import { appointments, Appointment } from '@/data/appointments';
+import { doctors, Doctor } from '@/data/doctors';
+import { patients, Patient } from '@/data/patients';
+import { promotions, Promotion } from '@/data/promotions';
+import { specialties, Specialty } from '@/data/specialties';
 
-// Define a type for our doctor data for better type safety
-type Doctor = typeof mockDoctors[0];
-
-const DOCTORS_STORAGE_KEY = 'healthconnect_doctors';
-
-// Seed the local storage with initial data if it's empty
-const seedData = () => {
-  const storedData = localStorage.getItem(DOCTORS_STORAGE_KEY);
-  if (!storedData) {
-    localStorage.setItem(DOCTORS_STORAGE_KEY, JSON.stringify(mockDoctors));
+// --- Seeding Logic ---
+const seedEntity = (key: string, data: unknown[]) => {
+  if (!localStorage.getItem(key)) {
+    localStorage.setItem(key, JSON.stringify(data));
   }
 };
 
-// Initialize data on load
-seedData();
+const seedAllData = () => {
+  seedEntity('agencies', agencies);
+  seedEntity('appointments', appointments);
+  seedEntity('doctors', doctors);
+  seedEntity('patients', patients);
+  seedEntity('promotions', promotions);
+  seedEntity('specialties', specialties);
+};
 
-// --- API Functions ---
+// Initialize data on first load
+seedAllData();
 
-export const getDoctors = (): Doctor[] => {
-  const storedData = localStorage.getItem(DOCTORS_STORAGE_KEY);
+// --- Generic Getter ---
+const getEntity = <T>(key: string): T[] => {
+  const storedData = localStorage.getItem(key);
   return storedData ? JSON.parse(storedData) : [];
 };
 
+// --- Specific Getters ---
+export const getAgencies = (): Agency[] => getEntity<Agency>('agencies');
+export const getAppointments = (): Appointment[] => getEntity<Appointment>('appointments');
+export const getDoctors = (): Doctor[] => getEntity<Doctor>('doctors');
+export const getPatients = (): Patient[] => getEntity<Patient>('patients');
+export const getPromotions = (): Promotion[] => getEntity<Promotion>('promotions');
+export const getSpecialties = (): Specialty[] => getEntity<Specialty>('specialties');
+
 export const getDoctorById = (id: string): Doctor | undefined => {
-  const doctors = getDoctors();
-  return doctors.find(doctor => doctor.id === id);
+  return getDoctors().find(doctor => doctor.id === id);
+};
+
+export const getAgencyBySlug = (slug: string): Agency | undefined => {
+  return getAgencies().find(agency => agency.slug === slug);
+};
+
+export const getDoctorsByAgencyId = (agencyId: string): Doctor[] => {
+  return getDoctors().filter(doctor => doctor.agencyId === agencyId);
+};
+
+export const getPromotionsByAgencyId = (agencyId: string): Promotion[] => {
+  return getPromotions().filter(promo => promo.targetAgencyId === agencyId);
 };
