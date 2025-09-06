@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { CalendarDaysIcon, ClockIcon } from 'lucide-react';
 import { getDoctorById, addAppointment } from '@/services/localApi';
 import { Doctor } from '@/data/doctors';
+import { Appointment } from '@/data/appointments';
 import { showSuccess, showError } from '@/utils/toast';
 
 const BookingPage: React.FC = () => {
@@ -31,12 +32,12 @@ const BookingPage: React.FC = () => {
     try {
       // In a real app, you'd get the logged-in patient's ID. We'll use a placeholder.
       const patientId = 'pat-1'; 
-      const newAppointment = {
+      const newAppointment: Omit<Appointment, 'id'> = {
         patientId,
         doctorId: doctor.id,
         datetime: selectedSlot,
         type: doctor.videoConsultation ? 'video' : 'in-person',
-        status: 'booked' as const,
+        status: 'booked',
       };
       addAppointment(newAppointment);
       showSuccess(`Appointment with ${doctor.fullName} booked successfully!`);
