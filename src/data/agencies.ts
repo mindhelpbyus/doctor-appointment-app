@@ -68,4 +68,22 @@ export const agencies: Agency[] = [
     },
     isActive: true,
   },
+  // New agency
+  {
+    id: 'agency-4',
+    name: 'Bright Future Pediatrics',
+    slug: 'bright-future-pediatrics',
+    logo: 'https://via.placeholder.com/150/FFC0CB/FFFFFF?text=BFP',
+    headerImage: 'https://via.placeholder.com/1200x300/ADD8E6/FFFFFF?text=Bright+Future+Pediatrics',
+    websiteUrl: 'https://brightfuture.example.com',
+    address: '500 Kids Way, Playville, USA',
+    phone: '555-400-4000',
+    contactEmail: 'hello@brightfuture.com',
+    type: 'Clinic',
+    theme: {
+      primaryColor: 'hsl(330 70% 60%)', // pink
+      secondaryColor: 'hsl(330 70% 90%)', // light pink
+    },
+    isActive: true,
+  },
 ];

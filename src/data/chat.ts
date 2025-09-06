@@ -45,6 +45,31 @@ export const conversations: Conversation[] = [
     unreadCount: 0,
     topic: 'general',
   },
+  // New conversations
+  {
+    id: 'conv-4',
+    participantIds: ['pat-demo', 'doc-1'],
+    lastMessageContent: 'Hello Dr. Reed, I have a question about my skin condition.',
+    lastMessageTimestamp: '2024-11-08T11:00:00Z',
+    unreadCount: 1, // Unread for doc-1
+    topic: 'medical_query',
+  },
+  {
+    id: 'conv-5',
+    participantIds: ['pat-demo', 'doc-3'],
+    lastMessageContent: 'Confirming my appointment for next week.',
+    lastMessageTimestamp: '2024-11-09T14:00:00Z',
+    unreadCount: 0,
+    topic: 'appointment_booking',
+  },
+  {
+    id: 'conv-6',
+    participantIds: ['pat-6', 'doc-5'],
+    lastMessageContent: 'Regarding my heart check-up results.',
+    lastMessageTimestamp: '2024-11-07T16:00:00Z',
+    unreadCount: 0,
+    topic: 'medical_query',
+  },
 ];
 
 // Initial mock data for messages
@@ -60,4 +85,14 @@ export const messages: Message[] = [
   { id: 'msg-7', conversationId: 'conv-3', senderId: 'pat-2', receiverId: 'doc-5', content: 'Hello Dr. White, I need to reschedule my appointment.', timestamp: '2024-11-03T09:00:00Z', read: true },
   { id: 'msg-8', conversationId: 'conv-3', senderId: 'doc-5', receiverId: 'pat-2', content: 'Please call the front desk to reschedule. Thanks!', timestamp: '2024-11-03T09:10:00Z', read: true },
   { id: 'msg-9', conversationId: 'conv-3', senderId: 'pat-2', receiverId: 'doc-5', content: 'Is the clinic open on holidays?', timestamp: '2024-11-03T09:15:00Z', read: true },
+
+  // New messages for conv-4 (pat-demo, doc-1)
+  { id: 'msg-10', conversationId: 'conv-4', senderId: 'pat-demo', receiverId: 'doc-1', content: 'Hello Dr. Reed, I have a question about my skin condition.', timestamp: '2024-11-08T10:00:00Z', read: true },
+  { id: 'msg-11', conversationId: 'conv-4', senderId: 'doc-1', receiverId: 'pat-demo', content: 'Hi! Please describe your symptoms in more detail.', timestamp: '2024-11-08T10:30:00Z', read: false },
+  { id: 'msg-12', conversationId: 'conv-4', senderId: 'pat-demo', receiverId: 'doc-1', content: 'It\'s a persistent rash on my arm.', timestamp: '2024-11-08T11:00:00Z', read: false },
+
+  // New messages for conv-5 (pat-demo, doc-3)
+  { id: 'msg-13', conversationId: 'conv-5', senderId: 'pat-demo', receiverId: 'doc-3', content: 'Hi Dr. Smith, just confirming my appointment for next week.', timestamp: '2024-11-09T13:00:00Z', read: true },
+  { id: 'msg-14', conversationId: 'conv-5', senderId: 'doc-3', receiverId: 'pat-demo', content: 'Confirmed! Looking forward to seeing you.', timestamp: '2024-11-09T13:30:00Z', read: true },
+  { id: 'msg-15', conversationId: 'conv-5', senderId: 'pat-demo', receiverId: 'doc-3', content: 'Thank you!', timestamp: '2024-11-09T14:00:00Z', read: true },
 ];

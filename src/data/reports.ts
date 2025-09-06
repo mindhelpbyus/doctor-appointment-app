@@ -130,6 +130,23 @@ export const doctorPerformanceReports: DoctorPerformanceReport[] = [
     patientSatisfactionScore: 4.7,
     revenueGenerated: 20900,
   },
+  // New doctors for reports
+  {
+    doctorId: 'doc-11', // Dr. Olivia Wilson (Individual)
+    doctorName: 'Dr. Olivia Wilson',
+    averageRating: 4.6,
+    totalAppointments: 50,
+    patientSatisfactionScore: 4.5,
+    revenueGenerated: 10000,
+  },
+  {
+    doctorId: 'doc-12', // Dr. Liam Davis (Agency-1)
+    doctorName: 'Dr. Liam Davis',
+    averageRating: 4.9,
+    totalAppointments: 70,
+    patientSatisfactionScore: 4.8,
+    revenueGenerated: 14000,
+  },
 ];
 
 // Mock Data for Promotion Reports (filtered by agency in localApi)
@@ -161,5 +178,13 @@ export const promotionReports: PromotionReport[] = [
     status: 'pending',
     redemptions: 0,
     revenueGenerated: 0,
+  },
+  // New promotion for agency-4
+  {
+    promotionId: 'promo-5', // Bright Future Pediatrics
+    promotionTitle: 'First Visit Free Consult',
+    status: 'approved',
+    redemptions: 15,
+    revenueGenerated: 0, // Free consult
   },
 ];

@@ -16,7 +16,7 @@ import {
   StarIcon,
   ClockIcon,
   MapPinIcon,
-  CalendarDays, // Import CalendarDays for the new tab icon
+  CalendarDays,
 } from 'lucide-react';
 import { getLoggedInUser, logoutUser } from '@/utils/auth';
 import {
@@ -26,15 +26,14 @@ import {
   getPatientById,
   getSpecialties,
   getMessagesForConversation,
-  updateDoctorWeeklyAvailability, // Import the new update function
+  updateDoctorWeeklyAvailability,
 } from '@/services/localApi';
 import { Doctor } from '@/data/doctors';
 import { Appointment } from '@/data/appointments';
 import { Conversation } from '@/data/chat';
-import MessagingSection from '@/components/doctor/MessagingSection';
+import { MessagingSection, DoctorAvailabilityCalendar, DoctorClientsTab } from '@/components/doctor'; // Import new DoctorClientsTab
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import DoctorAvailabilityCalendar from '@/components/doctor/DoctorAvailabilityCalendar'; // Import the new component
-import { IAvailability } from '@/models/Doctor'; // Import IAvailability
+import { IAvailability } from '@/models/Doctor';
 
 const DoctorDashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -127,8 +126,8 @@ const DoctorDashboardPage: React.FC = () => {
   const tabs = [
     { value: 'overview', label: 'Overview' },
     { value: 'messages', label: 'Messages' },
-    { value: 'availability', label: 'Availability' }, // New tab
-    { value: 'clients', label: 'My Patients' },
+    { value: 'availability', label: 'Availability' },
+    { value: 'clients', label: 'My Patients' }, // New tab
     { value: 'schedule', label: 'Schedule' },
     { value: 'settings', label: 'Settings' },
   ];
@@ -293,14 +292,7 @@ const DoctorDashboardPage: React.FC = () => {
           </TabsContent>
 
           <TabsContent value="clients">
-            <Card>
-              <CardHeader>
-                <CardTitle>My Patients</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">Patient management interface coming soon...</p>
-              </CardContent>
-            </Card>
+            <DoctorClientsTab currentDoctorId={doctor.id} />
           </TabsContent>
 
           <TabsContent value="schedule">

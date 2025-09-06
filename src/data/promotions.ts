@@ -16,4 +16,6 @@ export const promotions: Promotion[] = [
   { id: 'promo-2', title: 'Annual Heart Check-up', description: '$50 off cardiology consultations this month.', validFrom: '2024-11-01', validTo: '2024-11-30', discountType: 'flat', discountValue: 50, targetAgencyId: 'agency-2', status: 'approved' },
   { id: 'promo-3', title: 'Video Consult Special', description: '10% off any video consultation with Dr. Reed.', validFrom: '2024-11-01', validTo: '2024-11-30', discountType: 'percent', discountValue: 10, targetDoctorId: 'doc-1', status: 'pending' },
   { id: 'promo-4', title: 'Apex Neurology Offer', description: '15% off first-time neurology appointments.', validFrom: '2024-10-01', validTo: '2024-12-31', discountType: 'percent', discountValue: 15, targetAgencyId: 'agency-3', status: 'pending' },
+  // New promotion
+  { id: 'promo-5', title: 'First Visit Free Consult', description: 'Free initial consultation for new patients at Bright Future Pediatrics.', validFrom: '2024-11-15', validTo: '2025-01-31', discountType: 'flat', discountValue: 0, targetAgencyId: 'agency-4', status: 'approved' },
 ];

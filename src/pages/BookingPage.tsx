@@ -9,18 +9,28 @@ import { getDoctorById, addAppointment, getPatientById } from '@/services/localA
 import { Doctor } from '@/data/doctors';
 import { Appointment } from '@/data/appointments';
 import { showSuccess, showError } from '@/utils/toast';
-import { sendAppointmentReminder } from '@/utils/notifications'; // Import the new utility
+import { sendAppointmentReminder } from '@/utils/notifications';
+import { generateFutureAvailabilitySlots } from '@/utils/time'; // Import the new utility
+import { format, addDays, startOfDay } from 'date-fns';
 
 const BookingPage: React.FC = () => {
   const { doctorId } = useParams<{ doctorId: string }>();
   const navigate = useNavigate();
   const [doctor, setDoctor] = useState<Doctor | undefined>(undefined);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
+  const [availableSlots, setAvailableSlots] = useState<{ date: string; slots: string[] }[]>([]);
 
   useEffect(() => {
     if (doctorId) {
       const foundDoctor = getDoctorById(doctorId);
       setDoctor(foundDoctor);
+
+      if (foundDoctor && foundDoctor.weeklyAvailability) {
+        // Generate slots for the next 30 days starting from today
+        const today = startOfDay(new Date());
+        const generatedSlots = generateFutureAvailabilitySlots(foundDoctor.weeklyAvailability, today, 30, 30);
+        setAvailableSlots(generatedSlots);
+      }
     }
   }, [doctorId]);
 
@@ -32,7 +42,7 @@ const BookingPage: React.FC = () => {
 
     try {
       // In a real app, you'd get the logged-in patient's ID. We'll use a placeholder.
-      const patientId = 'pat-1'; 
+      const patientId = 'pat-demo'; 
       const newAppointment: Omit<Appointment, 'id'> = {
         patientId,
         doctorId: doctor.id,
@@ -40,14 +50,14 @@ const BookingPage: React.FC = () => {
         type: doctor.videoConsultation ? 'video' : 'in-person',
         status: 'booked',
       };
-      const addedAppointment = addAppointment(newAppointment); // Assuming addAppointment returns the new appointment with ID
+      const addedAppointment = addAppointment(newAppointment);
       
-      const patient = getPatientById(patientId); // Get patient details for reminder
+      const patient = getPatientById(patientId);
 
       if (addedAppointment && patient) {
         showSuccess(`Appointment with ${doctor.fullName} booked successfully!`);
-        sendAppointmentReminder(addedAppointment, doctor, patient); // Send reminder
-        navigate('/appointments');
+        sendAppointmentReminder(addedAppointment, doctor, patient);
+        navigate('/dashboard'); // Redirect to patient dashboard
       } else {
         showError('Failed to retrieve patient or appointment details for reminder.');
       }
@@ -61,12 +71,6 @@ const BookingPage: React.FC = () => {
     return <div className="text-center py-10">Loading doctor details...</div>;
   }
 
-  // Group slots by date
-  const availabilityByDate = doctor.availability.reduce((acc, day) => {
-    acc[day.date] = day.slots;
-    return acc;
-  }, {} as Record<string, string[]>);
-
   return (
     <div className="max-w-2xl mx-auto p-4">
       <Card className="shadow-lg">
@@ -75,29 +79,33 @@ const BookingPage: React.FC = () => {
           <CardDescription>Select an available time slot below.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {Object.keys(availabilityByDate).map(date => (
-            <div key={date}>
-              <h3 className="flex items-center gap-2 text-lg font-semibold mb-3">
-                <CalendarDaysIcon className="h-5 w-5 text-primary" />
-                {new Date(date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-              </h3>
-              <div className="grid grid-cols-3 gap-2">
-                {availabilityByDate[date].map(time => {
-                  const datetime = new Date(`${date}T${time}:00`).toISOString();
-                  return (
-                    <Button
-                      key={datetime}
-                      variant={selectedSlot === datetime ? 'default' : 'outline'}
-                      onClick={() => setSelectedSlot(datetime)}
-                      className="flex items-center gap-2"
-                    >
-                      <ClockIcon className="h-4 w-4" /> {time}
-                    </Button>
-                  );
-                })}
+          {availableSlots.length > 0 ? (
+            availableSlots.map(day => (
+              <div key={day.date}>
+                <h3 className="flex items-center gap-2 text-lg font-semibold mb-3">
+                  <CalendarDaysIcon className="h-5 w-5 text-primary" />
+                  {new Date(day.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                </h3>
+                <div className="grid grid-cols-3 gap-2">
+                  {day.slots.map(time => {
+                    const datetime = new Date(`${day.date}T${time}:00`).toISOString();
+                    return (
+                      <Button
+                        key={datetime}
+                        variant={selectedSlot === datetime ? 'default' : 'outline'}
+                        onClick={() => setSelectedSlot(datetime)}
+                        className="flex items-center gap-2"
+                      >
+                        <ClockIcon className="h-4 w-4" /> {time}
+                      </Button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="text-center text-lg text-muted-foreground">No available slots for this doctor in the next 30 days.</p>
+          )}
           <Button size="lg" className="w-full mt-4" onClick={handleBooking} disabled={!selectedSlot}>
             Confirm Booking
           </Button>

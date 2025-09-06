@@ -6,16 +6,22 @@ import { promotions, Promotion } from '@/data/promotions';
 import { specialties, Specialty } from '@/data/specialties';
 import { admins, Admin } from '@/data/admins';
 import { agencyUsers, AgencyUser } from '@/data/agencyUsers';
-import { conversations, messages, Conversation, Message, ConversationTopic } from '@/data/chat'; // Import ConversationTopic
+import { conversations, messages, Conversation, Message, ConversationTopic } from '@/data/chat';
 import { agencyPerformanceReport, doctorPerformanceReports, promotionReports, AgencyPerformanceReport, DoctorPerformanceReport, PromotionReport } from '@/data/reports';
 import { IAvailability } from '@/models/Doctor';
 import { visitSummaries, VisitSummary } from '@/data/visitSummaries';
 
 // --- Seeding Logic ---
-const seedEntity = (key: string, data: unknown[]) => {
-  if (!localStorage.getItem(key)) {
+const seedEntity = <T>(key: string, data: T[]) => {
+  const storedData = localStorage.getItem(key);
+  if (!storedData || JSON.parse(storedData).length === 0) { // Re-seed if missing or empty
     localStorage.setItem(key, JSON.stringify(data));
   }
+};
+
+export const clearAllData = () => {
+  localStorage.clear();
+  seedAllData(); // Re-seed after clearing
 };
 
 const seedAllData = () => {
@@ -154,15 +160,12 @@ export const addMessage = (message: Omit<Message, 'id'>): Message => {
 
   const conversation = getConversationById(message.conversationId);
   if (conversation) {
+    // Increment unread count for the receiver
     const updatedConversation = {
       ...conversation,
       lastMessageContent: message.content,
       lastMessageTimestamp: message.timestamp,
-      // Only increment unread count if the message is not from the current user
-      // This logic is handled in the UI components (ChatWindow, MessagingSection)
-      // by marking messages as read when loaded. For simplicity in localApi,
-      // we'll let the UI manage the unreadCount increment for the *other* participant.
-      // Here, we just ensure the last message is updated.
+      unreadCount: conversation.unreadCount + 1, // Increment for the receiver
     };
     updateConversation(updatedConversation);
   }
@@ -176,8 +179,8 @@ export const createConversation = (patientId: string, doctorId: string, topic?: 
     participantIds: [patientId, doctorId],
     lastMessageContent: 'New conversation started.',
     lastMessageTimestamp: new Date().toISOString(),
-    unreadCount: 0,
-    topic: topic, // Assign the new topic
+    unreadCount: 0, // No unread count initially when creating
+    topic: topic,
   };
   const newItems = [...items, newConversation];
   localStorage.setItem('conversations', JSON.stringify(newItems));

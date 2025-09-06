@@ -14,6 +14,8 @@ export const patients: Patient[] = [
   { id: 'pat-3', name: 'Bruce Wayne', email: 'bruce@email.com', phone: '555-003-0003', location: 'Hightower', savedAppointments: ['appt-3'], recentlyViewedDoctors: ['doc-10'] },
   { id: 'pat-4', name: 'Peter Parker', email: 'peter@email.com', phone: '555-004-0004', location: 'Central City', savedAppointments: [], recentlyViewedDoctors: ['doc-2'] },
   { id: 'pat-5', name: 'Leia Organa', email: 'leia@email.com', phone: '555-005-0005', location: 'Greensville', savedAppointments: [], recentlyViewedDoctors: ['doc-1'] },
+  { id: 'pat-6', name: 'Clark Kent', email: 'clark@email.com', phone: '555-006-0006', location: 'Metropolis', savedAppointments: [], recentlyViewedDoctors: ['doc-5'] },
+  { id: 'pat-7', name: 'Lois Lane', email: 'lois@email.com', phone: '555-007-0007', location: 'Metropolis', savedAppointments: [], recentlyViewedDoctors: ['doc-6'] },
   // Demo Patient
   { id: 'pat-demo', name: 'Demo Patient', email: 'patient@demo.com', phone: '555-999-0001', location: 'Demo City', savedAppointments: [], recentlyViewedDoctors: [] },
 ];

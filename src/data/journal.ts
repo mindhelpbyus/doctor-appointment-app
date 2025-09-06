@@ -18,4 +18,8 @@ export const journalEntries: JournalEntry[] = [
   { id: 'journal-7', patientId: 'pat-1', title: 'Relaxed evening', content: 'Enjoyed a quiet night in.', mood: 7, createdAt: '2024-11-07T20:00:00Z', tags: ['relaxation'] },
   { id: 'journal-8', patientId: 'pat-2', title: 'New city, new feelings', content: 'Adjusting to a new environment.', mood: 6, createdAt: '2024-11-01T12:00:00Z', tags: ['new-beginnings'] },
   { id: 'journal-9', patientId: 'pat-demo', title: 'Demo mood entry', content: 'This is a test entry for the demo patient.', mood: 7, createdAt: new Date().toISOString(), tags: ['demo', 'test'] },
+  // New journal entries for demo patient
+  { id: 'journal-10', patientId: 'pat-demo', title: 'Productive morning', content: 'Finished my tasks early and felt good about it.', mood: 8, createdAt: '2024-11-08T09:00:00Z', tags: ['work', 'productivity'] },
+  { id: 'journal-11', patientId: 'pat-demo', title: 'Slightly anxious', content: 'Had a challenging conversation, feeling a bit on edge.', mood: 4, createdAt: '2024-11-09T15:00:00Z', tags: ['anxiety', 'social'] },
+  { id: 'journal-12', patientId: 'pat-demo', title: 'Peaceful evening', content: 'Read a book and relaxed, feeling calm.', mood: 9, createdAt: '2024-11-10T21:00:00Z', tags: ['relaxation', 'reading'] },
 ];
