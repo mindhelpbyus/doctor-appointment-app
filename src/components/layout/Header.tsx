@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { MenuIcon, XIcon, UserIcon, LogOutIcon, LayoutDashboard, MessageSquare, CalendarDays, Settings, BriefcaseBusiness, HeartHandshake } from 'lucide-react';
+import { MenuIcon, XIcon, UserIcon, LogOutIcon, LayoutDashboard, MessageSquare, CalendarDays, Settings, BriefcaseBusiness, HeartHandshake, SearchIcon, MailIcon } from 'lucide-react';
 import { getLoggedInUser, logoutUser } from '@/utils/auth';
 import { User } from '@/data/users';
 import { showSuccess } from '@/utils/toast';
