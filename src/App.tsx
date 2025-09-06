@@ -20,7 +20,8 @@ import {
   PatientDashboardPage,
   ProviderOnboardingPage,
   MessagesPage,
-  DoctorDashboardPage // Import DoctorDashboardPage
+  DoctorDashboardPage,
+  AgenciesPage // Import AgenciesPage
 } from "./pages";
 
 const queryClient = new QueryClient();
@@ -45,16 +46,16 @@ const App = () => (
             <Route path="doctor/:doctorId" element={<DoctorProfilePage />} />
             <Route path="book/:doctorId" element={<BookingPage />} />
             <Route path="admin" element={<AdminPage />} />
-            {/* The standalone MessagesPage can still be accessed directly */}
             <Route path="messages" element={<MessagesPage />} />
             <Route path="messages/:conversationId" element={<MessagesPage />} />
+            <Route path="agencies" element={<AgenciesPage />} /> {/* New route for AgenciesPage */}
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Route>
 
           {/* Dashboard routes that manage their own layout/header */}
           <Route path="dashboard" element={<PatientDashboardPage />} />
-          <Route path="dashboard/messages/:conversationId" element={<PatientDashboardPage />} /> {/* Deep link to conversation in patient dashboard */}
+          <Route path="dashboard/messages/:conversationId" element={<PatientDashboardPage />} />
           <Route path="agency-dashboard/:agencyId" element={<AgencyDashboardPage />} />
           <Route path="doctor-dashboard" element={<DoctorDashboardPage />} />
           <Route path="doctor-dashboard/messages/:conversationId" element={<DoctorDashboardPage />} />

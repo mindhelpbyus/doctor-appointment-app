@@ -5,39 +5,39 @@
 @layer base {
   :root {
     --background: 0 0% 100%; /* White */
-    --foreground: 222.2 84% 4.9%; /* Charcoal */
-    --muted: 210 40% 96.1%; /* Light Gray */
-    --muted-foreground: 215.4 16.3% 46.9%; /* Stone */
+    --foreground: 210 20% 20%; /* Soft Deep Grey */
+    --muted: 210 20% 95%; /* Very Light Grey */
+    --muted-foreground: 210 10% 40%; /* Medium Grey */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 210 20% 20%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --accent: 150 100% 74%; /* Spearmint */
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --card-foreground: 210 20% 20%;
+    --border: 210 10% 90%; /* Light Grey Border */
+    --input: 210 10% 90%;
+    --primary: 140 60% 40%; /* Calming Green */
+    --primary-foreground: 0 0% 100%; /* White */
+    --secondary: 210 20% 95%; /* Very Light Grey */
+    --secondary-foreground: 210 20% 20%; /* Soft Deep Grey */
+    --accent: 150 100% 74%; /* Spearmint - Bright Fresh Green */
+    --accent-foreground: 210 20% 20%; /* Soft Deep Grey */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 140 60% 40%; /* Calming Green */
     --radius: 0.5rem;
 
     /* Custom Colors */
-    --basil: #008363; /* Primary green */
-    --dark-basil: #045944; /* Darker green for hover/active */
-    --charcoal: #2d2d2d; /* Dark text/background */
-    --stone: #57585a; /* Muted text */
-    --granite: #e4e5e5; /* Light border/background */
-    --hibiscus: #c92c78; /* Accent color */
-    --peach: #ffe3d9; /* Light background */
-    --sky: #e6faff; /* Light background */
-    --spearmint: #aaffd8; /* Light green accent */
-    --spritz: #ebf9f1; /* Very light green background */
-    --matcha-latte: #e9fed3; /* Light green background */
-    --light-grey: #f4f5f5; /* General light background */
+    --basil: 140 60% 40%; /* Primary green, same as primary */
+    --dark-basil: 140 60% 30%; /* Darker green for hover/active */
+    --charcoal: 210 20% 20%; /* Dark text/background, same as foreground */
+    --stone: 210 10% 40%; /* Muted text, same as muted-foreground */
+    --granite: 210 10% 90%; /* Light border/background */
+    --hibiscus: 330 70% 60%; /* Soft pink/red accent */
+    --peach: 30 100% 95%; /* Light peach background */
+    --sky: 200 100% 95%; /* Light blue background */
+    --spearmint: 150 100% 74%; /* Light green accent, same as accent */
+    --spritz: 150 100% 95%; /* Very light green background */
+    --matcha-latte: 80 60% 95%; /* Light green/yellow background */
+    --light-grey: 210 10% 95%; /* General light background */
   }
 
   .dark {
@@ -62,18 +62,18 @@
     --ring: 217.2 32.6% 17.5%;
 
     /* Custom Colors for Dark Mode */
-    --basil: #aaffd8; /* Lighter green for dark mode */
-    --dark-basil: #67d7a4; /* Slightly darker green for hover */
-    --charcoal: #f4f5f5; /* Light text/background */
-    --stone: #a2a3a5; /* Muted text */
-    --granite: #57585a; /* Dark border/background */
-    --hibiscus: #c92c78; /* Accent color (can remain same or adjust) */
-    --peach: #ffe3d9; /* Light background (can remain same or adjust) */
-    --sky: #e6faff; /* Light background (can remain same or adjust) */
-    --spearmint: #aaffd8; /* Light green accent (can remain same or adjust) */
-    --spritz: #ebf9f1; /* Very light green background (can remain same or adjust) */
-    --matcha-latte: #e9fed3; /* Light green background (can remain same or adjust) */
-    --light-grey: #2d2d2d; /* General dark background */
+    --basil: 140 60% 40%; /* Lighter green for dark mode */
+    --dark-basil: 140 60% 30%; /* Slightly darker green for hover */
+    --charcoal: 210 40% 98%; /* Light text/background */
+    --stone: 215 20.2% 65.1%; /* Muted text */
+    --granite: 217.2 32.6% 17.5%; /* Dark border/background */
+    --hibiscus: 330 70% 60%; /* Accent color (can remain same or adjust) */
+    --peach: 30 100% 95%; /* Light background (can remain same or adjust) */
+    --sky: 200 100% 95%; /* Light background (can remain same or adjust) */
+    --spearmint: 150 100% 74%; /* Light green accent (can remain same or adjust) */
+    --spritz: 150 100% 95%; /* Very light green background (can remain same or adjust) */
+    --matcha-latte: 80 60% 95%; /* Light green background (can remain same or adjust) */
+    --light-grey: 217.2 32.6% 17.5%; /* General dark background */
   }
 }
 

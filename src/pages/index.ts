@@ -13,7 +13,8 @@ import AgencyDashboardPage from './AgencyDashboardPage';
 import PatientDashboardPage from './PatientDashboardPage';
 import ProviderOnboardingPage from './ProviderOnboardingPage';
 import MessagesPage from './MessagesPage';
-import DoctorDashboardPage from './DoctorDashboardPage'; // Import new DoctorDashboardPage
+import DoctorDashboardPage from './DoctorDashboardPage';
+import AgenciesPage from './AgenciesPage'; // Import new AgenciesPage
 
 export {
   HomePage,
@@ -31,5 +32,6 @@ export {
   PatientDashboardPage,
   ProviderOnboardingPage,
   MessagesPage,
-  DoctorDashboardPage, // Export new DoctorDashboardPage
+  DoctorDashboardPage,
+  AgenciesPage, // Export new AgenciesPage
 };
