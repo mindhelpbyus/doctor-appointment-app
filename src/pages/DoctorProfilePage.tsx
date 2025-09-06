@@ -5,19 +5,16 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { StarIcon, MapPinIcon, CalendarDaysIcon, PhoneIcon, MailIcon, MessageSquare } from 'lucide-react';
-import { getDoctorById, getSpecialtyById, getOrCreateConversation, getReviewsByDoctorId } from '@/services/localApi';
+import { getDoctorById, getSpecialtyById, getOrCreateConversation } from '@/services/localApi';
 import { Doctor } from '@/data/doctors';
 import { getLoggedInUser } from '@/utils/auth';
 import { showError } from '@/utils/toast';
-import { Review } from '@/data/reviews';
-import { ReviewCard } from '@/components/common';
 
 const DoctorProfilePage: React.FC = () => {
   const { doctorId } = useParams<{ doctorId: string }>();
   const navigate = useNavigate();
   const [doctor, setDoctor] = useState<Doctor | undefined>(undefined);
   const [specialtyName, setSpecialtyName] = useState<string>('');
-  const [reviews, setReviews] = useState<Review[]>([]);
   const [currentPatientId, setCurrentPatientId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -34,8 +31,6 @@ const DoctorProfilePage: React.FC = () => {
       if (foundDoctor) {
         const specialty = getSpecialtyById(foundDoctor.specialtyId);
         setSpecialtyName(specialty?.name || 'N/A');
-        const foundReviews = getReviewsByDoctorId(doctorId);
-        setReviews(foundReviews);
       }
     }
   }, [doctorId]);
@@ -80,7 +75,7 @@ const DoctorProfilePage: React.FC = () => {
               <MapPinIcon className="h-5 w-5 mr-2 text-primary" /> {doctor.clinicAddress}
             </div>
             <div className="flex items-center justify-center md:justify-start text-lg text-yellow-500 font-averta">
-              <StarIcon className="h-5 w-5 mr-2 fill-yellow-500" /> {doctor.rating.toFixed(1)} ({reviews.length} reviews)
+              <StarIcon className="h-5 w-5 mr-2 fill-yellow-500" /> {doctor.rating.toFixed(1)} Rating
             </div>
           </div>
         </CardHeader>
@@ -88,19 +83,6 @@ const DoctorProfilePage: React.FC = () => {
           <section>
             <h2 className="text-2xl font-recoleta font-semibold mb-4 text-foreground">About Dr. {doctor.fullName.split(' ')[1]}</h2> {/* Serif font for heading */}
             <p className="text-muted-foreground leading-relaxed text-lg font-averta">{doctor.biography}</p> {/* Larger, relaxed leading */}
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-recoleta font-semibold mb-4 text-foreground">Patient Reviews</h2>
-            {reviews.length > 0 ? (
-              <div className="space-y-4">
-                {reviews.map(review => (
-                  <ReviewCard key={review.id} review={review} />
-                ))}
-              </div>
-            ) : (
-              <p className="text-muted-foreground text-lg font-averta">No reviews yet for this doctor.</p>
-            )}
           </section>
 
           <section>
