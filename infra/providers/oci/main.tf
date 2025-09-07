@@ -1,70 +1,50 @@
-# =============================================================================
-# OCI Provider: Main Configuration
-#
-# This file is the entry point for the OCI infrastructure. It configures the
-# OCI provider and defines shared variables for the OCI environment.
-# =============================================================================
-
 terraform {
   required_providers {
     oci = {
       source  = "oracle/oci"
-      version = "> 5.0"
+      version = "~> 4.60"
     }
   }
+  required_version = ">= 1.2.0"
 }
 
-# --- Provider Configuration ---
-# Configure the OCI provider. You must provide tenancy and user credentials.
-# This is typically done via a config file (~/.oci/config) or environment variables.
 provider "oci" {
-  tenancy_ocid     = var.oci_tenancy_ocid
-  user_ocid        = var.oci_user_ocid
-  fingerprint      = var.oci_fingerprint
-  private_key_path = var.oci_private_key_path
-  region           = var.oci_region
+  # Configuration details for OCI provider (e.g., tenancy_ocid, region)
+  # would be configured here, typically through environment variables.
 }
 
-# --- Global Variables for OCI ---
-variable "oci_tenancy_ocid" {
-  description = "The OCID of the OCI tenancy."
-  type        = string
+# OCI Compartment to hold all resources
+resource "oci_identity_compartment" "mindhelp_compartment" {
+  # Compartment details here
+  # This is a placeholder for your actual compartment OCID
+  compartment_id = "ocid1.tenancy.oc1..aaaa..."
+  name           = "MindHelpProduction"
+  description    = "Compartment for the MindHelp application"
 }
 
-variable "oci_user_ocid" {
-  description = "The OCID of the user for authentication."
-  type        = string
+# OCI Log Group for the API
+resource "oci_logging_log_group" "api_log_group" {
+  compartment_id = oci_identity_compartment.mindhelp_compartment.id
+  display_name   = "MindHelpAPILogGroup"
 }
 
-variable "oci_fingerprint" {
-  description = "The fingerprint of the API key."
-  type        = string
-}
+# OCI Log for the application
+resource "oci_logging_log" "application_log" {
+  log_group_id = oci_logging_log_group.api_log_group.id
+  log_type     = "AGENT"
+  display_name = "APIApplicationLogs"
 
-variable "oci_private_key_path" {
-  description = "The path to the private key file for API authentication."
-  type        = string
-}
+  is_enabled = true
 
-variable "oci_compartment_ocid" {
-  description = "The OCID of the compartment to deploy resources into."
-  type        = string
-}
-
-variable "oci_region" {
-  description = "The OCI region for deploying resources."
-  type        = string
-  default     = "us-ashburn-1"
-}
-
-variable "environment" {
-  description = "The deployment environment (e.g., dev, staging, prod)."
-  type        = string
-  default     = "dev"
-}
-
-variable "project_name" {
-  description = "The name of the project."
-  type        = string
-  default     = "your-app"
+  configuration {
+    source {
+      category = "application"
+      resource = "ocid1.instance.oc1..aaaa..." # Placeholder for compute instance OCID
+      service  = "compute"
+      source_type = "SYSLOG"
+    }
+    
+    # The compartment_id for the log configuration
+    compartment_id = oci_identity_compartment.mindhelp_compartment.id
+  }
 }

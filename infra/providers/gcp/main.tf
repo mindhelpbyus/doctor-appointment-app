@@ -1,51 +1,54 @@
-
-# =============================================================================
-# GCP Provider: Main Configuration
-#
-# This file is the entry point for the GCP infrastructure. It configures the
-# Google provider and defines shared resources and variables for the GCP
-# environment.
-# =============================================================================
-
 terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "~> 5.0"
+      version = "~> 4.20"
     }
   }
+  required_version = ">= 1.2.0"
 }
 
-# --- Provider Configuration ---
-# Configure the Google Cloud provider with project and region.
-# Credentials can be provided via environment variables, a credentials file,
-# or by running `gcloud auth application-default login`.
 provider "google" {
-  project = var.gcp_project_id
-  region  = var.gcp_region
+  project = "mindhelp-project" # Replace with your GCP project ID
+  region  = "us-west1"
 }
 
-# --- Global Variables for GCP ---
-# Define any variables that are shared across the GCP infrastructure here.
-variable "gcp_project_id" {
-  description = "The GCP Project ID to deploy resources into."
-  type        = string
-}
+# Note on GCP Logging:
+# Google Cloud Logging automatically collects syslog messages from VM instances
+# running the Cloud Logging agent. The primary task is to ensure the agent
+# is installed and configured on the compute instances.
 
-variable "gcp_region" {
-  description = "The GCP region for deploying resources."
-  type        = string
-  default     = "us-central1"
-}
+# The Terraform configuration would focus on setting up the compute instance
+# correctly, rather than creating a logging resource itself.
 
-variable "environment" {
-  description = "The deployment environment (e.g., dev, staging, prod)."
-  type        = string
-  default     = "dev"
-}
+# Example for a Google Compute Engine instance:
+resource "google_compute_instance" "api_server" {
+  name         = "mindhelp-api-server"
+  machine_type = "e2-medium"
+  zone         = "us-west1-a"
 
-variable "project_name" {
-  description = "The name of the project."
-  type        = string
-  default     = "your-app"
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+    }
+  }
+
+  network_interface {
+    network = "default"
+  }
+
+  // This metadata script installs the Ops Agent, which handles logging
+  metadata_startup_script = <<-EOT
+    #!/bin/bash
+    curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+    bash add-google-cloud-ops-agent-repo.sh --also-install
+    # The agent is now installed and will automatically forward syslog to Cloud Logging.
+    # The application's LOGGING_HOST should be set to localhost.
+  EOT
+
+  // The application's environment variables would be set here
+  metadata = {
+    LOGGING_HOST = "127.0.0.1"
+    LOGGING_PORT = "514"
+  }
 }

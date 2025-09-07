@@ -1,11 +1,3 @@
-
-# =============================================================================
-# Azure Provider: Main Configuration
-#
-# This file is the entry point for the Azure infrastructure. It configures the
-# Azure Provider (azurerm) and defines shared resources like the resource group.
-# =============================================================================
-
 terraform {
   required_providers {
     azurerm = {
@@ -13,49 +5,34 @@ terraform {
       version = "~> 3.0"
     }
   }
+  required_version = ">= 1.2.0"
 }
 
-# --- Provider Configuration ---
-# Configure the Azure Provider. Credentials are automatically sourced from
-# the environment (e.g., Azure CLI, Service Principal).
 provider "azurerm" {
   features {}
 }
 
-# --- Resource Group ---
-# A resource group is a container that holds related resources for an Azure solution.
-resource "azurerm_resource_group" "main" {
-  name     = "${var.project_name}-rg"
-  location = var.azure_region
+# Resource Group to hold all resources
+resource "azurerm_resource_group" "rg" {
+  name     = "mindhelp-resources"
+  location = "West US 2"
+}
+
+# Centralized Log Analytics Workspace for the API
+resource "azurerm_log_analytics_workspace" "api_logs" {
+  name                = "mindhelp-api-logs"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  sku                 = "PerGB2018" # Standard SKU
+  retention_in_days   = 90        # For compliance
 
   tags = {
-    environment = var.environment
-    managed-by  = "terraform"
+    Environment = "production"
+    Application = "MindHelpAPI"
   }
 }
 
-# --- Global Variables for Azure ---
-variable "azure_region" {
-  description = "The Azure region for deploying resources."
-  type        = string
-  default     = "East US"
-}
-
-variable "azure_failover_region" {
-  description = "The Azure region for failover."
-  type        = string
-  default     = "West US"
-}
-
-variable "environment" {
-  description = "The deployment environment (e.g., dev, staging, prod)."
-  type        = string
-  default     = "dev"
-}
-
-variable "project_name" {
-  description = "The name of the project."
-  type        = string
-  default     = "your-app"
-}
-
+# The application's compute service (e.g., App Service, VM)
+# would then be configured with the workspace ID and primary shared key
+# to send logs. The application environment would be configured with the
+# appropriate Syslog endpoint for this workspace.

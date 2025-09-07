@@ -1,5 +1,13 @@
 fastapi
-boto3
-firebase-admin
 uvicorn
-pydantic
+boto3
+python-jose[cryptography]
+passlib[bcrypt]
+firebase-admin
+
+# Logging & Monitoring
+watchtower
+
+# Development and Standards Enforcement
+black
+flake8
