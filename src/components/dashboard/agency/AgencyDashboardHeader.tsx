@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Heart, Settings, LogOut, Stethoscope } from 'lucide-react';
+import { Settings, LogOut } from 'lucide-react';
 
 interface AgencyDashboardHeaderProps {
   userName: string;
@@ -18,22 +18,22 @@ const AgencyDashboardHeader: React.FC<AgencyDashboardHeaderProps> = ({ userName,
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link to="/" className="flex flex-col items-start">
-              <span className="text-2xl font-recoleta font-bold text-primary">Medixy</span>
-              <span className="text-xs text-muted-foreground font-averta -mt-1">
+              <span className="text-2xl font-recoleta font-bold text-primary">Docsy</span>
+              <span className="text-xs text-muted-foreground font-averta -mt-1 hidden sm:inline">
                 Product of Bedrock health solution.
               </span>
             </Link>
             <Badge className="bg-accent text-accent-foreground border-primary/20">
               <Settings className="w-4 h-4" />
-              <span className="ml-1 capitalize">Agency Admin</span>
+              <span className="ml-1 capitalize hidden sm:inline">Agency Admin</span>
             </Badge>
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-muted-foreground">Welcome, {userName}</span>
+            <span className="text-muted-foreground hidden sm:inline">Welcome, {userName}</span>
             <Button variant="outline" size="sm" onClick={onLogout}>
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
+              <LogOut className="w-4 h-4 sm:mr-2" />
+              <span className="hidden sm:inline">Logout</span>
             </Button>
           </div>
         </div>

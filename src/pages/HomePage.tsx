@@ -40,7 +40,7 @@ const HomePage = () => {
   return (
     <div className="space-y-20">
       {/* Hero Section */}
-      <section className="bg-powder-blue text-center py-20 rounded-2xl shadow-subtle">
+      <section className="bg-primary-light text-center py-20 rounded-2xl shadow-sm">
         <div className="container mx-auto">
           <h1 className="text-5xl md:text-6xl font-recoleta font-extrabold mb-6 leading-tight text-foreground">
             Consult top doctors online or in-person for any health concern
@@ -62,7 +62,7 @@ const HomePage = () => {
             ))}
           </div>
           <div className="text-center mt-10">
-            <Button asChild className="btn-primary-soft font-semibold px-8 py-3 rounded-lg transition-colors duration-300">
+            <Button asChild className="btn-custom-secondary font-semibold px-8 py-3 rounded-lg transition-colors duration-300">
               <Link to="/search">View All Specialties</Link>
             </Button>
           </div>
@@ -70,26 +70,26 @@ const HomePage = () => {
       )}
 
       {/* Why Choose Docsy? Section */}
-      <section className="bg-misty-rose py-20">
+      <section className="bg-secondary py-20">
         <div className="container mx-auto text-center">
             <h2 className="text-4xl font-bold font-recoleta text-foreground mb-12">Why Choose Docsy?</h2>
             <div className="grid md:grid-cols-3 gap-12">
                 <div className="flex flex-col items-center">
-                    <div className="bg-white p-4 rounded-full shadow-medium mb-4">
-                        <ThumbsUp className="h-8 w-8 text-health-green" />
+                    <div className="bg-white p-4 rounded-full shadow-md mb-4">
+                        <ThumbsUp className="h-8 w-8 text-primary" />
                     </div>
                     <h3 className="text-2xl font-recoleta font-bold text-foreground mb-2">Expert-Led Care</h3>
                     <p className="text-muted-foreground font-averta max-w-xs">Access a curated network of highly-qualified doctors and specialists, ensuring you receive top-tier medical advice and treatment.</p>
                 </div>
                 <div className="flex flex-col items-center">
-                    <div className="bg-white p-4 rounded-full shadow-medium mb-4">
-                        <ShieldCheck className="h-8 w-8 text-health-blue" />
+                    <div className="bg-white p-4 rounded-full shadow-md mb-4">
+                        <ShieldCheck className="h-8 w-8 text-primary" />
                     </div>
                     <h3 className="text-2xl font-recoleta font-bold text-foreground mb-2">Secure & Confidential</h3>
                     <p className="text-muted-foreground font-averta max-w-xs">Your privacy is our priority. We use state-of-the-art security to protect your personal and medical information.</p>
                 </div>
                 <div className="flex flex-col items-center">
-                    <div className="bg-white p-4 rounded-full shadow-medium mb-4">
+                    <div className="bg-white p-4 rounded-full shadow-md mb-4">
                         <HeartHandshake className="h-8 w-8 text-primary" />
                     </div>
                     <h3 className="text-2xl font-recoleta font-bold text-foreground mb-2">Patient-Centric Approach</h3>

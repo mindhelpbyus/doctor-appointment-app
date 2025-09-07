@@ -1,0 +1,12 @@
+export interface NewUserGrowth {
+  id: string;
+  month: string;
+  count: number;
+}
+
+export const user_growth_stats: NewUserGrowth[] = [
+  { id: 'NUG001', month: 'January', count: 120 },
+  { id: 'NUG002', month: 'February', count: 180 },
+  { id: 'NUG003', month: 'March', count: 250 },
+  { id: 'NUG004', month: 'April', count: 300 },
+];

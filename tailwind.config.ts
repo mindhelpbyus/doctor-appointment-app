@@ -27,6 +27,8 @@ const config = {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          dark: "hsl(var(--primary-dark))",
+          light: "hsl(var(--primary-light))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -52,16 +54,6 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Custom colors aligned with the new wellness theme
-        charcoal: 'var(--charcoal)',
-        stone: 'var(--stone)',
-        granite: 'var(--granite)',
-        'light-grey': 'var(--light-grey)',
-        'health-blue': 'var(--health-blue)',
-        'dark-health-blue': 'var(--dark-health-blue)',
-        'health-green': 'var(--health-green)',
-        'misty-rose': 'var(--misty-rose)', // New accent color
-        'powder-blue': 'var(--powder-blue)', // New accent color
       },
       borderRadius: {
         lg: "var(--radius)",

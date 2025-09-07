@@ -64,7 +64,7 @@ const Header: React.FC = () => {
       <Button asChild variant="custom-primary" size="custom-sm" className="w-full md:w-auto">
         <Link to="/register" onClick={() => setIsSheetOpen(false)}>Register</Link>
       </Button>
-      <Button asChild variant="ghost" size="custom-sm" className="w-full md:w-auto text-primary hover:text-dark-health-blue">
+      <Button asChild variant="ghost" size="custom-sm" className="w-full md:w-auto text-primary hover:text-primary-dark">
         <Link to="/provider-login" onClick={() => setIsSheetOpen(false)}>Provider Login</Link>
       </Button>
     </>
@@ -72,21 +72,21 @@ const Header: React.FC = () => {
 
   const renderUserMenu = () => (
     <>
-      <Link to={getDashboardLink()} className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent/20 rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
+      <Link to={getDashboardLink()} className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
         <LayoutDashboard className="h-5 w-5 text-primary" />
         <span className="font-averta">Dashboard</span>
       </Link>
       {user?.type === 'patient' && (
         <>
-          <Link to="/appointments" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent/20 rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
+          <Link to="/appointments" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
             <CalendarDays className="h-5 w-5 text-primary" />
             <span className="font-averta">Appointments</span>
           </Link>
-          <Link to="/messages" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent/20 rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
+          <Link to="/messages" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
             <MessageSquare className="h-5 w-5 text-primary" />
             <span className="font-averta">Messages</span>
           </Link>
-          <Link to="/profile" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent/20 rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
+          <Link to="/profile" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
             <UserIcon className="h-5 w-5 text-primary" />
             <span className="font-averta">Profile</span>
           </Link>
@@ -94,11 +94,11 @@ const Header: React.FC = () => {
       )}
       {user?.type === 'doctor' && (
         <>
-          <Link to={getProfileLink()} className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent/20 rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
+          <Link to={getProfileLink()} className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
             <UserIcon className="h-5 w-5 text-primary" />
             <span className="font-averta">My Profile</span>
           </Link>
-          <Link to="/doctor-settings" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent/20 rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
+          <Link to="/doctor-settings" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
             <Settings className="h-5 w-5 text-primary" />
             <span className="font-averta">Settings</span>
           </Link>
@@ -106,18 +106,18 @@ const Header: React.FC = () => {
       )}
       {user?.type === 'agencyUser' && (
         <>
-          <Link to="/agency-profile" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent/20 rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
+          <Link to="/agency-profile" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
             <BriefcaseBusiness className="h-5 w-5 text-primary" />
             <span className="font-averta">Agency Profile</span>
           </Link>
-          <Link to="/agency-settings" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent/20 rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
+          <Link to="/agency-settings" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
             <Settings className="h-5 w-5 text-primary" />
             <span className="font-averta">Settings</span>
           </Link>
         </>
       )}
       {user?.type === 'admin' && (
-        <Link to="/admin" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent/20 rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
+        <Link to="/admin" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
           <HeartHandshake className="h-5 w-5 text-primary" />
           <span className="font-averta">Admin Panel</span>
         </Link>
@@ -185,19 +185,19 @@ const Header: React.FC = () => {
               </Button>
             </div>
             <nav className="flex flex-col gap-2 py-4 flex-grow">
-              <Link to="/search" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent/20 rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
+              <Link to="/search" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
                 <SearchIcon className="h-5 w-5 text-primary" />
                 <span className="font-averta">Find a Provider</span>
               </Link>
-              <Link to="/agencies" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent/20 rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
+              <Link to="/agencies" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
                 <BriefcaseBusiness className="h-5 w-5 text-primary" />
                 <span className="font-averta">Agencies</span>
               </Link>
-              <Link to="/about" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent/20 rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
+              <Link to="/about" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
                 <HeartHandshake className="h-5 w-5 text-primary" />
                 <span className="font-averta">About Us</span>
               </Link>
-              <Link to="/contact" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent/20 rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
+              <Link to="/contact" className="flex items-center gap-2 px-4 py-2 text-foreground hover:bg-accent rounded-md transition-colors" onClick={() => setIsSheetOpen(false)}>
                 <MailIcon className="h-5 w-5 text-primary" />
                 <span className="font-averta">Contact</span>
               </Link>

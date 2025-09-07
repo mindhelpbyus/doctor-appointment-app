@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -28,12 +28,12 @@ import {
 
 import {
   AgencyDashboardHeader,
-  AgencyOverviewTab,
   AgencyDoctorsTab,
   AgencyPromotionsTab,
   AgencyReportsTab,
   AgencySettingsTab,
 } from '@/components/dashboard/agency';
+import Dashboard from '@/components/Dashboard'; // Import the new Dashboard component
 
 const AgencyDashboardPage: React.FC = () => {
   const { agencyId } = useParams<{ agencyId: string }>();
@@ -98,7 +98,6 @@ const AgencyDashboardPage: React.FC = () => {
   };
 
   const handlePromotionsUpdated = () => {
-    // Re-fetch promotions after a new one is added
     if (agencyId) {
       setPromotions(getPromotionsByAgencyId(agencyId));
     }
@@ -107,11 +106,6 @@ const AgencyDashboardPage: React.FC = () => {
   if (!agency) {
     return <div className="text-center py-10">Loading agency dashboard...</div>;
   }
-
-  // Calculate agency-wide metrics for overview
-  const totalDoctors = doctors.length;
-  const totalActiveAppointments = getAppointmentsForDoctors(doctors.map(d => d.id)).length;
-  const totalPromotions = promotions.length;
 
   const tabs = [
     { value: 'overview', label: 'Overview' },
@@ -143,13 +137,8 @@ const AgencyDashboardPage: React.FC = () => {
           </div>
 
           <TabsContent value="overview">
-            <AgencyOverviewTab
-              agency={agency}
-              totalDoctors={totalDoctors}
-              totalActiveAppointments={totalActiveAppointments}
-              totalPromotions={totalPromotions}
-              agencyPerformance={agencyPerformance}
-            />
+             {/* --- THIS IS THE NEW DYNAMIC DASHBOARD -- */}
+            <Dashboard userRole="AGENCY_ADMIN" />
           </TabsContent>
 
           <TabsContent value="doctors">

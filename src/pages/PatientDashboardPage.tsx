@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -22,7 +22,6 @@ import { showError } from '@/utils/toast';
 
 import {
   PatientDashboardHeader,
-  PatientOverviewTab,
   PatientAppointmentsTab,
   PatientDoctorsTab,
   PatientMessagingTab,
@@ -30,6 +29,7 @@ import {
   PatientJournalTab,
   PatientMoodTrackerTab,
 } from '@/components/dashboard/patient';
+import Dashboard from '@/components/Dashboard'; // Import the new Dashboard component
 
 const PatientDashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -41,7 +41,6 @@ const PatientDashboardPage: React.FC = () => {
   const [pastAppointments, setPastAppointments] = useState<Appointment[]>([]);
   const [allDoctors, setAllDoctors] = useState<Doctor[]>([]);
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
-  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [promotions, setPromotions] = useState<Promotion[]>([]);
 
   const currentUserId = getLoggedInUser()?.id;
@@ -69,7 +68,6 @@ const PatientDashboardPage: React.FC = () => {
 
     setAllDoctors(getDoctors());
     setSpecialties(getSpecialties());
-    setConversations(getConversationsForUser(currentUserId));
     setPromotions(getPromotions().filter(p => p.status === 'approved'));
   }, [currentUserId, currentUserType, navigate]);
 
@@ -122,12 +120,8 @@ const PatientDashboardPage: React.FC = () => {
           </div>
 
           <TabsContent value="overview">
-            <PatientOverviewTab
-              patientId={patient.id}
-              upcomingAppointments={upcomingAppointments}
-              pastAppointments={pastAppointments}
-              conversations={conversations}
-            />
+            {/* --- THIS IS THE NEW DYNAMIC DASHBOARD -- */}
+            <Dashboard userRole="PATIENT" />
           </TabsContent>
 
           <TabsContent value="appointments">

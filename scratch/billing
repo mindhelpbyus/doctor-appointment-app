@@ -1,0 +1,1 @@
+[{"id":"BILL001","patientId":"PAT001","amount":150,"date":"2025-08-23T01:26:19.342Z","status":"Paid"},{"id":"BILL002","patientId":"PAT002","amount":200,"date":"2025-08-18T01:26:19.342Z","status":"Pending"},{"id":"BILL003","patientId":"PAT003","amount":75,"date":"2025-09-02T01:26:19.342Z","status":"Paid"}]

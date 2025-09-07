@@ -1,0 +1,43 @@
+[
+  {
+    "id": "ROLE#PATIENT",
+    "layout_config": {
+      "widgets": [
+        { "id": "upcoming_appointments", "title": "Upcoming Appointments", "x": 0, "y": 0, "w": 6, "h": 2 },
+        { "id": "recent_mood_entries", "title": "My Mood Tracker", "x": 6, "y": 0, "w": 6, "h": 2 },
+        { "id": "my_doctor_messages", "title": "Messages", "x": 0, "y": 2, "w": 12, "h": 3 }
+      ]
+    }
+  },
+  {
+    "id": "ROLE#DOCTOR",
+    "layout_config": {
+      "widgets": [
+        { "id": "appointments_today", "title": "Today's Appointments", "x": 0, "y": 0, "w": 8, "h": 4 },
+        { "id": "patient_list", "title": "My Patients", "x": 8, "y": 0, "w": 4, "h": 4 },
+        { "id": "doctor_messaging_inbox", "title": "Inbox", "x": 0, "y": 4, "w": 12, "h": 3 }
+      ]
+    }
+  },
+  {
+    "id": "ROLE#AGENCY_ADMIN",
+    "layout_config": {
+      "widgets": [
+        { "id": "agency_doctor_list", "title": "Agency Doctors", "x": 0, "y": 0, "w": 6, "h": 4 },
+        { "id": "agency_patient_list", "title": "Agency Patients", "x": 6, "y": 0, "w": 6, "h": 4 },
+        { "id": "agency_billing_overview", "title": "Billing Overview", "x": 0, "y": 4, "w": 12, "h": 2 }
+      ]
+    }
+  },
+  {
+    "id": "ROLE#BEDROCK_ADMIN",
+    "layout_config": {
+      "widgets": [
+        { "id": "platform_user_stats", "title": "Platform User Statistics", "x": 0, "y": 0, "w": 4, "h": 2 },
+        { "id": "platform_revenue", "title": "Platform Revenue", "x": 4, "y": 0, "w": 4, "h": 2 },
+        { "id": "api_health_status", "title": "API Health", "x": 8, "y": 0, "w": 4, "h": 2 },
+        { "id": "new_user_growth", "title": "New User Growth", "x": 0, "y": 2, "w": 12, "h": 3 }
+      ]
+    }
+  }
+]
